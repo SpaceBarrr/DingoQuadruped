@@ -1,0 +1,11 @@
+LTspice 24.0.9 for Windows
+Circuit: * C:\Users\cianr\OneDrive\Documents\DingoQuadruped\PCBs\PDB\Battery_Mon_Sim.asc
+Start Time: Sun Apr  7 09:33:40 2024
+solver = Normal
+Maximum thread count: 16
+tnom = 27
+temp = 27
+method = modified trap
+Direct Newton iteration for .op point succeeded.
+Total elapsed time: 0.355 seconds.
+
