@@ -38,44 +38,20 @@ The following flow diagram shows a simplified overview of how a joystick command
 
 ## Installation of Code
 ### Natively
-- Install Ubuntu 20.04
+- Install Ubuntu 20.04 onto the Pi's SD card via the [Raspberry Pi Imager](https://www.raspberrypi.com/software/), and setup username, password and network information.
 - Install [ros-noetic](http://wiki.ros.org/noetic/Installation/Ubuntu)
-- Install git via `sudo apt-get install git`
-- Create a new folder in your home folder: `mkdir ~/any_folder_name`
-- Change directory to the new folder just created: `cd ~/any_folder_name`
-- Clone this repository into the folder using git: `git clone ...`
-- Move into the dingo_ws folder: `cd /dingo_ws`
+- Install necessary packages via `sudo apt-get install python3-catkin-tools git python3-rosdep python3-rosinstall python3-rosinstall-generator python3-wstool python3-pip build-essential wireless-tools libraspberrypi-bin ros-noetic-joy ros-noetic-catkin python3-catkin-tools i2c-tools libi2c-dev python3-smbus`
+- Install necessary python packages via `pip install spidev transforms3d adafruit-circuitpython-bno055 pillow rpi.gpio pyserial`
+- Change directory to the home folder: `cd ~`
+- Clone this (the Dingo Quadruped) repository using git: `git clone ...`
+- Move into the dingo_ws folder: `cd /DingoQuadruped/dingo_ws`
 - Initialise rosdep: `sudo rosdep init`
 - Fetch dependencies with rosdep: `rosdep update`
 - Build the workspace: `catkin build`
 - Source the workspace: `source devel/setup.bash`
-- (Optional) Add a line to .bashrc to automatically source the workspace: `echo "source ~/any_folder_name/DingoQuadruped/dingo_ws/devel/setup.bash" >> ~/.bashrc`, `source ~/.bashrc`
+- (Optional) Add a line to .bashrc to automatically source the workspace: `echo "source ~/DingoQuadruped/dingo_ws/devel/setup.bash" >> ~/.bashrc`, `source ~/.bashrc`
 
 ### Additional Installation Steps
-#### Setting necessary permissions for ROS
-To run ROS as non-root, must set permissions correctly via udev for several /dev files.
-- Add the following to /etc/udev/rules.d/99-ROS.rules
-```.   
-       KERNEL=="ttyS0", OWNER="root", GROUP="ros", MODE="0660"
-       KERNEL=="spi", OWNER="root", GROUP="ros", MODE="0660"
-       KERNEL=="i2c", OWNER="root", GROUP="ros", MODE="0660"
-       KERNEL=="gpiomem", OWNER="root", GROUP="ros", MODE="0660"
-       KERNEL=="mem", OWNER="root", GROUP="ros", MODE="0660"
-```
-- Add new group to user account: `sudo groupadd ros && sudo adduser <username> ros`
-- Reload udev rules: `sudo udevadm control --reload-rules && sudo udevadm trigger`
-
-#### Setting up Serial Comms
-These steps will be required to get serial comms working between the Pi and Nano.
-- Run the following to install ROS serial
-    - `sudo apt-get update`
-    - `sudo apt-get install ros-noetic-rosserial-python ros-noetic-rosserial-arduino`
-- See above for udev changess needed for ttyS0 
-- The Ubuntu serial console must be disabled or it will conflict with serial comms.
-    - `sudo systemctl disable serial-getty@ttyS0.service --now`
-    - `sudo systemctl stop serial-getty@ttyS0.service`
-    - `sudo systemctl mask serial-getty@ttyS0.service`
-
 #### Bluetooth Setup
 For getting bluetooth controller working (for instance PS4 controller)
 - More info here: https://www.makeuseof.com/manage-bluetooth-linux-with-bluetoothctl/
@@ -132,10 +108,91 @@ The LCD node has been created following the waveshare tutorial here: https://www
 - `sudo apt-get install unzip -y`
 - `sudo wget https://files.waveshare.com/upload/8/8d/LCD_Module_RPI_code.zip`
 - `sudo unzip ./LCD_Module_RPI_code.zip`
-- `cd python/Font`
+- `cd ~/LCD_Module_RPI_code/RaspberryPi/python/Font`
 - `sudo mv Font00.ttf /usr/share/fonts/truetype/Font00.ttf`
 - `sudo mv Font01.ttf /usr/share/fonts/truetype/Font01.ttf`
 - `sudo mv Font02.ttf /usr/share/fonts/truetype/Font02.ttf`
+
+#### Setting necessary permissions for ROS
+To run ROS as non-root, must set permissions correctly via udev for several /dev files.
+- Add the following to /etc/udev/rules.d/99-ROS.rules
+```.   
+       KERNEL=="ttyS0", OWNER="root", GROUP="ros", MODE="0660"
+       KERNEL=="spi", OWNER="root", GROUP="ros", MODE="0660"
+       KERNEL=="i2c", OWNER="root", GROUP="ros", MODE="0660"
+       KERNEL=="gpiomem", OWNER="root", GROUP="ros", MODE="0660"
+       KERNEL=="mem", OWNER="root", GROUP="ros", MODE="0660"
+```
+- Add new group to user account: `sudo groupadd ros && sudo adduser <username> ros`
+- Reload udev rules: `sudo udevadm control --reload-rules && sudo udevadm trigger`
+
+#### Setting up I2C
+- First, run this command to check whether i2c is working for root: `sudo i2cdetect -y 1`. If this doesnt work, try replacing the 1 with a 0. If this works, replace the 1 with a 0 in all subsequent steps.
+- Now try for your user: `i2cdetect -y 1`. If the same matrix appears, all is good. Otherwise, run the following:
+```.
+    sudo groupadd i2c
+    sudo chown :i2c /dev/i2c-1
+    sudo chmod g+rw /dev/i2c-1
+    sudo usermod -aG i2c [INSERT YOUR USERNAME]
+```
+- Reboot or logout and back in and then check if i2c is working by running `i2cdetect -y 1`. The matrix should now appear for your user.
+
+#### Setting up SPI
+Please run the code first before following these steps. If you do not receive an SPI permission error, there is no need to do the following SPI setup steps. Proceed if you receive an error
+- Run `ls -la /dev/spidev*` to list SPI devices
+- Then, run the following to give your user SPI permissions, repeating the last two lines for all SPI devices listed from previous command:
+```.
+    sudo groupadd spi
+    sudo usermod -aG spi <yourusername>
+    sudo chown :spi <put the spi device name here>
+    sudo chmod g+rw <put the spi device name here>
+```
+- Try running the code again. If it works, reboot the device and run the code again immediately after logging in. If it still works after reboot, no need to continue, but it if does not, keep going below:
+- Run `sudo nano /etc/systemd/system/spi-permissions.service` and put the following into the file, saving and exiting afterwards:
+```.
+    [Unit]
+    Description=Set SPI Permissions
+     
+    [Service]
+    ExecStart=/path/to/your/script.sh
+    User=root
+    Group=root
+    Restart=on-failure
+    RestartSec=5s
+     
+    [Install]
+    WantedBy=multi-user.target
+```
+- Now, run `nano ~/startspi.sh` and put the following into the file, saving and exiting afterwards. Note: If your SPI device names are different, please update them accordingly:
+```.
+    #!/bin/bash
+    sudo usermod -aG spi <yourusername>
+    sudo chown :spi /dev/spidev0.0
+    sudo chmod g+rw /dev/spidev0.0
+    sudo chown :spi /dev/spidev0.1
+    sudo chmod g+rw /dev/spidev0.1
+```
+- Run the following in the terminal:
+    - `sudo chmod +x /path/to/your/script.sh`
+    - `sudo systemctl daemon-reload`
+    - `sudo systemctl enable spi-permissions.service`
+    - `sudo systemctl start spi-permissions.service`
+
+SPI should now work across restarts
+
+#### Setting up Serial Comms
+Serial communications was one of the hardest parts of this project to get working. Unfortunately Ubuntu 20.04 in particular seems to have trouble on Raspberry Pi with serial communications via the tx and rx pins. If the following steps do not work for you, further research/trial and error may be required. 
+
+Do the following:
+- Run the following to install ROS serial
+    - `sudo apt-get update`
+    - `sudo apt-get install ros-noetic-rosserial ros-noetic-rosserial-python ros-noetic-rosserial-arduino`
+- Disable the Ubuntu serial console or it will conflict with serial comms
+    - `sudo systemctl disable serial-getty@ttyS0.service --now`
+    - `sudo systemctl stop serial-getty@ttyS0.service`
+    - `sudo systemctl mask serial-getty@ttyS0.service`
+ 
+Test whether serial is working by running the Dingo code. It should attempt to connect to the Arduino and successfully do so, which can be seen via the code printing to the terminal that publishers have been established. If it errors, first check your wiring to the arduino, and that the arduino has been flashed correctly. If this does not work, further research and trial/error will be needed. Look for articles like [this one](https://devicetests.com/enabling-uart-communication-raspberry-pi-4-ubuntu-20-04)
 
 #### SD Card Backup
 It's a good idea to backup the sdcard every so often. Here is how to do that on linux.
