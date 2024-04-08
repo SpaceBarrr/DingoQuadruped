@@ -15,10 +15,10 @@ def calc_cells(v1, v2, v3, v4):
     return round(V1, 3), round(V2, 3), round(V3, 3), round(V4, 3)
 
 
-v1_gt = 4.2
+v1_gt = 15
 v2_gt = 4.2
-v3_gt = 4.2
-v4_gt = 4.2
+v3_gt = 3.6
+v4_gt = 2
 
 divider_out = calc_v_divider(v1_gt, v2_gt, v3_gt, v4_gt)
 V1, V2, V3, V4 = calc_cells(*divider_out)
