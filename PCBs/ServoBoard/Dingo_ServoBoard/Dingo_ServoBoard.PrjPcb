@@ -36,7 +36,10 @@ ConstraintManagerFlow=0
 IsVirtualBomDocumentRemoved=0
 OutputPath=
 LogFolderPath=
-ManagedProjectGUID=
+ManagedProjectGUID=6D47D628-78C9-410F-BC51-F8E02550BB45
+VaultGUID=1779A46D-E3D7-419B-ACDF-65988F78CA40
+ReleaseVaultName=Monash Uncrewed Aerial Systems (UAS)
+ItemGUID=6D47D628-78C9-410F-BC51-F8E02550BB45
 IncludeDesignInRelease=0
 CrossRefSheetStyle=1
 CrossRefLocationStyle=1
@@ -65,6 +68,23 @@ ClassGenNCAutoScope=None
 DItemRevisionGUID=
 GenerateClassCluster=0
 DocumentUniqueId=ACDRCHUP
+
+[Document2]
+DocumentPath=ServoBoard.PcbDoc
+AnnotationEnabled=1
+AnnotateStartValue=1
+AnnotationIndexControlEnabled=0
+AnnotateSuffix=
+AnnotateScope=All
+AnnotateOrder=-1
+DoLibraryUpdate=1
+DoDatabaseUpdate=1
+ClassGenCCAutoEnabled=1
+ClassGenCCAutoRoomEnabled=0
+ClassGenNCAutoScope=None
+DItemRevisionGUID=
+GenerateClassCluster=0
+DocumentUniqueId=YFQSHPUF
 
 [Configuration1]
 Name=Sources
