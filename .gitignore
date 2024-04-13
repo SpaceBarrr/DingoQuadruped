@@ -7,4 +7,5 @@ dingo_ws/logs/*
 dingo_ws/.catkin_tools/*
 dingo_ws/.vscode/*
 .vscode/*
+.idea/*
 dingo_ws/src/.vscode/*
