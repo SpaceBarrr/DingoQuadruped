@@ -1,0 +1,13 @@
+Added Component: Designator=IC2(RT6258C)
+Added Pin To Net: NetName=NetIC2_1 Pin=IC2-1
+Added Pin To Net: NetName=NetC5_2 Pin=IC2-2
+Added Pin To Net: NetName=NetC5_2 Pin=IC2-3
+Added Pin To Net: NetName=GND Pin=IC2-4
+Added Pin To Net: NetName=VCC Pin=IC2-5
+Added Pin To Net: NetName=NetIC2_6 Pin=IC2-6
+Added Pin To Net: NetName=GND Pin=IC2-8
+Added Pin To Net: NetName=NetIC2_9 Pin=IC2-9
+Added Pin To Net: NetName=5V_OUT Pin=IC2-10
+Added Pin To Net: NetName=NetC8_1 Pin=IC2-11
+Added Pin To Net: NetName=5V LDO Pin=IC2-12
+Added Member To Class: ClassName=PDB_schematic Member=Component IC2 RT6258C

@@ -1,0 +1,13 @@
+Output: NC Drill Files
+Type  : NC Drill
+From  : Project [Kelpie_Main_Board.PrjPcb]
+   Generated File[Main_PCB.TXT]
+   Generated File[Main_PCB-RectHoles.TXT]
+   Generated File[Main_PCB.LDP]
+   Generated File[Main_PCB.DRR]
+
+
+Files Generated   : 4
+Documents Printed : 0
+
+Finished Output Generation At 16:01:59 On 15/05/2024

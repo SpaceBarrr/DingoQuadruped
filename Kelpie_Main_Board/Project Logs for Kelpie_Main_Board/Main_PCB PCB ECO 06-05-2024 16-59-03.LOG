@@ -1,0 +1,24 @@
+Change Component Designator: OldDesignator=F3 NewDesignator=F2
+Change Component Designator: OldDesignator=F4 NewDesignator=F3
+Change Component Designator: OldDesignator=F5 NewDesignator=F4
+Change Component Designator: OldDesignator=FL1 NewDesignator=J9
+Change Component Designator: OldDesignator=FL2 NewDesignator=J5
+Change Component Designator: OldDesignator=FL3 NewDesignator=J1
+Change Component Designator: OldDesignator=FR1 NewDesignator=J11
+Change Component Designator: OldDesignator=FR2 NewDesignator=J7
+Change Component Designator: OldDesignator=FR3 NewDesignator=J3
+Change Component Designator: OldDesignator=PWR GOOD NewDesignator=LED1
+Change Component Designator: OldDesignator=RL1 NewDesignator=J10
+Change Component Designator: OldDesignator=RL2 NewDesignator=J6
+Change Component Designator: OldDesignator=RL3 NewDesignator=J2
+Change Component Designator: OldDesignator=RR1 NewDesignator=J12
+Change Component Designator: OldDesignator=RR2 NewDesignator=J8
+Change Component Designator: OldDesignator=RR3 NewDesignator=J4
+Added Pin To Net: NetName=VCC Pin=R22-2
+Change Net Name : Old Net Name=NetF3_1 New Net Name=NetF2_1
+Change Net Name : Old Net Name=NetF4_1 New Net Name=NetF3_1
+Change Net Name : Old Net Name=NetF5_1 New Net Name=NetF4_1
+Change Net Name : Old Net Name=NetF5_2 New Net Name=NetF4_2
+Added Member To Class: ClassName=PDB_schematic Member=Component J18 JST-GH 5Pin
+Added Member To Class: ClassName=PDB_schematic Member=Component J19 JST-GH 5Pin
+Added Member To Class: ClassName=PDB_schematic Member=Component J20 JST-GH 5Pin

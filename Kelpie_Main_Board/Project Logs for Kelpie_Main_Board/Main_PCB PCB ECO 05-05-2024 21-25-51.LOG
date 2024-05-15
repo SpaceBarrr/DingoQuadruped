@@ -1,0 +1,77 @@
+Change Component Footprint: Designator=J18 Old Footprint=SHDR5W114P0X396_1X5_1974X850X1090P New Footprint=BM05BGHSTBTLFSNN
+Change Component Footprint: Designator=J19 Old Footprint=SHDR5W114P0X396_1X5_1974X850X1090P New Footprint=BM05BGHSTBTLFSNN
+Change Component Footprint: Designator=J20 Old Footprint=SHDR5W114P0X396_1X5_1974X850X1090P New Footprint=BM05BGHSTBTLFSNN
+Change Component Comment : Designator=J18 Old Comment=JST-VH 5Pin New Comment=JST-GH 5Pin
+Change Component Comment : Designator=J19 Old Comment=JST-VH 5Pin New Comment=JST-GH 5Pin
+Change Component Comment : Designator=J20 Old Comment=JST-VH 5Pin New Comment=JST-GH 5Pin
+Change component parameters: Designator = "J18" ("J18"); Footprint = "SHDR5W114P0X396_1X5_1974X850X1090P"; UniqueID = "\YYBUKVPS" ("\YYBUKVPS")
+Change component parameters (AddParameter): Name = "Arrow Part Number"; Value = ""; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Arrow Price/Stock"; Value = ""; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Datasheet Link"; Value = "http://www.jst-mfg.com/product/pdf/eng/eGH.pdf"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Height"; Value = "4.05mm"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Manufacturer_Name"; Value = "JST (JAPAN SOLDERLESS TERMINALS)"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Manufacturer_Part_Number"; Value = "BM05B-GHS-TBT(LF)(SN)(N)"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Mouser Part Number"; Value = ""; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Mouser Price/Stock"; Value = ""; VariantName = "[No Variations]"
+Change component parameters: Designator = "J19" ("J19"); Footprint = "SHDR5W114P0X396_1X5_1974X850X1090P"; UniqueID = "\CUOESINQ" ("\CUOESINQ")
+Change component parameters (AddParameter): Name = "Arrow Part Number"; Value = ""; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Arrow Price/Stock"; Value = ""; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Datasheet Link"; Value = "http://www.jst-mfg.com/product/pdf/eng/eGH.pdf"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Height"; Value = "4.05mm"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Manufacturer_Name"; Value = "JST (JAPAN SOLDERLESS TERMINALS)"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Manufacturer_Part_Number"; Value = "BM05B-GHS-TBT(LF)(SN)(N)"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Mouser Part Number"; Value = ""; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Mouser Price/Stock"; Value = ""; VariantName = "[No Variations]"
+Change component parameters: Designator = "J20" ("J20"); Footprint = "SHDR5W114P0X396_1X5_1974X850X1090P"; UniqueID = "\YIZACHNO" ("\YIZACHNO")
+Change component parameters (AddParameter): Name = "Arrow Part Number"; Value = ""; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Arrow Price/Stock"; Value = ""; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Datasheet Link"; Value = "http://www.jst-mfg.com/product/pdf/eng/eGH.pdf"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Height"; Value = "4.05mm"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Manufacturer_Name"; Value = "JST (JAPAN SOLDERLESS TERMINALS)"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Manufacturer_Part_Number"; Value = "BM05B-GHS-TBT(LF)(SN)(N)"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Mouser Part Number"; Value = ""; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Mouser Price/Stock"; Value = ""; VariantName = "[No Variations]"
+Added Member To Class: ClassName=PDB_schematic Member=Component C1 10pF
+Added Member To Class: ClassName=PDB_schematic Member=Component C17 10uF
+Added Member To Class: ClassName=PDB_schematic Member=Component C19 1uF
+Added Member To Class: ClassName=PDB_schematic Member=Component C20 0.1uF
+Added Member To Class: ClassName=PDB_schematic Member=Component C21 1uF
+Added Member To Class: ClassName=PDB_schematic Member=Component C23 0.1uF
+Added Member To Class: ClassName=PDB_schematic Member=Component C24 0.47uF
+Added Member To Class: ClassName=PDB_schematic Member=Component C26 0.1uF
+Added Member To Class: ClassName=PDB_schematic Member=Component C27 0.1uF
+Added Member To Class: ClassName=PDB_schematic Member=Component C28 0.01uF
+Added Member To Class: ClassName=PDB_schematic Member=Component C30 0.1uF
+Added Member To Class: ClassName=PDB_schematic Member=Component C31 0.1uF
+Added Member To Class: ClassName=PDB_schematic Member=Component F3 Fuse
+Added Member To Class: ClassName=PDB_schematic Member=Component F4 Fuse
+Added Member To Class: ClassName=PDB_schematic Member=Component F5 Fuse
+Added Member To Class: ClassName=PDB_schematic Member=Component IC2 MMBT3904
+Added Member To Class: ClassName=PDB_schematic Member=Component IC5 INA3221AIRGVR
+Added Member To Class: ClassName=PDB_schematic Member=Component IC7 ICM-20609
+Added Member To Class: ClassName=PDB_schematic Member=Component IC9 INA3221AIRGVR
+Added Member To Class: ClassName=PDB_schematic Member=Component J2 1x3 dupont
+Added Member To Class: ClassName=PDB_schematic Member=Component J7 1x3 dupont
+Added Member To Class: ClassName=PDB_schematic Member=Component J9 1x3 dupont
+Added Member To Class: ClassName=PDB_schematic Member=Component J10 1x3 dupont
+Added Member To Class: ClassName=PDB_schematic Member=Component J11 1x3 dupont
+Added Member To Class: ClassName=PDB_schematic Member=Component R2 10mOhm
+Added Member To Class: ClassName=PDB_schematic Member=Component R4 10mOhm
+Added Member To Class: ClassName=PDB_schematic Member=Component R5 10mOhm
+Added Member To Class: ClassName=PDB_schematic Member=Component R6 10mOhm
+Added Member To Class: ClassName=PDB_schematic Member=Component R7 10mOhm
+Added Member To Class: ClassName=PDB_schematic Member=Component R9 10mOhm
+Added Member To Class: ClassName=PDB_schematic Member=Component R10 10mOhm
+Added Member To Class: ClassName=PDB_schematic Member=Component R11 10mOhm
+Added Member To Class: ClassName=PDB_schematic Member=Component R12 10mOhm
+Added Member To Class: ClassName=PDB_schematic Member=Component R16 10ohm
+Added Member To Class: ClassName=PDB_schematic Member=Component R17 1kOhm
+Added Member To Class: ClassName=PDB_schematic Member=Component R18 100Ohm
+Added Member To Class: ClassName=PDB_schematic Member=Component R19 100Ohm
+Added Member To Class: ClassName=PDB_schematic Member=Component R20 100Ohm
+Added Member To Class: ClassName=PDB_schematic Member=Component R21 10k Ohm
+Added Member To Class: ClassName=PDB_schematic Member=Component R22 10kOhm
+Added Member To Class: ClassName=PDB_schematic Member=Component R23 10kOhm
+Added Member To Class: ClassName=PDB_schematic Member=Component R25 10kOhm
+Added Member To Class: ClassName=PDB_schematic Member=Component R26 10k Ohm
+Added Member To Class: ClassName=PDB_schematic Member=Component R27 10k Ohm

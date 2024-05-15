@@ -1,0 +1,681 @@
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html">
+<style type="text/css">
+		h1, h2, h3, h4, h5, h6 {
+			font-family : segoe ui;
+			color : black;
+			background-color : #EDE7D9;
+			padding: 0.3em;
+		}
+
+		h1 {
+			font-size: 1.2em;
+		}		
+
+		h2 {
+			font-size: 1.2em;
+		}
+
+		body {
+			font-family : segoe ui;
+		}
+
+		td, th {
+			padding: 0.5em;
+			text-align : left;
+			width: 10em;
+		}
+		th {
+			background-color : #EEEEEE;
+
+		}
+		th.column1, td.column1 {
+			text-align: left;
+			width : auto;
+		}
+		table {
+			width : 100%;
+			font-size: 0.9em;
+		}
+
+		.DRC_summary_header {
+			padding-bottom : 0.1em;
+			border : 0px solid black;
+			width: 100%;
+			align: left;
+		}
+
+		.DRC_summary_header_col1,
+		.DRC_summary_header_col2, 
+		.DRC_summary_header_col3 {
+			color : black;
+			font-size:100%;
+			padding : 0em;
+			padding-top : 0.2em;
+			padding-bottom 0.2em;
+			border : 0px solid black;
+			vertical-align: top;
+			text-align: left;
+		}
+
+		.DRC_summary_header_col1 {
+			font-weight: bold;
+			width: 9em;
+		}
+
+		.DRC_summary_header_col2 {
+			width: 0.1em;
+		
+		}
+
+		.DRC_summary_header_col3 {
+			width : auto;
+		}
+
+		.header_holder {
+		    Width = 100%;
+		    border = 0px solid green;
+		    padding = 0;
+		}
+
+
+		.front_matter, .front_matter_column1, .front_matter_column2, .front_matter_column3
+		{
+			left : 0;
+			top : 0;
+			padding: 0em;
+			padding-top : 0.1em;
+			border : 0px solid black;
+			width : 100%;
+			vertical-align: top;
+			text-align: left;
+		}
+
+		.front_matter_column1 {
+			width : 8em;
+			font-weight: bold;
+		}
+
+		.front_matter_column2 {
+			width: 0.1em;
+		}
+
+		.front_matter_column3 {
+			width : auto;
+		}
+
+		.total_column1, .total_column {
+			font-weight : bold;
+		}
+		.total_column1 {
+			text-align : left;
+		}
+		.warning, .error {
+			color : red;
+			font-weight : bold;
+		}
+		tr.onmouseout_odd {
+			background-color : #white;
+		}
+		tr.onmouseout_even { 
+			background-color : #FAFAFA;
+		}
+		tr.onmouseover_odd, tr.onmouseover_even { 
+			background-color : #EEEEEE;
+		} 
+		a:link, a:visited, .q a:link,.q a:active,.q {
+			color: #21489e; 
+		}
+		a:link.callback, a:visited.callback { 
+			color: #21489e;
+		}
+		a:link.customize, a:visited.customize {
+			color: #C0C0C0;
+			position: absolute; 
+			right: 10px;
+		}	
+		p.contents_level1 {
+			font-weight : bold;
+			font-size : 110%;
+			margin : 0.5em;
+		}
+		p.contents_level2 {
+			position : relative;
+			left : 20px;
+			margin : 0.5em;
+		}
+	</style><script type="text/javascript">
+		function coordToMils(coord) {
+			var number = coord / 10000;
+			
+			if (number != number.toFixed(3))
+				number = number.toFixed(3);
+
+			return number + 'mil'
+		}
+
+		function coordToMM(coord) {
+			var number = 0.0254 * coord / 10000;
+			
+			if (number != number.toFixed(4))
+				number = number.toFixed(4);
+			
+			return number + 'mm'
+		}
+	
+		function convertCoord(coordNode, units) {
+			for (var i = 0; i < coordNode.childNodes.length; i++) {
+				coordNode.removeChild(coordNode.childNodes[i]);
+			}
+
+			var coord = coordNode.getAttribute('value');
+			if (coord != null) {
+				if (units == 'mm') {
+					textNode = document.createTextNode(coordToMM(coord));
+					coordNode.appendChild(textNode);
+				} else if (units == 'mil') {
+					textNode = document.createTextNode(coordToMils(coord));		
+					coordNode.appendChild(textNode);	
+				}
+			}
+		}
+	
+		function convertUnits(unitNode, units) {
+			for (var i = 0; i < unitNode.childNodes.length; i++) {
+				unitNode.removeChild(unitNode.childNodes[i]);		
+			}
+		
+			textNode = document.createTextNode(units); 
+			unitNode.appendChild(textNode);
+		}
+	
+		function changeUnits(radio_input, units) {
+			if (radio_input.checked) {
+			
+				var elements = document.getElementsByName('coordinate');
+				if (elements) {
+					for (var i = 0; i < elements.length; i++) {
+						convertCoord(elements[i], units);
+					}
+				}
+	
+				var elements = document.getElementsByName('units');
+				if (elements) {
+					for (var i = 0; i < elements.length; i++) {
+						convertUnits(elements[i], units);
+					}
+				}
+			}
+		}
+	</script><title>Design Rule Verification Report</title>
+</head>
+<body onload=""><img ALT="Altium" src="
+			file://C:\Users\Public\Documents\Altium\AD24\Templates\AD_logo.png
+		"><h1>Design Rule Verification Report</h1>
+<table class="header_holder">
+<td class="column1">
+<table class="front_matter">
+<tr class="front_matter">
+<td class="front_matter_column1">Date:</td>
+<td class="front_matter_column2"></td>
+<td class="front_matter_column3">15/05/2024</td>
+</tr>
+<tr class="front_matter">
+<td class="front_matter_column1">Time:</td>
+<td class="front_matter_column2"></td>
+<td class="front_matter_column3">15:43:03</td>
+</tr>
+<tr class="front_matter">
+<td class="front_matter_column1">Elapsed Time:</td>
+<td class="front_matter_column2"></td>
+<td class="front_matter_column3">00:00:03</td>
+</tr>
+<tr class="front_matter">
+<td class="front_matter_column1">Filename:</td>
+<td class="front_matter_column2"></td>
+<td class="front_matter_column3"><a href="file:///C:\Users\Public\Documents\Altium\Kelpie_Main_Board\Main_PCB.PcbDoc" class="file"><acronym title="C:\Users\Public\Documents\Altium\Kelpie_Main_Board\Main_PCB.PcbDoc">C:\Users\Public\Documents\Altium\Kelpie_Main_Board\Main_PCB.PcbDoc</acronym></a></td>
+</tr>
+</table>
+</td>
+<td class="column2">
+<table class="DRC_summary_header">
+<tr>
+<td class="DRC_summary_header_col1">Warnings:</td>
+<td class="DRC_summary_header_col2"></td>
+<td class="DRC_summary_header_col3" style="color : red">23</td></tr>
+<tr>
+<td class="DRC_summary_header_col1">Rule Violations:</td>
+<td class="DRC_summary_header_col2"></td>
+<td class="DRC_summary_header_col3" style="color : red">11</td></tr>
+<tr>
+<td class="DRC_summary_header_col1">Waived Violations:</td>
+<td class="DRC_summary_header_col2"></td>
+<td class="DRC_summary_header_col3" style="color : red">59</td></tr>
+</table>
+</td>
+</table><a name="IDQDJHHPJIGJAJLPTZLFY0FW5H5KI1GGBD5JR410GG00VF5I0YKB2P"><h2>Summary</h2></a><table>
+<tr>
+<th class="column1">Warnings</th>
+<th class="column2">Count</th>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="#IDL4J4JBKTS5RLGA5RZFDE4VNPHPAI3G3XLY1ZR4FH5D5EO5OQCFTK">Zero hole size multi-layer pad(s) detected</a></td>
+<td class="column2">23</td>
+</tr>
+<tr>
+<td style="font-weight : bold; text-align : right" class="column1">Total</td>
+<td style="font-weight : bold" class="column2">23</td>
+</tr>
+</table><br><table>
+<tr>
+<th class="column1">Rule Violations</th>
+<th class="column2">Count</th>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="#IDHY4HR11W1A0XIKQFXOLDY0LYMEKDTSCGDCJKXDDXTCGU4S1NHDVN">Clearance Constraint (Gap=0.127mm) (All),(All)</a></td>
+<td class="column2">0</td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="#IDQERXSCGU3CUFF04BDFQODIYFIO0LR50FJNDGGYCHNPL2L3HRTSRJ">Short-Circuit Constraint (Allowed=No) (All),(All)</a></td>
+<td class="column2">0</td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="#ID3S2S5TM3SNIZORXNP0RXCUY2NOC3URLZZNE4YHMDBSB0GBOQFTID">Un-Routed Net Constraint ( (All) )</a></td>
+<td class="column2">0</td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="#IDSWULZS4QA32ZOJFEPZSBF4TLNKI4S5LEYB00ZKNWXWFTJFY50XTO">Modified Polygon (Allow modified: No), (Allow shelved: No)</a></td>
+<td class="column2">0</td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="#IDZJFG14XQIGBOPAWORBPWZCTTWES2PMJHA145QZJR1EJSOUOPDZWM">Width Constraint (Min=0.178mm) (Max=0.305mm) (Preferred=0.178mm) (InNet('I2C_SDA'))</a></td>
+<td class="column2">0</td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="#IDZEFK1WTU4NZ5ILCPW4DED3XCJJNBTOSKMUUIDGBZPDM3BFQYXQZL">Width Constraint (Min=0.127mm) (Max=25.4mm) (Preferred=0.127mm) (All)</a></td>
+<td class="column2">0</td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="#IDTN01D2MIQNW4LQ3YHNRBEVGAFFBUY53GATYKAHNPBSMN4G2U54RB">Width Constraint (Min=0.178mm) (Max=0.305mm) (Preferred=0.178mm) (InNet('I2C_SCL'))</a></td>
+<td class="column2">0</td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="#IDYQJTPOJPRP5JK5EMDHU11TN2IMCN2MAEFB3MXBF0QIYA4IKLGC4P">Width Constraint (Min=0.254mm) (Max=0.254mm) (Preferred=0.254mm) (InNet('5V LDO'))</a></td>
+<td class="column2">0</td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="#IDYG2VPPYZNJ44JXYT2DW31YOE1GSNVQQBU3CXS5QD5OV2STRPSQG">Width Constraint (Min=0.254mm) (Max=25mm) (Preferred=0.6mm) (InNet('VCC'))</a></td>
+<td class="column2">0</td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="#IDPX1JKENP2EMTGU40IJESEF340E1ZUT4RLPFFX0HNU03KTNYLEVQP">Width Constraint (Min=0.254mm) (Max=0.254mm) (Preferred=0.254mm) (InNet('3.3V_OUT'))</a></td>
+<td class="column2">0</td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="#IDSLXB1PLG13ANI05QLMWJCY4BIEA1CZARPZ2PCJDDLCBQ0WYOD0BC">Power Plane Connect Rule(Direct Connect )(Expansion=0.508mm) (Conductor Width=0.254mm) (Air Gap=0.254mm) (Entries=4) (InPadClass('PowerPads'))</a></td>
+<td class="column2">0</td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="#IDJDCJQ5ND1OOKI5E2FGIJBM2AUKJUS2EJHDSCAAECG1PXFYYHMO1G">Power Plane Connect Rule(Relief Connect )(Expansion=0.3mm) (Conductor Width=0.127mm) (Air Gap=0.127mm) (Entries=4) (All)</a></td>
+<td class="column2">0</td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="#IDLI203VDZBU2ZIA5LI5VIFSCYFLJCXF3243OXOGCHTSMQYS5DO4JD">Minimum Annular Ring (Minimum=0.076mm) (All)</a></td>
+<td class="column2">4</td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="#IDZG402MVD0T3TMTFXDNHHS1TFZCWSYBSZI3LSCWJUSOLYSTFNM2BK">Hole Size Constraint (Min=0.3mm) (Max=6.3mm) (All)</a></td>
+<td class="column2">0</td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="#IDO33DDGAYIIGWH40NJIVJKRAXBDZFLSHPCYD5MBBWWHXCSZS5HCHI">Hole To Hole Clearance (Gap=0.25mm) (All),(All)</a></td>
+<td class="column2">0</td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="#ID4GT0TKUYGIWVLI4PY1LGCSXDFN3A0DKT3JUIOCLCJ1NT4MLKGW1P">Minimum Solder Mask Sliver (Gap=0mm) (All),(All)</a></td>
+<td class="column2">0</td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="#IDKRBOMHBRZ02VNSQHFOQFN3LYYHUX2PQNZY3WBSPUGOL3Q5GXO5CD">Silk To Solder Mask (Clearance=0.127mm) (IsPad),(All)</a></td>
+<td class="column2">0</td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="#IDJHCITKUVAX3GE5FWGVZTD20EEE54NMOEVK2MTBMH3SZVKR0O3ODF">Silk to Silk (Clearance=0mm) (All),(All)</a></td>
+<td class="column2">0</td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="#ID24J0VLT5PSHJEGRSEYL1UZI24JF2BNA3WA1SYPNKBPRQJZRTWYUG">Net Antennae (Tolerance=0mm) (All)</a></td>
+<td class="column2">0</td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="#IDWWITCQUY4PT2VDE202NJEGXILUCE5DCDV0TYKF0VK2D14H4XLZC">Board Clearance Constraint (Gap=0mm) (All)</a></td>
+<td class="column2">7</td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="#ID52S2BRRF5I0HL4BMQVBSNXN5LF40N0QQJR4JG5CUTGILWKZGNRXB">Height Constraint (Min=0mm) (Max=1816.048mm) (Prefered=12.7mm) (All)</a></td>
+<td class="column2">0</td>
+</tr>
+<tr>
+<td style="font-weight : bold; text-align : right" class="column1">Total</td>
+<td style="font-weight : bold" class="column2">11</td>
+</tr>
+</table><br><table>
+<tr>
+<th class="column1">Waived Violations</th>
+<th class="column2">Count</th>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="#IDQJ5IIR0VKDOAIMB3OI2K0YGECCCV05J5CXY0SABNO1J1VK2FVSTK">Silk To Solder Mask (Clearance=0.127mm) (IsPad),(All)</a></td>
+<td class="column2">23</td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="#IDDXUILQN1RVCWLVEEEBGGYELSQK1EM0FVSQHELWGKCRV3E4AJYQUN">Board Clearance Constraint (Gap=0mm) (All)</a></td>
+<td class="column2">36</td>
+</tr>
+<tr>
+<td style="font-weight : bold; text-align : right" class="column1">Total</td>
+<td style="font-weight : bold" class="column2">59</td>
+</tr>
+</table><br><a name="IDXAIRBBOEORQMOBXFT5GU4QYEWN5RB4WA2OAHG3OGT0WMK2R1WVZK"><h2>Warnings</h2></a><a name="IDL4J4JBKTS5RLGA5RZFDE4VNPHPAI3G3XLY1ZR4FH5D5EO5OQCFTK"><table>
+<tr>
+<th style="text-align : left" colspan="1" class="warning">Zero hole size multi-layer pad(s) detected</th>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Kelpie_Main_Board\Main_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=3220.278mil|Location2.X=3279.218mil|Location1.Y=469.03mil|Location2.Y=527.97mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Kelpie_Main_Board\Main_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=3220.278mil|Location2.X=3279.218mil|Location1.Y=469.03mil|Location2.Y=527.97mil|Absolute=True">Pad GND_TP-1(7.544mm,-87.338mm) on Multi-Layer</acronym></a> on <a href="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Kelpie_Main_Board\Main_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=629.921mil|Location2.X=4280.708mil|Location1.Y=469.03mil|Location2.Y=3463.583mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Kelpie_Main_Board\Main_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=629.921mil|Location2.X=4280.708mil|Location1.Y=469.03mil|Location2.Y=3463.583mil|Absolute=True">Net GND</acronym></a></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Kelpie_Main_Board\Main_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=410.072mil|Location2.X=474.101mil|Location1.Y=1936.902mil|Location2.Y=2000.932mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Kelpie_Main_Board\Main_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=410.072mil|Location2.X=474.101mil|Location1.Y=1936.902mil|Location2.Y=2000.932mil|Absolute=True">Pad 3V3-1(-63.771mm,-49.99mm) on Multi-Layer</acronym></a> on <a href="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Kelpie_Main_Board\Main_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=0mil|Location2.X=0mil|Location1.Y=0mil|Location2.Y=0mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Kelpie_Main_Board\Main_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=0mil|Location2.X=0mil|Location1.Y=0mil|Location2.Y=0mil|Absolute=True">Net 3.3V_OUT</acronym></a></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Kelpie_Main_Board\Main_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=410.072mil|Location2.X=474.101mil|Location1.Y=2563.064mil|Location2.Y=2627.093mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Kelpie_Main_Board\Main_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=410.072mil|Location2.X=474.101mil|Location1.Y=2563.064mil|Location2.Y=2627.093mil|Absolute=True">Pad LDO-1(-63.771mm,-34.085mm) on Multi-Layer</acronym></a> on <a href="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Kelpie_Main_Board\Main_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=410.072mil|Location2.X=3118.898mil|Location1.Y=1163.583mil|Location2.Y=3251.378mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Kelpie_Main_Board\Main_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=410.072mil|Location2.X=3118.898mil|Location1.Y=1163.583mil|Location2.Y=3251.378mil|Absolute=True">Net 5V LDO</acronym></a></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Kelpie_Main_Board\Main_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=410.19mil|Location2.X=474.219mil|Location1.Y=1313.969mil|Location2.Y=1377.999mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Kelpie_Main_Board\Main_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=410.19mil|Location2.X=474.219mil|Location1.Y=1313.969mil|Location2.Y=1377.999mil|Absolute=True">Pad 5V-1(-63.768mm,-65.812mm) on Multi-Layer</acronym></a> on <a href="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Kelpie_Main_Board\Main_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=0mil|Location2.X=0mil|Location1.Y=0mil|Location2.Y=0mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Kelpie_Main_Board\Main_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=0mil|Location2.X=0mil|Location1.Y=0mil|Location2.Y=0mil|Absolute=True">Net 5V_OUT</acronym></a></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Kelpie_Main_Board\Main_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=3599.39mil|Location2.X=3644.666mil|Location1.Y=822.543mil|Location2.Y=867.819mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Kelpie_Main_Board\Main_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=3599.39mil|Location2.X=3644.666mil|Location1.Y=822.543mil|Location2.Y=867.819mil|Absolute=True">Pad VCC_TP-1(17mm,-78.532mm) on Multi-Layer</acronym></a> on <a href="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Kelpie_Main_Board\Main_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1361.689mil|Location2.X=3857.283mil|Location1.Y=801.177mil|Location2.Y=3074.652mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Kelpie_Main_Board\Main_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1361.689mil|Location2.X=3857.283mil|Location1.Y=801.177mil|Location2.Y=3074.652mil|Absolute=True">Net VCC</acronym></a></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Kelpie_Main_Board\Main_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2622.244mil|Location2.X=2695.079mil|Location1.Y=1657.48mil|Location2.Y=1668.504mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Kelpie_Main_Board\Main_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2622.244mil|Location2.X=2695.079mil|Location1.Y=1657.48mil|Location2.Y=1668.504mil|Absolute=True">Pad IC3-5(-7.47mm,-57.76mm) on Multi-Layer</acronym></a> on <a href="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Kelpie_Main_Board\Main_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1361.689mil|Location2.X=3857.283mil|Location1.Y=801.177mil|Location2.Y=3074.652mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Kelpie_Main_Board\Main_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1361.689mil|Location2.X=3857.283mil|Location1.Y=801.177mil|Location2.Y=3074.652mil|Absolute=True">Net VCC</acronym></a></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Kelpie_Main_Board\Main_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2620.079mil|Location2.X=2700.787mil|Location1.Y=1683.465mil|Location2.Y=1699.213mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Kelpie_Main_Board\Main_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2620.079mil|Location2.X=2700.787mil|Location1.Y=1683.465mil|Location2.Y=1699.213mil|Absolute=True">Pad IC3-4(-7.425mm,-57.04mm) on Multi-Layer</acronym></a> on <a href="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Kelpie_Main_Board\Main_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=629.921mil|Location2.X=4280.708mil|Location1.Y=469.03mil|Location2.Y=3463.583mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Kelpie_Main_Board\Main_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=629.921mil|Location2.X=4280.708mil|Location1.Y=469.03mil|Location2.Y=3463.583mil|Absolute=True">Net GND</acronym></a></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Kelpie_Main_Board\Main_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2717.913mil|Location2.X=2733.661mil|Location1.Y=1608.268mil|Location2.Y=1630.709mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Kelpie_Main_Board\Main_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2717.913mil|Location2.X=2733.661mil|Location1.Y=1608.268mil|Location2.Y=1630.709mil|Absolute=True">Pad IC3-12(-5.765mm,-58.865mm) on Multi-Layer</acronym></a> on <a href="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Kelpie_Main_Board\Main_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=410.072mil|Location2.X=3118.898mil|Location1.Y=1163.583mil|Location2.Y=3251.378mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Kelpie_Main_Board\Main_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=410.072mil|Location2.X=3118.898mil|Location1.Y=1163.583mil|Location2.Y=3251.378mil|Absolute=True">Net 5V LDO</acronym></a></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Kelpie_Main_Board\Main_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2700.197mil|Location2.X=2715.945mil|Location1.Y=1608.268mil|Location2.Y=1630.709mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Kelpie_Main_Board\Main_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2700.197mil|Location2.X=2715.945mil|Location1.Y=1608.268mil|Location2.Y=1630.709mil|Absolute=True">Pad IC3-11(-6.215mm,-58.865mm) on Multi-Layer</acronym></a> on <a href="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Kelpie_Main_Board\Main_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=0mil|Location2.X=0mil|Location1.Y=0mil|Location2.Y=0mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Kelpie_Main_Board\Main_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=0mil|Location2.X=0mil|Location1.Y=0mil|Location2.Y=0mil|Absolute=True">Net NetC3_1</acronym></a></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Kelpie_Main_Board\Main_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2682.48mil|Location2.X=2698.228mil|Location1.Y=1608.268mil|Location2.Y=1630.709mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Kelpie_Main_Board\Main_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2682.48mil|Location2.X=2698.228mil|Location1.Y=1608.268mil|Location2.Y=1630.709mil|Absolute=True">Pad IC3-10(-6.665mm,-58.865mm) on Multi-Layer</acronym></a> on <a href="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Kelpie_Main_Board\Main_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=0mil|Location2.X=0mil|Location1.Y=0mil|Location2.Y=0mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Kelpie_Main_Board\Main_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=0mil|Location2.X=0mil|Location1.Y=0mil|Location2.Y=0mil|Absolute=True">Net 5V_OUT</acronym></a></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Kelpie_Main_Board\Main_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2664.764mil|Location2.X=2680.512mil|Location1.Y=1608.268mil|Location2.Y=1630.709mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Kelpie_Main_Board\Main_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2664.764mil|Location2.X=2680.512mil|Location1.Y=1608.268mil|Location2.Y=1630.709mil|Absolute=True">Pad IC3-9(-7.115mm,-58.865mm) on Multi-Layer</acronym></a> on <a href="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Kelpie_Main_Board\Main_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=0mil|Location2.X=0mil|Location1.Y=0mil|Location2.Y=0mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Kelpie_Main_Board\Main_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=0mil|Location2.X=0mil|Location1.Y=0mil|Location2.Y=0mil|Absolute=True">Net NetIC3_9</acronym></a></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Kelpie_Main_Board\Main_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2647.047mil|Location2.X=2662.795mil|Location1.Y=1608.268mil|Location2.Y=1630.709mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Kelpie_Main_Board\Main_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2647.047mil|Location2.X=2662.795mil|Location1.Y=1608.268mil|Location2.Y=1630.709mil|Absolute=True">Pad IC3-8(-7.565mm,-58.865mm) on Multi-Layer</acronym></a> on <a href="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Kelpie_Main_Board\Main_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=629.921mil|Location2.X=4280.708mil|Location1.Y=469.03mil|Location2.Y=3463.583mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Kelpie_Main_Board\Main_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=629.921mil|Location2.X=4280.708mil|Location1.Y=469.03mil|Location2.Y=3463.583mil|Absolute=True">Net GND</acronym></a></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Kelpie_Main_Board\Main_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2629.331mil|Location2.X=2645.079mil|Location1.Y=1608.268mil|Location2.Y=1630.709mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Kelpie_Main_Board\Main_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2629.331mil|Location2.X=2645.079mil|Location1.Y=1608.268mil|Location2.Y=1630.709mil|Absolute=True">Pad IC3-7(-8.015mm,-58.865mm) on Multi-Layer</acronym></a> on <a href="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Kelpie_Main_Board\Main_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=0mil|Location2.X=0mil|Location1.Y=0mil|Location2.Y=0mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Kelpie_Main_Board\Main_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=0mil|Location2.X=0mil|Location1.Y=0mil|Location2.Y=0mil|Absolute=True">Net NetIC2_1</acronym></a></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Kelpie_Main_Board\Main_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2620.079mil|Location2.X=2642.52mil|Location1.Y=1637.401mil|Location2.Y=1653.149mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Kelpie_Main_Board\Main_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2620.079mil|Location2.X=2642.52mil|Location1.Y=1637.401mil|Location2.Y=1653.149mil|Absolute=True">Pad IC3-6(-8.165mm,-58.21mm) on Multi-Layer</acronym></a> on <a href="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Kelpie_Main_Board\Main_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=0mil|Location2.X=0mil|Location1.Y=0mil|Location2.Y=0mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Kelpie_Main_Board\Main_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=0mil|Location2.X=0mil|Location1.Y=0mil|Location2.Y=0mil|Absolute=True">Net NetIC3_6</acronym></a></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Kelpie_Main_Board\Main_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2720.472mil|Location2.X=2742.914mil|Location1.Y=1637.401mil|Location2.Y=1653.149mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Kelpie_Main_Board\Main_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2720.472mil|Location2.X=2742.914mil|Location1.Y=1637.401mil|Location2.Y=1653.149mil|Absolute=True">Pad IC3-1(-5.615mm,-58.21mm) on Multi-Layer</acronym></a> on <a href="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Kelpie_Main_Board\Main_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=0mil|Location2.X=0mil|Location1.Y=0mil|Location2.Y=0mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Kelpie_Main_Board\Main_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=0mil|Location2.X=0mil|Location1.Y=0mil|Location2.Y=0mil|Absolute=True">Net NetIC3_1</acronym></a></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Kelpie_Main_Board\Main_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2698.819mil|Location2.X=2742.914mil|Location1.Y=1701.181mil|Location2.Y=1716.929mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Kelpie_Main_Board\Main_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2698.819mil|Location2.X=2742.914mil|Location1.Y=1701.181mil|Location2.Y=1716.929mil|Absolute=True">Pad IC3-3(-5.89mm,-56.59mm) on Multi-Layer</acronym></a> on <a href="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Kelpie_Main_Board\Main_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=0mil|Location2.X=0mil|Location1.Y=0mil|Location2.Y=0mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Kelpie_Main_Board\Main_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=0mil|Location2.X=0mil|Location1.Y=0mil|Location2.Y=0mil|Absolute=True">Net NetC13_2</acronym></a></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Kelpie_Main_Board\Main_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2702.953mil|Location2.X=2740.354mil|Location1.Y=1668.11mil|Location2.Y=1679.134mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Kelpie_Main_Board\Main_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2702.953mil|Location2.X=2740.354mil|Location1.Y=1668.11mil|Location2.Y=1679.134mil|Absolute=True">Pad IC3-2(-5.87mm,-57.49mm) on Multi-Layer</acronym></a> on <a href="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Kelpie_Main_Board\Main_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=0mil|Location2.X=0mil|Location1.Y=0mil|Location2.Y=0mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Kelpie_Main_Board\Main_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=0mil|Location2.X=0mil|Location1.Y=0mil|Location2.Y=0mil|Absolute=True">Net NetC13_2</acronym></a></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Kelpie_Main_Board\Main_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=3371.063mil|Location2.X=3416.338mil|Location1.Y=3257.579mil|Location2.Y=3322.539mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Kelpie_Main_Board\Main_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=3371.063mil|Location2.X=3416.338mil|Location1.Y=3257.579mil|Location2.Y=3322.539mil|Absolute=True">Pad F3-2(11.2mm,-16.432mm) on Multi-Layer</acronym></a> on <a href="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Kelpie_Main_Board\Main_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=0mil|Location2.X=0mil|Location1.Y=0mil|Location2.Y=0mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Kelpie_Main_Board\Main_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=0mil|Location2.X=0mil|Location1.Y=0mil|Location2.Y=0mil|Absolute=True">Net NetF3_2</acronym></a></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Kelpie_Main_Board\Main_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=3457.677mil|Location2.X=3502.953mil|Location1.Y=3257.579mil|Location2.Y=3322.539mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Kelpie_Main_Board\Main_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=3457.677mil|Location2.X=3502.953mil|Location1.Y=3257.579mil|Location2.Y=3322.539mil|Absolute=True">Pad F3-1(13.4mm,-16.432mm) on Multi-Layer</acronym></a> on <a href="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Kelpie_Main_Board\Main_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=0mil|Location2.X=0mil|Location1.Y=0mil|Location2.Y=0mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Kelpie_Main_Board\Main_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=0mil|Location2.X=0mil|Location1.Y=0mil|Location2.Y=0mil|Absolute=True">Net NetF3_1</acronym></a></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Kelpie_Main_Board\Main_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=3455.709mil|Location2.X=3500.984mil|Location1.Y=3357.677mil|Location2.Y=3422.638mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Kelpie_Main_Board\Main_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=3455.709mil|Location2.X=3500.984mil|Location1.Y=3357.677mil|Location2.Y=3422.638mil|Absolute=True">Pad F4-1(13.35mm,-13.89mm) on Multi-Layer</acronym></a> on <a href="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Kelpie_Main_Board\Main_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=0mil|Location2.X=0mil|Location1.Y=0mil|Location2.Y=0mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Kelpie_Main_Board\Main_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=0mil|Location2.X=0mil|Location1.Y=0mil|Location2.Y=0mil|Absolute=True">Net NetF4_1</acronym></a></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Kelpie_Main_Board\Main_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=3369.095mil|Location2.X=3414.37mil|Location1.Y=3357.677mil|Location2.Y=3422.638mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Kelpie_Main_Board\Main_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=3369.095mil|Location2.X=3414.37mil|Location1.Y=3357.677mil|Location2.Y=3422.638mil|Absolute=True">Pad F4-2(11.15mm,-13.89mm) on Multi-Layer</acronym></a> on <a href="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Kelpie_Main_Board\Main_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=0mil|Location2.X=0mil|Location1.Y=0mil|Location2.Y=0mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Kelpie_Main_Board\Main_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=0mil|Location2.X=0mil|Location1.Y=0mil|Location2.Y=0mil|Absolute=True">Net NetF4_2</acronym></a></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Kelpie_Main_Board\Main_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=3457.677mil|Location2.X=3502.953mil|Location1.Y=3157.48mil|Location2.Y=3222.441mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Kelpie_Main_Board\Main_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=3457.677mil|Location2.X=3502.953mil|Location1.Y=3157.48mil|Location2.Y=3222.441mil|Absolute=True">Pad F2-1(13.4mm,-18.975mm) on Multi-Layer</acronym></a> on <a href="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Kelpie_Main_Board\Main_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=0mil|Location2.X=0mil|Location1.Y=0mil|Location2.Y=0mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Kelpie_Main_Board\Main_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=0mil|Location2.X=0mil|Location1.Y=0mil|Location2.Y=0mil|Absolute=True">Net NetF2_1</acronym></a></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Kelpie_Main_Board\Main_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=3371.063mil|Location2.X=3416.338mil|Location1.Y=3157.48mil|Location2.Y=3222.441mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Kelpie_Main_Board\Main_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=3371.063mil|Location2.X=3416.338mil|Location1.Y=3157.48mil|Location2.Y=3222.441mil|Absolute=True">Pad F2-2(11.2mm,-18.975mm) on Multi-Layer</acronym></a> on <a href="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Kelpie_Main_Board\Main_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=629.921mil|Location2.X=4280.708mil|Location1.Y=469.03mil|Location2.Y=3463.583mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Kelpie_Main_Board\Main_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=629.921mil|Location2.X=4280.708mil|Location1.Y=469.03mil|Location2.Y=3463.583mil|Absolute=True">Net GND</acronym></a></td>
+</tr>
+</table></a><hr color="#EEEEEE"><a href="#top" style="font-size: 0.9em">Back to top</a><br><br><a name="IDBK3GZ2ESXXIQJCTZWAGGMAWPUEHYDO011CYS0IYIKLTJ50E3OWP"><h2>Rule Violations</h2></a><a name="IDLI203VDZBU2ZIA5LI5VIFSCYFLJCXF3243OXOGCHTSMQYS5DO4JD"><table>
+<tr>
+<th style="text-align : left" colspan="1" class="rule">Minimum Annular Ring (Minimum=0.076mm) (All)</th>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Kelpie_Main_Board\Main_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=3966.217mil|Location2.X=3969.217mil|Location1.Y=2993.382mil|Location2.Y=2996.382mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Kelpie_Main_Board\Main_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=3966.217mil|Location2.X=3969.217mil|Location1.Y=2993.382mil|Location2.Y=2996.382mil|Absolute=True">Minimum Annular Ring: (No Ring) Pad J13-8(25.78mm,-23.93mm) on Multi-Layer (Annular Ring missing on Top Layer)</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Kelpie_Main_Board\Main_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=3966.217mil|Location2.X=3969.217mil|Location1.Y=2465.823mil|Location2.Y=2468.823mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Kelpie_Main_Board\Main_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=3966.217mil|Location2.X=3969.217mil|Location1.Y=2465.823mil|Location2.Y=2468.823mil|Absolute=True">Minimum Annular Ring: (No Ring) Pad J13-8(25.78mm,-37.33mm) on Multi-Layer (Annular Ring missing on Top Layer)</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Kelpie_Main_Board\Main_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=3972.91mil|Location2.X=3975.91mil|Location1.Y=1470.941mil|Location2.Y=1473.941mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Kelpie_Main_Board\Main_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=3972.91mil|Location2.X=3975.91mil|Location1.Y=1470.941mil|Location2.Y=1473.941mil|Absolute=True">Minimum Annular Ring: (No Ring) Pad J14-8(25.95mm,-62.6mm) on Multi-Layer (Annular Ring missing on Top Layer)</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Kelpie_Main_Board\Main_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=3972.91mil|Location2.X=3975.91mil|Location1.Y=943.382mil|Location2.Y=946.382mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Kelpie_Main_Board\Main_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=3972.91mil|Location2.X=3975.91mil|Location1.Y=943.382mil|Location2.Y=946.382mil|Absolute=True">Minimum Annular Ring: (No Ring) Pad J14-8(25.95mm,-76mm) on Multi-Layer (Annular Ring missing on Top Layer)</acronym></a><br></td>
+</tr>
+</table></a><hr color="#EEEEEE"><a href="#top" style="font-size: 0.9em">Back to top</a><br><br><a name="IDWWITCQUY4PT2VDE202NJEGXILUCE5DCDV0TYKF0VK2D14H4XLZC"><table>
+<tr>
+<th style="text-align : left" colspan="1" class="rule">Board Clearance Constraint (Gap=0mm) (All)</th>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Kelpie_Main_Board\Main_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2547.13mil|Location2.X=2556.254mil|Location1.Y=3535.869mil|Location2.Y=3544.993mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Kelpie_Main_Board\Main_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2547.13mil|Location2.X=2556.254mil|Location1.Y=3535.869mil|Location2.Y=3544.993mil|Absolute=True">Board Outline Clearance(Outline Edge): (0.146mm &lt; 0.2mm) Between Board Edge And Text "FL1" (-9.933mm,-11.2mm) on Top Overlay </acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Kelpie_Main_Board\Main_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2329.284mil|Location2.X=2338.408mil|Location1.Y=3535.869mil|Location2.Y=3544.993mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Kelpie_Main_Board\Main_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2329.284mil|Location2.X=2338.408mil|Location1.Y=3535.869mil|Location2.Y=3544.993mil|Absolute=True">Board Outline Clearance(Outline Edge): (0.146mm &lt; 0.2mm) Between Board Edge And Text "FL2" (-15.466mm,-11.2mm) on Top Overlay </acronym></a><br></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Kelpie_Main_Board\Main_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2120.622mil|Location2.X=2129.746mil|Location1.Y=3535.869mil|Location2.Y=3544.993mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Kelpie_Main_Board\Main_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2120.622mil|Location2.X=2129.746mil|Location1.Y=3535.869mil|Location2.Y=3544.993mil|Absolute=True">Board Outline Clearance(Outline Edge): (0.146mm &lt; 0.2mm) Between Board Edge And Text "FL3" (-20.766mm,-11.2mm) on Top Overlay </acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Kelpie_Main_Board\Main_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=391.107mil|Location2.X=400.231mil|Location1.Y=1432.446mil|Location2.Y=1441.57mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Kelpie_Main_Board\Main_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=391.107mil|Location2.X=400.231mil|Location1.Y=1432.446mil|Location2.Y=1441.57mil|Absolute=True">Board Outline Clearance(Outline Edge): (0.1mm &lt; 0.2mm) Between Board Edge And Text "J15, J16 max cont. current 6A TOTAL. 
+J18, J19, J20 max cont. current 100mA TOTAL" (-64.9mm,-63.5mm) on Bottom Overlay </acronym></a><br></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Kelpie_Main_Board\Main_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1771.539mil|Location2.X=1780.663mil|Location1.Y=3535.869mil|Location2.Y=3544.993mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Kelpie_Main_Board\Main_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1771.539mil|Location2.X=1780.663mil|Location1.Y=3535.869mil|Location2.Y=3544.993mil|Absolute=True">Board Outline Clearance(Outline Edge): (0.146mm &lt; 0.2mm) Between Board Edge And Text "RL1" (-29.633mm,-11.2mm) on Top Overlay </acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Kelpie_Main_Board\Main_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1549.756mil|Location2.X=1558.88mil|Location1.Y=3535.869mil|Location2.Y=3544.993mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Kelpie_Main_Board\Main_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1549.756mil|Location2.X=1558.88mil|Location1.Y=3535.869mil|Location2.Y=3544.993mil|Absolute=True">Board Outline Clearance(Outline Edge): (0.146mm &lt; 0.2mm) Between Board Edge And Text "RL2" (-35.266mm,-11.2mm) on Top Overlay </acronym></a><br></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Kelpie_Main_Board\Main_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1341.094mil|Location2.X=1350.218mil|Location1.Y=3535.869mil|Location2.Y=3544.993mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Kelpie_Main_Board\Main_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1341.094mil|Location2.X=1350.218mil|Location1.Y=3535.869mil|Location2.Y=3544.993mil|Absolute=True">Board Outline Clearance(Outline Edge): (0.146mm &lt; 0.2mm) Between Board Edge And Text "RL3" (-40.566mm,-11.2mm) on Top Overlay </acronym></a><br></td>
+</tr>
+</table></a><hr color="#EEEEEE"><a href="#top" style="font-size: 0.9em">Back to top</a><br><br><a name="IDHLQPMETBPFZ2MTVLORIO3MTYTESL0YJWWYCTWUGOQXPZKAASCNLI"><h2>Waived Violations</h2></a><a name="IDQJ5IIR0VKDOAIMB3OI2K0YGECCCV05J5CXY0SABNO1J1VK2FVSTK"><table>
+<tr>
+<th style="text-align : left" colspan="1" class="waived">Silk To Solder Mask (Clearance=0.127mm) (IsPad),(All)</th>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Kelpie_Main_Board\Main_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2867.227mil|Location2.X=2873.477mil|Location1.Y=1720.315mil|Location2.Y=1726.565mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Kelpie_Main_Board\Main_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2867.227mil|Location2.X=2873.477mil|Location1.Y=1720.315mil|Location2.Y=1726.565mil|Absolute=True">Silk To Solder Mask Clearance Constraint: (0.114mm &lt; 0.127mm) Between Pad C13-1(-1.565mm,-56.738mm) on Top Layer And Track (-2.883mm,-56.068mm)(-0.683mm,-56.068mm) on Top Overlay [Top Overlay] to [Top Solder] clearance [0.114mm]</acronym></a><br>Waived by William Li at 09/05/2024 22:58:52<br>dont give a shit</td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Kelpie_Main_Board\Main_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2851.647mil|Location2.X=2857.897mil|Location1.Y=1720.315mil|Location2.Y=1726.565mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Kelpie_Main_Board\Main_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2851.647mil|Location2.X=2857.897mil|Location1.Y=1720.315mil|Location2.Y=1726.565mil|Absolute=True">Silk To Solder Mask Clearance Constraint: (0.114mm &lt; 0.127mm) Between Pad C13-2(-3.016mm,-56.738mm) on Top Layer And Track (-2.883mm,-56.068mm)(-0.683mm,-56.068mm) on Top Overlay [Top Overlay] to [Top Solder] clearance [0.114mm]</acronym></a><br>Waived by William Li at 09/05/2024 22:58:52<br>dont give a shit</td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Kelpie_Main_Board\Main_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1056.889mil|Location2.X=1061.222mil|Location1.Y=2273.424mil|Location2.Y=2277.757mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Kelpie_Main_Board\Main_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1056.889mil|Location2.X=1061.222mil|Location1.Y=2273.424mil|Location2.Y=2277.757mil|Absolute=True">Silk To Solder Mask Clearance Constraint: (Collision &lt; 0.127mm) Between Pad J16-6A-1(-46.75mm,-41.825mm) on Multi-Layer And Track (-54.8mm,-42.2mm)(-46.7mm,-42.2mm) on Top Overlay [Top Overlay] to [Top Solder] clearance [0mm]</acronym></a><br>Waived by William Li at 08/05/2024 21:29:18<br>Silkscreen can be fucked idc</td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Kelpie_Main_Board\Main_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1056.864mil|Location2.X=1061.197mil|Location1.Y=2132.282mil|Location2.Y=2136.615mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Kelpie_Main_Board\Main_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1056.864mil|Location2.X=1061.197mil|Location1.Y=2132.282mil|Location2.Y=2136.615mil|Absolute=True">Silk To Solder Mask Clearance Constraint: (Collision &lt; 0.127mm) Between Pad J16-6A-2(-46.75mm,-45.785mm) on Multi-Layer And Track (-54.787mm,-45.785mm)(-46.75mm,-45.785mm) on Top Overlay [Top Overlay] to [Top Solder] clearance [0mm]</acronym></a><br>Waived by William Li at 08/05/2024 21:29:18<br>Silkscreen can be fucked idc</td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Kelpie_Main_Board\Main_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1113.249mil|Location2.X=1117.582mil|Location1.Y=2029.454mil|Location2.Y=2033.787mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Kelpie_Main_Board\Main_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1113.249mil|Location2.X=1117.582mil|Location1.Y=2029.454mil|Location2.Y=2033.787mil|Absolute=True">Silk To Solder Mask Clearance Constraint: (Collision &lt; 0.127mm) Between Pad J16-6A-3(-46.75mm,-49.745mm) on Multi-Layer And Region (181 hole(s)) Bottom Overlay [Bottom Overlay] to [Bottom Solder] clearance [0mm]</acronym></a><br>Waived by William Li at 08/05/2024 21:29:18<br>Silkscreen can be fucked idc</td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Kelpie_Main_Board\Main_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1056.864mil|Location2.X=1061.197mil|Location1.Y=1976.377mil|Location2.Y=1980.71mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Kelpie_Main_Board\Main_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1056.864mil|Location2.X=1061.197mil|Location1.Y=1976.377mil|Location2.Y=1980.71mil|Absolute=True">Silk To Solder Mask Clearance Constraint: (Collision &lt; 0.127mm) Between Pad J16-6A-3(-46.75mm,-49.745mm) on Multi-Layer And Track (-54.7mm,-49.745mm)(-46.75mm,-49.745mm) on Top Overlay [Top Overlay] to [Top Solder] clearance [0mm]</acronym></a><br>Waived by William Li at 08/05/2024 21:29:18<br>Silkscreen can be fucked idc</td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Kelpie_Main_Board\Main_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1075.306mil|Location2.X=1079.639mil|Location1.Y=1813.416mil|Location2.Y=1817.749mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Kelpie_Main_Board\Main_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1075.306mil|Location2.X=1079.639mil|Location1.Y=1813.416mil|Location2.Y=1817.749mil|Absolute=True">Silk To Solder Mask Clearance Constraint: (Collision &lt; 0.127mm) Between Pad J16-6A-4(-46.75mm,-53.705mm) on Multi-Layer And Region (181 hole(s)) Bottom Overlay [Bottom Overlay] to [Bottom Solder] clearance [0mm]</acronym></a><br>Waived by William Li at 08/05/2024 21:29:18<br>Silkscreen can be fucked idc</td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Kelpie_Main_Board\Main_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1056.864mil|Location2.X=1061.197mil|Location1.Y=1820.471mil|Location2.Y=1824.804mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Kelpie_Main_Board\Main_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1056.864mil|Location2.X=1061.197mil|Location1.Y=1820.471mil|Location2.Y=1824.804mil|Absolute=True">Silk To Solder Mask Clearance Constraint: (Collision &lt; 0.127mm) Between Pad J16-6A-4(-46.75mm,-53.705mm) on Multi-Layer And Track (-54.7mm,-53.705mm)(-46.75mm,-53.705mm) on Top Overlay [Top Overlay] to [Top Solder] clearance [0mm]</acronym></a><br>Waived by William Li at 08/05/2024 21:29:18<br>Silkscreen can be fucked idc</td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Kelpie_Main_Board\Main_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1120.004mil|Location2.X=1126.254mil|Location1.Y=1609.649mil|Location2.Y=1615.899mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Kelpie_Main_Board\Main_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1120.004mil|Location2.X=1126.254mil|Location1.Y=1609.649mil|Location2.Y=1615.899mil|Absolute=True">Silk To Solder Mask Clearance Constraint: (0.096mm &lt; 0.127mm) Between Pad J16-6A-5(-46.75mm,-57.665mm) on Multi-Layer And Region (181 hole(s)) Bottom Overlay [Bottom Overlay] to [Bottom Solder] clearance [0.096mm]</acronym></a><br>Waived by William Li at 08/05/2024 21:29:18<br>Silkscreen can be fucked idc</td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Kelpie_Main_Board\Main_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1056.864mil|Location2.X=1061.197mil|Location1.Y=1664.566mil|Location2.Y=1668.899mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Kelpie_Main_Board\Main_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1056.864mil|Location2.X=1061.197mil|Location1.Y=1664.566mil|Location2.Y=1668.899mil|Absolute=True">Silk To Solder Mask Clearance Constraint: (Collision &lt; 0.127mm) Between Pad J16-6A-5(-46.75mm,-57.665mm) on Multi-Layer And Track (-54.7mm,-57.665mm)(-46.75mm,-57.665mm) on Top Overlay [Top Overlay] to [Top Solder] clearance [0mm]</acronym></a><br>Waived by William Li at 08/05/2024 21:29:18<br>Silkscreen can be fucked idc</td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Kelpie_Main_Board\Main_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=745.865mil|Location2.X=750.198mil|Location1.Y=2560.825mil|Location2.Y=2565.159mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Kelpie_Main_Board\Main_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=745.865mil|Location2.X=750.198mil|Location1.Y=2560.825mil|Location2.Y=2565.159mil|Absolute=True">Silk To Solder Mask Clearance Constraint: (Collision &lt; 0.127mm) Between Pad J18-0.1A-1(-56.55mm,-34.855mm) on Top Layer And Track (-56mm,-34.9mm)(-55mm,-34.9mm) on Top Overlay [Top Overlay] to [Top Solder] clearance [0mm]</acronym></a><br>Waived by William Li at 08/05/2024 21:29:18<br>Silkscreen can be fucked idc</td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Kelpie_Main_Board\Main_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=749.802mil|Location2.X=754.135mil|Location1.Y=2612.007mil|Location2.Y=2616.34mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Kelpie_Main_Board\Main_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=749.802mil|Location2.X=754.135mil|Location1.Y=2612.007mil|Location2.Y=2616.34mil|Absolute=True">Silk To Solder Mask Clearance Constraint: (Collision &lt; 0.127mm) Between Pad J18-0.1A-2(-56.55mm,-33.605mm) on Top Layer And Track (-55.9mm,-33.6mm)(-53.4mm,-33.6mm) on Top Overlay [Top Overlay] to [Top Solder] clearance [0mm]</acronym></a><br>Waived by William Li at 08/05/2024 21:29:18<br>Silkscreen can be fucked idc</td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Kelpie_Main_Board\Main_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=749.802mil|Location2.X=754.135mil|Location1.Y=2659.251mil|Location2.Y=2663.584mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Kelpie_Main_Board\Main_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=749.802mil|Location2.X=754.135mil|Location1.Y=2659.251mil|Location2.Y=2663.584mil|Absolute=True">Silk To Solder Mask Clearance Constraint: (Collision &lt; 0.127mm) Between Pad J18-0.1A-3(-56.55mm,-32.355mm) on Top Layer And Track (-55.9mm,-32.4mm)(-53.4mm,-32.4mm) on Top Overlay [Top Overlay] to [Top Solder] clearance [0mm]</acronym></a><br>Waived by William Li at 08/05/2024 21:29:18<br>Silkscreen can be fucked idc</td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Kelpie_Main_Board\Main_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=749.802mil|Location2.X=754.135mil|Location1.Y=2710.432mil|Location2.Y=2714.765mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Kelpie_Main_Board\Main_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=749.802mil|Location2.X=754.135mil|Location1.Y=2710.432mil|Location2.Y=2714.765mil|Absolute=True">Silk To Solder Mask Clearance Constraint: (Collision &lt; 0.127mm) Between Pad J18-0.1A-4(-56.55mm,-31.105mm) on Top Layer And Track (-55.9mm,-31.1mm)(-53.4mm,-31.1mm) on Top Overlay [Top Overlay] to [Top Solder] clearance [0mm]</acronym></a><br>Waived by William Li at 08/05/2024 21:29:18<br>Silkscreen can be fucked idc</td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Kelpie_Main_Board\Main_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=749.802mil|Location2.X=754.135mil|Location1.Y=2757.676mil|Location2.Y=2762.009mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Kelpie_Main_Board\Main_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=749.802mil|Location2.X=754.135mil|Location1.Y=2757.676mil|Location2.Y=2762.009mil|Absolute=True">Silk To Solder Mask Clearance Constraint: (Collision &lt; 0.127mm) Between Pad J18-0.1A-5(-56.55mm,-29.855mm) on Top Layer And Track (-55.9mm,-29.9mm)(-55.2mm,-29.9mm) on Top Overlay [Top Overlay] to [Top Solder] clearance [0mm]</acronym></a><br>Waived by William Li at 08/05/2024 21:29:18<br>Silkscreen can be fucked idc</td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Kelpie_Main_Board\Main_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2811.061mil|Location2.X=2815.394mil|Location1.Y=1734.781mil|Location2.Y=1739.114mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Kelpie_Main_Board\Main_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2811.061mil|Location2.X=2815.394mil|Location1.Y=1734.781mil|Location2.Y=1739.114mil|Absolute=True">Silk To Solder Mask Clearance Constraint: (Collision &lt; 0.127mm) Between Pad L1-2(-4.283mm,-55.018mm) on Top Layer And Track (-3.544mm,-55.882mm)(-1.038mm,-55.882mm) on Top Overlay [Top Overlay] to [Top Solder] clearance [0mm]</acronym></a><br>Waived by William Li at 09/05/2024 22:58:52<br>dont give a shit</td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Kelpie_Main_Board\Main_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1056.889mil|Location2.X=1061.222mil|Location1.Y=1351.029mil|Location2.Y=1355.362mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Kelpie_Main_Board\Main_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1056.889mil|Location2.X=1061.222mil|Location1.Y=1351.029mil|Location2.Y=1355.362mil|Absolute=True">Silk To Solder Mask Clearance Constraint: (Collision &lt; 0.127mm) Between Pad PI-1(-46.75mm,-64.82mm) on Multi-Layer And Region (181 hole(s)) Bottom Overlay [Bottom Overlay] to [Bottom Solder] clearance [0mm]</acronym></a><br>Waived by William Li at 08/05/2024 21:29:18<br>Silkscreen can be fucked idc</td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Kelpie_Main_Board\Main_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1954.526mil|Location2.X=1958.86mil|Location1.Y=3383.66mil|Location2.Y=3387.993mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Kelpie_Main_Board\Main_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1954.526mil|Location2.X=1958.86mil|Location1.Y=3383.66mil|Location2.Y=3387.993mil|Absolute=True">Silk To Solder Mask Clearance Constraint: (Collision &lt; 0.127mm) Between Pad RL1-1(-26.081mm,-13.947mm) on Multi-Layer And Track (-25.3mm,-14mm)(-24.2mm,-14mm) on Top Overlay [Top Overlay] to [Top Solder] clearance [0mm]</acronym></a><br>Waived by William Li at 08/05/2024 21:29:18<br>Silkscreen can be fucked idc</td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Kelpie_Main_Board\Main_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1950.589mil|Location2.X=1954.922mil|Location1.Y=3281.298mil|Location2.Y=3285.631mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Kelpie_Main_Board\Main_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1950.589mil|Location2.X=1954.922mil|Location1.Y=3281.298mil|Location2.Y=3285.631mil|Absolute=True">Silk To Solder Mask Clearance Constraint: (Collision &lt; 0.127mm) Between Pad RL1-2(-26.081mm,-16.487mm) on Multi-Layer And Track (-25.4mm,-16.6mm)(-24.2mm,-16.6mm) on Top Overlay [Top Overlay] to [Top Solder] clearance [0mm]</acronym></a><br>Waived by William Li at 08/05/2024 21:29:18<br>Silkscreen can be fucked idc</td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Kelpie_Main_Board\Main_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1950.589mil|Location2.X=1954.922mil|Location1.Y=3182.873mil|Location2.Y=3187.206mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Kelpie_Main_Board\Main_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1950.589mil|Location2.X=1954.922mil|Location1.Y=3182.873mil|Location2.Y=3187.206mil|Absolute=True">Silk To Solder Mask Clearance Constraint: (Collision &lt; 0.127mm) Between Pad RL1-3(-26.081mm,-19.027mm) on Multi-Layer And Track (-25.4mm,-19.1mm)(-24.2mm,-19.1mm) on Top Overlay [Top Overlay] to [Top Solder] clearance [0mm]</acronym></a><br>Waived by William Li at 08/05/2024 21:29:18<br>Silkscreen can be fucked idc</td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Kelpie_Main_Board\Main_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1950.589mil|Location2.X=1954.923mil|Location1.Y=549.014mil|Location2.Y=553.347mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Kelpie_Main_Board\Main_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1950.589mil|Location2.X=1954.923mil|Location1.Y=549.014mil|Location2.Y=553.347mil|Absolute=True">Silk To Solder Mask Clearance Constraint: (Collision &lt; 0.127mm) Between Pad RR1-1(-26.081mm,-86.033mm) on Multi-Layer And Track (-25.4mm,-86mm)(-23.4mm,-86mm) on Top Overlay [Top Overlay] to [Top Solder] clearance [0mm]</acronym></a><br>Waived by William Li at 08/05/2024 21:29:18<br>Silkscreen can be fucked idc</td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Kelpie_Main_Board\Main_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1950.589mil|Location2.X=1954.923mil|Location1.Y=647.439mil|Location2.Y=651.773mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Kelpie_Main_Board\Main_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1950.589mil|Location2.X=1954.923mil|Location1.Y=647.439mil|Location2.Y=651.773mil|Absolute=True">Silk To Solder Mask Clearance Constraint: (Collision &lt; 0.127mm) Between Pad RR1-2(-26.081mm,-83.493mm) on Multi-Layer And Track (-25.4mm,-83.5mm)(-23.4mm,-83.5mm) on Top Overlay [Top Overlay] to [Top Solder] clearance [0mm]</acronym></a><br>Waived by William Li at 08/05/2024 21:29:18<br>Silkscreen can be fucked idc</td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Kelpie_Main_Board\Main_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1954.526mil|Location2.X=1958.86mil|Location1.Y=749.802mil|Location2.Y=754.135mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Kelpie_Main_Board\Main_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1954.526mil|Location2.X=1958.86mil|Location1.Y=749.802mil|Location2.Y=754.135mil|Absolute=True">Silk To Solder Mask Clearance Constraint: (Collision &lt; 0.127mm) Between Pad RR1-3(-26.081mm,-80.953mm) on Multi-Layer And Track (-25.3mm,-80.9mm)(-23.4mm,-80.9mm) on Top Overlay [Top Overlay] to [Top Solder] clearance [0mm]</acronym></a><br>Waived by William Li at 08/05/2024 21:29:18<br>Silkscreen can be fucked idc</td>
+</tr>
+</table></a><hr color="#EEEEEE"><a href="#top" style="font-size: 0.9em">Back to top</a><br><br><a name="IDDXUILQN1RVCWLVEEEBGGYELSQK1EM0FVSQHELWGKCRV3E4AJYQUN"><table>
+<tr>
+<th style="text-align : left" colspan="1" class="waived">Board Clearance Constraint (Gap=0mm) (All)</th>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Kelpie_Main_Board\Main_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=391.131mil|Location2.X=400.255mil|Location1.Y=1065.264mil|Location2.Y=1074.388mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Kelpie_Main_Board\Main_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=391.131mil|Location2.X=400.255mil|Location1.Y=1065.264mil|Location2.Y=1074.388mil|Absolute=True">Board Outline Clearance(Outline Edge): (0.092mm &lt; 0.2mm) Between Board Edge And Region (181 hole(s)) Bottom Overlay </acronym></a><br>Waived by William Li at 08/05/2024 21:29:42<br>More silkscreen stuff</td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Kelpie_Main_Board\Main_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=386.253mil|Location2.X=392.502mil|Location1.Y=1856.275mil|Location2.Y=1862.524mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Kelpie_Main_Board\Main_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=386.253mil|Location2.X=392.502mil|Location1.Y=1856.275mil|Location2.Y=1862.524mil|Absolute=True">Board Outline Clearance(Outline Edge): (Collision &lt; 0.2mm) Between Board Edge And Text "3V3" (-64.371mm,-53.337mm) on Top Overlay </acronym></a><br>Waived by William Li at 09/05/2024 22:58:52<br>dont give a shit</td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Kelpie_Main_Board\Main_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=777.732mil|Location2.X=783.981mil|Location1.Y=3241.513mil|Location2.Y=3247.762mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Kelpie_Main_Board\Main_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=777.732mil|Location2.X=783.981mil|Location1.Y=3241.513mil|Location2.Y=3247.762mil|Absolute=True">Board Outline Clearance(Outline Edge): (Collision &lt; 0.2mm) Between Board Edge And Text "Kelpie Main Board" (-62.721mm,-25.67mm) on Top Overlay </acronym></a><br>Waived by William Li at 09/05/2024 22:58:52<br>dont give a shit</td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Kelpie_Main_Board\Main_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=386.253mil|Location2.X=392.502mil|Location1.Y=2482.259mil|Location2.Y=2488.508mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Kelpie_Main_Board\Main_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=386.253mil|Location2.X=392.502mil|Location1.Y=2482.259mil|Location2.Y=2488.508mil|Absolute=True">Board Outline Clearance(Outline Edge): (Collision &lt; 0.2mm) Between Board Edge And Text "LDO" (-64.371mm,-37.437mm) on Top Overlay </acronym></a><br>Waived by William Li at 09/05/2024 22:58:52<br>dont give a shit</td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Kelpie_Main_Board\Main_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=3864.712mil|Location2.X=3873.836mil|Location1.Y=3535.869mil|Location2.Y=3544.993mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Kelpie_Main_Board\Main_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=3864.712mil|Location2.X=3873.836mil|Location1.Y=3535.869mil|Location2.Y=3544.993mil|Absolute=True">Board Outline Clearance(Outline Edge): (0.146mm &lt; 0.2mm) Between Board Edge And Text "P2" (23.534mm,-11.2mm) on Top Overlay </acronym></a><br>Waived by William Li at 08/05/2024 21:29:42<br>More silkscreen stuff</td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Kelpie_Main_Board\Main_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=4034.046mil|Location2.X=4040.295mil|Location1.Y=3033.096mil|Location2.Y=3039.345mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Kelpie_Main_Board\Main_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=4034.046mil|Location2.X=4040.295mil|Location1.Y=3033.096mil|Location2.Y=3039.345mil|Absolute=True">Board Outline Clearance(Outline Edge): (Collision &lt; 0.2mm) Between Board Edge And Track (13.83mm,-22.88mm)(27.48mm,-22.88mm) on Top Overlay </acronym></a><br>Waived by William Li at 08/05/2024 21:29:42<br>More silkscreen stuff</td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Kelpie_Main_Board\Main_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=4034.046mil|Location2.X=4040.295mil|Location1.Y=2422.86mil|Location2.Y=2429.109mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Kelpie_Main_Board\Main_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=4034.046mil|Location2.X=4040.295mil|Location1.Y=2422.86mil|Location2.Y=2429.109mil|Absolute=True">Board Outline Clearance(Outline Edge): (Collision &lt; 0.2mm) Between Board Edge And Track (13.83mm,-38.38mm)(27.48mm,-38.38mm) on Top Overlay </acronym></a><br>Waived by William Li at 08/05/2024 21:29:42<br>More silkscreen stuff</td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Kelpie_Main_Board\Main_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=4037.392mil|Location2.X=4043.641mil|Location1.Y=1510.655mil|Location2.Y=1516.904mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Kelpie_Main_Board\Main_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=4037.392mil|Location2.X=4043.641mil|Location1.Y=1510.655mil|Location2.Y=1516.904mil|Absolute=True">Board Outline Clearance(Outline Edge): (Collision &lt; 0.2mm) Between Board Edge And Track (14mm,-61.55mm)(27.65mm,-61.55mm) on Top Overlay </acronym></a><br>Waived by William Li at 08/05/2024 21:29:42<br>More silkscreen stuff</td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Kelpie_Main_Board\Main_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=4037.392mil|Location2.X=4043.641mil|Location1.Y=900.419mil|Location2.Y=906.668mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Kelpie_Main_Board\Main_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=4037.392mil|Location2.X=4043.641mil|Location1.Y=900.419mil|Location2.Y=906.668mil|Absolute=True">Board Outline Clearance(Outline Edge): (Collision &lt; 0.2mm) Between Board Edge And Track (14mm,-77.05mm)(27.65mm,-77.05mm) on Top Overlay </acronym></a><br>Waived by William Li at 08/05/2024 21:29:42<br>More silkscreen stuff</td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Kelpie_Main_Board\Main_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=4029.823mil|Location2.X=4036.072mil|Location1.Y=3479.365mil|Location2.Y=3485.614mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Kelpie_Main_Board\Main_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=4029.823mil|Location2.X=4036.072mil|Location1.Y=3479.365mil|Location2.Y=3485.614mil|Absolute=True">Board Outline Clearance(Outline Edge): (Collision &lt; 0.2mm) Between Board Edge And Track (16mm,-11.545mm)(27.5mm,-11.545mm) on Top Overlay </acronym></a><br>Waived by William Li at 08/05/2024 21:29:42<br>More silkscreen stuff</td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Kelpie_Main_Board\Main_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=4034.439mil|Location2.X=4040.688mil|Location1.Y=3089.601mil|Location2.Y=3095.851mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Kelpie_Main_Board\Main_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=4034.439mil|Location2.X=4040.688mil|Location1.Y=3089.601mil|Location2.Y=3095.851mil|Absolute=True">Board Outline Clearance(Outline Edge): (Collision &lt; 0.2mm) Between Board Edge And Track (16mm,-21.445mm)(27.5mm,-21.445mm) on Top Overlay </acronym></a><br>Waived by William Li at 08/05/2024 21:29:42<br>More silkscreen stuff</td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Kelpie_Main_Board\Main_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=4034.046mil|Location2.X=4040.295mil|Location1.Y=2727.978mil|Location2.Y=2734.227mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Kelpie_Main_Board\Main_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=4034.046mil|Location2.X=4040.295mil|Location1.Y=2727.978mil|Location2.Y=2734.227mil|Absolute=True">Board Outline Clearance(Outline Edge): (Collision &lt; 0.2mm) Between Board Edge And Track (27.48mm,-38.38mm)(27.48mm,-22.88mm) on Top Overlay </acronym></a><br>Waived by William Li at 08/05/2024 21:29:42<br>More silkscreen stuff</td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Kelpie_Main_Board\Main_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=4032.308mil|Location2.X=4038.557mil|Location1.Y=3284.483mil|Location2.Y=3290.733mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Kelpie_Main_Board\Main_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=4032.308mil|Location2.X=4038.557mil|Location1.Y=3284.483mil|Location2.Y=3290.733mil|Absolute=True">Board Outline Clearance(Outline Edge): (Collision &lt; 0.2mm) Between Board Edge And Track (27.5mm,-21.445mm)(27.5mm,-11.545mm) on Top Overlay </acronym></a><br>Waived by William Li at 08/05/2024 21:29:42<br>More silkscreen stuff</td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Kelpie_Main_Board\Main_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=4038.214mil|Location2.X=4044.463mil|Location1.Y=1205.537mil|Location2.Y=1211.786mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Kelpie_Main_Board\Main_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=4038.214mil|Location2.X=4044.463mil|Location1.Y=1205.537mil|Location2.Y=1211.786mil|Absolute=True">Board Outline Clearance(Outline Edge): (Collision &lt; 0.2mm) Between Board Edge And Track (27.65mm,-77.05mm)(27.65mm,-61.55mm) on Top Overlay </acronym></a><br>Waived by William Li at 08/05/2024 21:29:42<br>More silkscreen stuff</td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Kelpie_Main_Board\Main_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=385.901mil|Location2.X=392.151mil|Location1.Y=2765.712mil|Location2.Y=2771.961mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Kelpie_Main_Board\Main_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=385.901mil|Location2.X=392.151mil|Location1.Y=2765.712mil|Location2.Y=2771.961mil|Absolute=True">Board Outline Clearance(Outline Edge): (Collision &lt; 0.2mm) Between Board Edge And Track (-65.1mm,-29.75mm)(-62.8mm,-27.45mm) on Top Overlay </acronym></a><br>Waived by William Li at 08/05/2024 21:29:42<br>More silkscreen stuff</td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Kelpie_Main_Board\Main_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=385.901mil|Location2.X=392.151mil|Location1.Y=2676.508mil|Location2.Y=2682.757mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Kelpie_Main_Board\Main_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=385.901mil|Location2.X=392.151mil|Location1.Y=2676.508mil|Location2.Y=2682.757mil|Absolute=True">Board Outline Clearance(Outline Edge): (Collision &lt; 0.2mm) Between Board Edge And Track (-65.1mm,-32.016mm)(-62.8mm,-29.716mm) on Top Overlay </acronym></a><br>Waived by William Li at 08/05/2024 21:29:42<br>More silkscreen stuff</td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Kelpie_Main_Board\Main_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=385.901mil|Location2.X=392.151mil|Location1.Y=2587.304mil|Location2.Y=2593.553mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Kelpie_Main_Board\Main_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=385.901mil|Location2.X=392.151mil|Location1.Y=2587.304mil|Location2.Y=2593.553mil|Absolute=True">Board Outline Clearance(Outline Edge): (Collision &lt; 0.2mm) Between Board Edge And Track (-65.1mm,-34.282mm)(-62.8mm,-31.982mm) on Top Overlay </acronym></a><br>Waived by William Li at 08/05/2024 21:29:42<br>More silkscreen stuff</td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Kelpie_Main_Board\Main_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=385.901mil|Location2.X=392.151mil|Location1.Y=2498.099mil|Location2.Y=2504.349mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Kelpie_Main_Board\Main_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=385.901mil|Location2.X=392.151mil|Location1.Y=2498.099mil|Location2.Y=2504.349mil|Absolute=True">Board Outline Clearance(Outline Edge): (Collision &lt; 0.2mm) Between Board Edge And Track (-65.1mm,-36.547mm)(-62.8mm,-34.247mm) on Top Overlay </acronym></a><br>Waived by William Li at 08/05/2024 21:29:42<br>More silkscreen stuff</td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Kelpie_Main_Board\Main_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=385.901mil|Location2.X=392.151mil|Location1.Y=2408.895mil|Location2.Y=2415.144mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Kelpie_Main_Board\Main_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=385.901mil|Location2.X=392.151mil|Location1.Y=2408.895mil|Location2.Y=2415.144mil|Absolute=True">Board Outline Clearance(Outline Edge): (Collision &lt; 0.2mm) Between Board Edge And Track (-65.1mm,-38.813mm)(-62.8mm,-36.513mm) on Top Overlay </acronym></a><br>Waived by William Li at 08/05/2024 21:29:42<br>More silkscreen stuff</td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Kelpie_Main_Board\Main_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=385.901mil|Location2.X=392.151mil|Location1.Y=2319.691mil|Location2.Y=2325.94mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Kelpie_Main_Board\Main_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=385.901mil|Location2.X=392.151mil|Location1.Y=2319.691mil|Location2.Y=2325.94mil|Absolute=True">Board Outline Clearance(Outline Edge): (Collision &lt; 0.2mm) Between Board Edge And Track (-65.1mm,-41.079mm)(-62.8mm,-38.779mm) on Top Overlay </acronym></a><br>Waived by William Li at 08/05/2024 21:29:42<br>More silkscreen stuff</td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Kelpie_Main_Board\Main_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=385.901mil|Location2.X=392.151mil|Location1.Y=2230.486mil|Location2.Y=2236.736mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Kelpie_Main_Board\Main_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=385.901mil|Location2.X=392.151mil|Location1.Y=2230.486mil|Location2.Y=2236.736mil|Absolute=True">Board Outline Clearance(Outline Edge): (Collision &lt; 0.2mm) Between Board Edge And Track (-65.1mm,-43.345mm)(-62.8mm,-41.045mm) on Top Overlay </acronym></a><br>Waived by William Li at 08/05/2024 21:29:42<br>More silkscreen stuff</td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Kelpie_Main_Board\Main_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=385.901mil|Location2.X=392.151mil|Location1.Y=2141.282mil|Location2.Y=2147.531mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Kelpie_Main_Board\Main_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=385.901mil|Location2.X=392.151mil|Location1.Y=2141.282mil|Location2.Y=2147.531mil|Absolute=True">Board Outline Clearance(Outline Edge): (Collision &lt; 0.2mm) Between Board Edge And Track (-65.1mm,-45.611mm)(-62.8mm,-43.311mm) on Top Overlay </acronym></a><br>Waived by William Li at 08/05/2024 21:29:42<br>More silkscreen stuff</td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Kelpie_Main_Board\Main_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=385.901mil|Location2.X=392.151mil|Location1.Y=2052.078mil|Location2.Y=2058.327mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Kelpie_Main_Board\Main_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=385.901mil|Location2.X=392.151mil|Location1.Y=2052.078mil|Location2.Y=2058.327mil|Absolute=True">Board Outline Clearance(Outline Edge): (Collision &lt; 0.2mm) Between Board Edge And Track (-65.1mm,-47.876mm)(-62.8mm,-45.576mm) on Top Overlay </acronym></a><br>Waived by William Li at 08/05/2024 21:29:42<br>More silkscreen stuff</td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Kelpie_Main_Board\Main_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=385.901mil|Location2.X=392.151mil|Location1.Y=1962.873mil|Location2.Y=1969.123mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Kelpie_Main_Board\Main_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=385.901mil|Location2.X=392.151mil|Location1.Y=1962.873mil|Location2.Y=1969.123mil|Absolute=True">Board Outline Clearance(Outline Edge): (Collision &lt; 0.2mm) Between Board Edge And Track (-65.1mm,-50.142mm)(-62.8mm,-47.842mm) on Top Overlay </acronym></a><br>Waived by William Li at 08/05/2024 21:29:42<br>More silkscreen stuff</td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Kelpie_Main_Board\Main_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=385.901mil|Location2.X=392.151mil|Location1.Y=1873.669mil|Location2.Y=1879.918mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Kelpie_Main_Board\Main_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=385.901mil|Location2.X=392.151mil|Location1.Y=1873.669mil|Location2.Y=1879.918mil|Absolute=True">Board Outline Clearance(Outline Edge): (Collision &lt; 0.2mm) Between Board Edge And Track (-65.1mm,-52.408mm)(-62.8mm,-50.108mm) on Top Overlay </acronym></a><br>Waived by William Li at 08/05/2024 21:29:42<br>More silkscreen stuff</td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Kelpie_Main_Board\Main_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=385.901mil|Location2.X=392.151mil|Location1.Y=1784.465mil|Location2.Y=1790.714mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Kelpie_Main_Board\Main_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=385.901mil|Location2.X=392.151mil|Location1.Y=1784.465mil|Location2.Y=1790.714mil|Absolute=True">Board Outline Clearance(Outline Edge): (Collision &lt; 0.2mm) Between Board Edge And Track (-65.1mm,-54.674mm)(-62.8mm,-52.374mm) on Top Overlay </acronym></a><br>Waived by William Li at 08/05/2024 21:29:42<br>More silkscreen stuff</td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Kelpie_Main_Board\Main_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=385.901mil|Location2.X=392.151mil|Location1.Y=1695.261mil|Location2.Y=1701.51mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Kelpie_Main_Board\Main_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=385.901mil|Location2.X=392.151mil|Location1.Y=1695.261mil|Location2.Y=1701.51mil|Absolute=True">Board Outline Clearance(Outline Edge): (Collision &lt; 0.2mm) Between Board Edge And Track (-65.1mm,-56.939mm)(-62.8mm,-54.639mm) on Top Overlay </acronym></a><br>Waived by William Li at 08/05/2024 21:29:42<br>More silkscreen stuff</td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Kelpie_Main_Board\Main_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=385.901mil|Location2.X=392.151mil|Location1.Y=1606.056mil|Location2.Y=1612.305mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Kelpie_Main_Board\Main_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=385.901mil|Location2.X=392.151mil|Location1.Y=1606.056mil|Location2.Y=1612.305mil|Absolute=True">Board Outline Clearance(Outline Edge): (Collision &lt; 0.2mm) Between Board Edge And Track (-65.1mm,-59.205mm)(-62.8mm,-56.905mm) on Top Overlay </acronym></a><br>Waived by William Li at 08/05/2024 21:29:42<br>More silkscreen stuff</td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Kelpie_Main_Board\Main_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=385.901mil|Location2.X=392.151mil|Location1.Y=1516.852mil|Location2.Y=1523.101mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Kelpie_Main_Board\Main_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=385.901mil|Location2.X=392.151mil|Location1.Y=1516.852mil|Location2.Y=1523.101mil|Absolute=True">Board Outline Clearance(Outline Edge): (Collision &lt; 0.2mm) Between Board Edge And Track (-65.1mm,-61.471mm)(-62.8mm,-59.171mm) on Top Overlay </acronym></a><br>Waived by William Li at 08/05/2024 21:29:42<br>More silkscreen stuff</td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Kelpie_Main_Board\Main_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=385.901mil|Location2.X=392.151mil|Location1.Y=1427.648mil|Location2.Y=1433.897mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Kelpie_Main_Board\Main_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=385.901mil|Location2.X=392.151mil|Location1.Y=1427.648mil|Location2.Y=1433.897mil|Absolute=True">Board Outline Clearance(Outline Edge): (Collision &lt; 0.2mm) Between Board Edge And Track (-65.1mm,-63.737mm)(-62.8mm,-61.437mm) on Top Overlay </acronym></a><br>Waived by William Li at 08/05/2024 21:29:42<br>More silkscreen stuff</td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Kelpie_Main_Board\Main_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=385.901mil|Location2.X=392.151mil|Location1.Y=1338.443mil|Location2.Y=1344.693mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Kelpie_Main_Board\Main_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=385.901mil|Location2.X=392.151mil|Location1.Y=1338.443mil|Location2.Y=1344.693mil|Absolute=True">Board Outline Clearance(Outline Edge): (Collision &lt; 0.2mm) Between Board Edge And Track (-65.1mm,-66.003mm)(-62.8mm,-63.703mm) on Top Overlay </acronym></a><br>Waived by William Li at 08/05/2024 21:29:42<br>More silkscreen stuff</td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Kelpie_Main_Board\Main_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=385.901mil|Location2.X=392.151mil|Location1.Y=1249.239mil|Location2.Y=1255.488mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Kelpie_Main_Board\Main_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=385.901mil|Location2.X=392.151mil|Location1.Y=1249.239mil|Location2.Y=1255.488mil|Absolute=True">Board Outline Clearance(Outline Edge): (Collision &lt; 0.2mm) Between Board Edge And Track (-65.1mm,-68.268mm)(-62.8mm,-65.968mm) on Top Overlay </acronym></a><br>Waived by William Li at 08/05/2024 21:29:42<br>More silkscreen stuff</td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Kelpie_Main_Board\Main_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=385.901mil|Location2.X=392.151mil|Location1.Y=1160.035mil|Location2.Y=1166.284mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Kelpie_Main_Board\Main_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=385.901mil|Location2.X=392.151mil|Location1.Y=1160.035mil|Location2.Y=1166.284mil|Absolute=True">Board Outline Clearance(Outline Edge): (Collision &lt; 0.2mm) Between Board Edge And Track (-65.1mm,-70.534mm)(-62.8mm,-68.234mm) on Top Overlay </acronym></a><br>Waived by William Li at 08/05/2024 21:29:42<br>More silkscreen stuff</td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Kelpie_Main_Board\Main_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=386.115mil|Location2.X=392.365mil|Location1.Y=1070.831mil|Location2.Y=1077.08mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Kelpie_Main_Board\Main_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=386.115mil|Location2.X=392.365mil|Location1.Y=1070.831mil|Location2.Y=1077.08mil|Absolute=True">Board Outline Clearance(Outline Edge): (Collision &lt; 0.2mm) Between Board Edge And Track (-65.1mm,-72.8mm)(-62.8mm,-70.5mm) on Top Overlay </acronym></a><br>Waived by William Li at 08/05/2024 21:29:42<br>More silkscreen stuff</td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Kelpie_Main_Board\Main_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=387.87mil|Location2.X=394.119mil|Location1.Y=2855.143mil|Location2.Y=2861.392mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Kelpie_Main_Board\Main_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=387.87mil|Location2.X=394.119mil|Location1.Y=2855.143mil|Location2.Y=2861.392mil|Absolute=True">Board Outline Clearance(Outline Edge): (Collision &lt; 0.2mm) Between Board Edge And Track (-65mm,-27.4mm)(-62.8mm,-27.4mm) on Top Overlay </acronym></a><br>Waived by William Li at 08/05/2024 21:29:42<br>More silkscreen stuff</td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Kelpie_Main_Board\Main_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=388.208mil|Location2.X=394.457mil|Location1.Y=1067.741mil|Location2.Y=1073.991mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Kelpie_Main_Board\Main_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=388.208mil|Location2.X=394.457mil|Location1.Y=1067.741mil|Location2.Y=1073.991mil|Absolute=True">Board Outline Clearance(Outline Edge): (Collision &lt; 0.2mm) Between Board Edge And Track (-65mm,-72.8mm)(-62.7mm,-72.8mm) on Top Overlay </acronym></a><br>Waived by William Li at 08/05/2024 21:29:42<br>More silkscreen stuff</td>
+</tr>
+</table></a><hr color="#EEEEEE"><a href="#top" style="font-size: 0.9em">Back to top</a><br><br></body>
+</html>
