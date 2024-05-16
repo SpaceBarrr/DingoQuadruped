@@ -213,3 +213,20 @@ _:-ms-input-placeholder, :root .demo-graph {
       -ms-flex-align: center;
           align-items: center;
 }
+
+.console {
+  background: black;
+  font-family: monospace;
+  width: 60em;
+}
+.shell {
+  word-break: break-all; white-space:pre-wrap; display:inline;
+}
+.output {
+  color: gray;  
+  padding: 15px;
+}
+
+/* * {
+  outline: 1px solid red !important;
+} */
