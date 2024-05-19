@@ -165,6 +165,9 @@ _:-ms-input-placeholder, :root .demo-graph {
 .demo-cards .demo-separator {
   height: 32px;
 }
+.demo-cards .ip-address{
+  height: 64px;
+}
 .demo-cards .mdl-card__title.mdl-card__title {
   color: white;
   font-size: 24px;
@@ -176,15 +179,19 @@ _:-ms-input-placeholder, :root .demo-graph {
 .demo-cards h3 {
   font-size: 1em;
 }
-.demo-updates .mdl-card__title {
-  min-height: 200px;
-  background-image: url('images/dog.png');
-  background-position: 90% 100%;
-  background-repeat: no-repeat;
+.current-monitor .mdl-card__title {
+  height: 64px;
 }
+
 .demo-cards .mdl-card__actions a {
   color: #00BCD4;
   text-decoration: none;
+}
+
+.demo-cards .mdl-card__media {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .demo-options h3 {
