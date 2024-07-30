@@ -3,16 +3,21 @@
 EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/objects/backgrounds/protos/TexturedBackground.proto"
 EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/objects/backgrounds/protos/TexturedBackgroundLight.proto"
 EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/objects/floors/protos/RectangleArena.proto"
+EXTERNPROTO "../protos/klp.proto"
 
 WorldInfo {
 }
 Viewpoint {
-  orientation -0.34901400774184044 0.3063561142956575 0.8856269833477549 1.820007004432328
-  position 0.31405324310118415 -1.5311457015625993 1.4366406631830606
+  orientation -0.0944602236909316 0.9377231010796296 0.3342942593612132 0.585384726342542
+  position -1.5261038510003018 -0.6212412249854176 1.2009417012530996
 }
 TexturedBackground {
 }
 TexturedBackgroundLight {
 }
 RectangleArena {
+}
+klp {
+  translation 0 -3.30588e-07 0.09
+  rotation 1 0 0 1.5708
 }

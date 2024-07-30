@@ -2,13 +2,13 @@
 # license: Apache License 2.0
 # license url: http://www.apache.org/licenses/LICENSE-2.0
 # This is a proto file for Webots for the klp
-# Extracted from: C:\\Users\\Will\\Documents\\FYP\\software\\webot\\klp_urdf\\klp.urdf
+# Extracted from: /mnt/c/Users/Will/Documents/FYP/Code/webot/klp_urdf/klp.urdf
 
 PROTO klp [
   field  SFVec3f     translation     0 0 0
   field  SFRotation  rotation        0 0 1 0
   field  SFString    name            "klp"  # Is `Robot.name`.
-  field  SFString    controller      "void" # Is `Robot.controller`.
+  field  SFString    controller      "<extern>" # Is `Robot.controller`.
   field  MFString    controllerArgs  []     # Is `Robot.controllerArgs`.
   field  SFString    customData      ""     # Is `Robot.customData`.
   field  SFBool      supervisor      FALSE  # Is `Robot.supervisor`.
@@ -35,8 +35,8 @@ PROTO klp [
               roughness 1.000000
               metalness 0
             }
-            geometry DEF base Mesh {
-              url "..\\klp_urdf\\meshes\\visual\\base.stl"
+            geometry DEF meshes/visual/base Mesh {
+              url "../klp_urdf/meshes/visual/base.stl"
             }
           }
         ]
@@ -70,8 +70,8 @@ PROTO klp [
                     roughness 1.000000
                     metalness 0
                   }
-                  geometry DEF Body01 Mesh {
-                    url "..\\klp_urdf\\meshes\\visual\\Body01.stl"
+                  geometry DEF meshes/visual/Body01 Mesh {
+                    url "../klp_urdf/meshes/visual/Body01.stl"
                   }
                 }
               ]
@@ -105,8 +105,8 @@ PROTO klp [
                           roughness 1.000000
                           metalness 0
                         }
-                        geometry DEF Body02 Mesh {
-                          url "..\\klp_urdf\\meshes\\visual\\Body02.stl"
+                        geometry DEF meshes/visual/Body02 Mesh {
+                          url "../klp_urdf/meshes/visual/Body02.stl"
                         }
                       }
                     ]
@@ -140,16 +140,16 @@ PROTO klp [
                                 roughness 1.000000
                                 metalness 0
                               }
-                              geometry DEF Body03 Mesh {
-                                url "..\\klp_urdf\\meshes\\visual\\Body03.stl"
+                              geometry DEF meshes/visual/Body03 Mesh {
+                                url "../klp_urdf/meshes/visual/Body03.stl"
                               }
                             }
                           ]
                         }
                       ]
                       name "Body03"
-                      boundingObject DEF Body03_coll Mesh {
-                        url "..\\klp_urdf\\meshes\\collision\\Body03_coll.stl"
+                      boundingObject DEF meshes/collision/Body03_coll Mesh {
+                        url "../klp_urdf/meshes/collision/Body03_coll.stl"
                       }
                       physics Physics {
                         density -1
@@ -164,8 +164,8 @@ PROTO klp [
                   }
                 ]
                 name "Body02"
-                boundingObject DEF Body02_coll Mesh {
-                  url "..\\klp_urdf\\meshes\\collision\\Body02_coll.stl"
+                boundingObject DEF meshes/collision/Body02_coll Mesh {
+                  url "../klp_urdf/meshes/collision/Body02_coll.stl"
                 }
                 physics Physics {
                   density -1
@@ -180,8 +180,8 @@ PROTO klp [
             }
           ]
           name "Body01"
-          boundingObject DEF Body01_coll Mesh {
-            url "..\\klp_urdf\\meshes\\collision\\Body01_coll.stl"
+          boundingObject DEF meshes/collision/Body01_coll Mesh {
+            url "../klp_urdf/meshes/collision/Body01_coll.stl"
           }
           physics Physics {
             density -1
@@ -223,8 +223,8 @@ PROTO klp [
                     roughness 1.000000
                     metalness 0
                   }
-                  geometry DEF Body04 Mesh {
-                    url "..\\klp_urdf\\meshes\\visual\\Body04.stl"
+                  geometry DEF meshes/visual/Body04 Mesh {
+                    url "../klp_urdf/meshes/visual/Body04.stl"
                   }
                 }
               ]
@@ -258,7 +258,7 @@ PROTO klp [
                           roughness 1.000000
                           metalness 0
                         }
-                        geometry USE Body02
+                        geometry USE meshes/visual/Body02
                       }
                     ]
                   }
@@ -291,13 +291,13 @@ PROTO klp [
                                 roughness 1.000000
                                 metalness 0
                               }
-                              geometry USE Body03
+                              geometry USE meshes/visual/Body03
                             }
                           ]
                         }
                       ]
                       name "Body06"
-                      boundingObject USE Body03_coll
+                      boundingObject USE meshes/collision/Body03_coll
                       physics Physics {
                         density -1
                         mass 0.019696
@@ -311,7 +311,7 @@ PROTO klp [
                   }
                 ]
                 name "Body05"
-                boundingObject USE Body02_coll
+                boundingObject USE meshes/collision/Body02_coll
                 physics Physics {
                   density -1
                   mass 0.011388
@@ -325,8 +325,8 @@ PROTO klp [
             }
           ]
           name "Body04"
-          boundingObject DEF Body04_coll Mesh {
-            url "..\\klp_urdf\\meshes\\collision\\Body04_coll.stl"
+          boundingObject DEF meshes/collision/Body04_coll Mesh {
+            url "../klp_urdf/meshes/collision/Body04_coll.stl"
           }
           physics Physics {
             density -1
@@ -367,8 +367,8 @@ PROTO klp [
                     roughness 1.000000
                     metalness 0
                   }
-                  geometry DEF Body07 Mesh {
-                    url "..\\klp_urdf\\meshes\\visual\\Body07.stl"
+                  geometry DEF meshes/visual/Body07 Mesh {
+                    url "../klp_urdf/meshes/visual/Body07.stl"
                   }
                 }
               ]
@@ -402,7 +402,7 @@ PROTO klp [
                           roughness 1.000000
                           metalness 0
                         }
-                        geometry USE Body02
+                        geometry USE meshes/visual/Body02
                       }
                     ]
                   }
@@ -435,16 +435,16 @@ PROTO klp [
                                 roughness 1.000000
                                 metalness 0
                               }
-                              geometry DEF Body09 Mesh {
-                                url "..\\klp_urdf\\meshes\\visual\\Body09.stl"
+                              geometry DEF meshes/visual/Body09 Mesh {
+                                url "../klp_urdf/meshes/visual/Body09.stl"
                               }
                             }
                           ]
                         }
                       ]
                       name "Body09"
-                      boundingObject DEF Body09_coll Mesh {
-                        url "..\\klp_urdf\\meshes\\collision\\Body09_coll.stl"
+                      boundingObject DEF meshes/collision/Body09_coll Mesh {
+                        url "../klp_urdf/meshes/collision/Body09_coll.stl"
                       }
                       physics Physics {
                         density -1
@@ -459,7 +459,7 @@ PROTO klp [
                   }
                 ]
                 name "Body08"
-                boundingObject USE Body02_coll
+                boundingObject USE meshes/collision/Body02_coll
                 physics Physics {
                   density -1
                   mass 0.011388
@@ -473,8 +473,8 @@ PROTO klp [
             }
           ]
           name "Body07"
-          boundingObject DEF Body07_coll Mesh {
-            url "..\\klp_urdf\\meshes\\collision\\Body07_coll.stl"
+          boundingObject DEF meshes/collision/Body07_coll Mesh {
+            url "../klp_urdf/meshes/collision/Body07_coll.stl"
           }
           physics Physics {
             density -1
@@ -516,8 +516,8 @@ PROTO klp [
                     roughness 1.000000
                     metalness 0
                   }
-                  geometry DEF Body10 Mesh {
-                    url "..\\klp_urdf\\meshes\\visual\\Body10.stl"
+                  geometry DEF meshes/visual/Body10 Mesh {
+                    url "../klp_urdf/meshes/visual/Body10.stl"
                   }
                 }
               ]
@@ -551,7 +551,7 @@ PROTO klp [
                           roughness 1.000000
                           metalness 0
                         }
-                        geometry USE Body02
+                        geometry USE meshes/visual/Body02
                       }
                     ]
                   }
@@ -584,13 +584,13 @@ PROTO klp [
                                 roughness 1.000000
                                 metalness 0
                               }
-                              geometry USE Body09
+                              geometry USE meshes/visual/Body09
                             }
                           ]
                         }
                       ]
                       name "Body12"
-                      boundingObject USE Body09_coll
+                      boundingObject USE meshes/collision/Body09_coll
                       physics Physics {
                         density -1
                         mass 0.019696
@@ -604,7 +604,7 @@ PROTO klp [
                   }
                 ]
                 name "Body11"
-                boundingObject USE Body02_coll
+                boundingObject USE meshes/collision/Body02_coll
                 physics Physics {
                   density -1
                   mass 0.011388
@@ -618,8 +618,8 @@ PROTO klp [
             }
           ]
           name "Body10"
-          boundingObject DEF Body10_coll Mesh {
-            url "..\\klp_urdf\\meshes\\collision\\Body10_coll.stl"
+          boundingObject DEF meshes/collision/Body10_coll Mesh {
+            url "../klp_urdf/meshes/collision/Body10_coll.stl"
           }
           physics Physics {
             density -1
@@ -634,8 +634,8 @@ PROTO klp [
       }
     ]
     name IS name
-    boundingObject DEF base_coll Mesh {
-      url "..\\klp_urdf\\meshes\\collision\\base_coll.stl"
+    boundingObject DEF meshes/collision/base_coll Mesh {
+      url "../klp_urdf/meshes/collision/base_coll.stl"
     }
     physics Physics {
       density -1
