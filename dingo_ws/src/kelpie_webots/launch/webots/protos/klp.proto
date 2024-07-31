@@ -27,7 +27,7 @@ PROTO klp [
     selfCollision IS selfCollision
     children [
       Transform {
-        scale 0.001000 0.001000 0.001000
+        scale 1.000 1.000 1.000
         children [
           Shape {
             appearance DEF Base_material PBRAppearance {
@@ -48,13 +48,13 @@ PROTO klp [
         }
         device [
           RotationalMotor {
-            name "FL_R"
+            name "motor.FL_R"
             minPosition -3.14159265
             maxPosition 3.14159265
             maxTorque 10000
           }
           PositionSensor {
-            name "Joint01_sensor"
+            name "pos_sensor.FL_R"
           }
         ]
         endPoint Solid {
@@ -62,7 +62,7 @@ PROTO klp [
           rotation 1.000000 0.000000 0.000000 3.141593
           children [
             Transform {
-              scale 0.001000 0.001000 0.001000
+              scale 1.000 1.000 1.000
               children [
                 Shape {
                   appearance DEF Body01_material PBRAppearance {
@@ -83,13 +83,13 @@ PROTO klp [
               }
               device [
                 RotationalMotor {
-                  name "FL_U"
+                  name "motor.FL_U"
                   minPosition -3.14159265
                   maxPosition 3.14159265
                   maxTorque 10000
                 }
                 PositionSensor {
-                  name "Joint02_sensor"
+                  name "pos_sensor.FL_U"
                 }
               ]
               endPoint Solid {
@@ -97,7 +97,7 @@ PROTO klp [
                 rotation -0.707107 0.000000 0.707107 3.141593
                 children [
                   Transform {
-                    scale 0.001000 0.001000 0.001000
+                    scale 1.000 1.000 1.000
                     children [
                       Shape {
                         appearance DEF Body02_material PBRAppearance {
@@ -118,21 +118,21 @@ PROTO klp [
                     }
                     device [
                       RotationalMotor {
-                        name "FL_L"
+                        name "motor.FL_L"
                         minPosition -3.14159265
                         maxPosition 3.14159265
                         maxTorque 10000
                       }
                       PositionSensor {
-                        name "Joint03_sensor"
+                        name "pos_sensor.FL_L"
                       }
                     ]
                     endPoint Solid {
-                      translation -0.129879 -0.005598 -0.026000
+                      translation -0.129879 0.000000 -0.026000
                       rotation 1.000000 0.000000 0.000000 3.141593
                       children [
                         Transform {
-                          scale 0.001000 0.001000 0.001000
+                          scale 1.000 1.000 1.000
                           children [
                             Shape {
                               appearance DEF Body03_material PBRAppearance {
@@ -201,13 +201,13 @@ PROTO klp [
         }
         device [
           RotationalMotor {
-            name "RL_R"
+            name "motor.RL_R"
             minPosition -3.14159265
             maxPosition 3.14159265
             maxTorque 10000
           }
           PositionSensor {
-            name "Joint04_sensor"
+            name "pos_sensor.RL_R"
           }
         ]
         endPoint Solid {
@@ -215,7 +215,7 @@ PROTO klp [
           rotation 0.000000 0.000000 1.000000 3.141593
           children [
             Transform {
-              scale 0.001000 0.001000 0.001000
+              scale 1.000 1.000 1.000
               children [
                 Shape {
                   appearance DEF Body04_material PBRAppearance {
@@ -236,13 +236,13 @@ PROTO klp [
               }
               device [
                 RotationalMotor {
-                  name "RL_U"
+                  name "motor.RL_U"
                   minPosition -3.14159265
                   maxPosition 3.14159265
                   maxTorque 10000
                 }
                 PositionSensor {
-                  name "Joint05_sensor"
+                  name "pos_sensor.RL_U"
                 }
               ]
               endPoint Solid {
@@ -250,7 +250,7 @@ PROTO klp [
                 rotation -0.707107 -0.000000 -0.707107 3.141593
                 children [
                   Transform {
-                    scale 0.001000 0.001000 0.001000
+                    scale 1.000 1.000 1.000
                     children [
                       Shape {
                         appearance DEF Body05_material PBRAppearance {
@@ -269,21 +269,21 @@ PROTO klp [
                     }
                     device [
                       RotationalMotor {
-                        name "RL_L"
+                        name "motor.RL_L"
                         minPosition -3.14159265
                         maxPosition 3.14159265
                         maxTorque 10000
                       }
                       PositionSensor {
-                        name "Joint06_sensor"
+                        name "pos_sensor.RL_L"
                       }
                     ]
                     endPoint Solid {
-                      translation -0.129879 -0.005598 -0.026000
+                      translation -0.129879 0.000000 -0.026000
                       rotation 1.000000 0.000000 0.000000 3.141593
                       children [
                         Transform {
-                          scale 0.001000 0.001000 0.001000
+                          scale 1.000 1.000 1.000
                           children [
                             Shape {
                               appearance DEF Body06_material PBRAppearance {
@@ -346,20 +346,20 @@ PROTO klp [
         }
         device [
           RotationalMotor {
-            name "RR_R"
+            name "motor.RR_R"
             minPosition -3.14159265
             maxPosition 3.14159265
             maxTorque 10000
           }
           PositionSensor {
-            name "Joint07_sensor"
+            name "pos_sensor.RR_R"
           }
         ]
         endPoint Solid {
           translation -0.065000 0.048000 -0.102500
           children [
             Transform {
-              scale 0.001000 0.001000 0.001000
+              scale 1.000 1.000 1.000
               children [
                 Shape {
                   appearance DEF Body07_material PBRAppearance {
@@ -380,13 +380,13 @@ PROTO klp [
               }
               device [
                 RotationalMotor {
-                  name "RR_U"
+                  name "motor.RR_U"
                   minPosition -3.14159265
                   maxPosition 3.14159265
                   maxTorque 10000
                 }
                 PositionSensor {
-                  name "Joint08_sensor"
+                  name "pos_sensor.RR_U"
                 }
               ]
               endPoint Solid {
@@ -394,7 +394,7 @@ PROTO klp [
                 rotation -0.707107 -0.000000 -0.707107 3.141593
                 children [
                   Transform {
-                    scale 0.001000 0.001000 0.001000
+                    scale 1.000 1.000 1.000
                     children [
                       Shape {
                         appearance DEF Body08_material PBRAppearance {
@@ -413,21 +413,21 @@ PROTO klp [
                     }
                     device [
                       RotationalMotor {
-                        name "RR_L"
+                        name "motor.RR_L"
                         minPosition -3.14159265
                         maxPosition 3.14159265
                         maxTorque 10000
                       }
                       PositionSensor {
-                        name "Joint09_sensor"
+                        name "pos_sensor.RR_L"
                       }
                     ]
                     endPoint Solid {
-                      translation -0.129879 -0.005598 -0.026000
+                      translation -0.129879 0.000000 -0.026000
                       rotation 1.000000 0.000000 0.000000 3.141593
                       children [
                         Transform {
-                          scale 0.001000 0.001000 0.001000
+                          scale 1.000 1.000 1.000
                           children [
                             Shape {
                               appearance DEF Body09_material PBRAppearance {
@@ -494,13 +494,13 @@ PROTO klp [
         }
         device [
           RotationalMotor {
-            name "FR_R"
+            name "motor.FR_R"
             minPosition -3.14159265
             maxPosition 3.14159265
             maxTorque 10000
           }
           PositionSensor {
-            name "Joint10_sensor"
+            name "pos_sensor.FR_R"
           }
         ]
         endPoint Solid {
@@ -508,7 +508,7 @@ PROTO klp [
           rotation 0.000000 1.000000 0.000000 3.141593
           children [
             Transform {
-              scale 0.001000 0.001000 0.001000
+              scale 1.000 1.000 1.000
               children [
                 Shape {
                   appearance DEF Body10_material PBRAppearance {
@@ -529,13 +529,13 @@ PROTO klp [
               }
               device [
                 RotationalMotor {
-                  name "FR_U"
+                  name "motor.FR_U"
                   minPosition -3.14159265
                   maxPosition 3.14159265
                   maxTorque 10000
                 }
                 PositionSensor {
-                  name "Joint11_sensor"
+                  name "pos_sensor.FR_U"
                 }
               ]
               endPoint Solid {
@@ -543,7 +543,7 @@ PROTO klp [
                 rotation -0.707107 0.000000 0.707107 3.141593
                 children [
                   Transform {
-                    scale 0.001000 0.001000 0.001000
+                    scale 1.000 1.000 1.000
                     children [
                       Shape {
                         appearance DEF Body11_material PBRAppearance {
@@ -562,21 +562,21 @@ PROTO klp [
                     }
                     device [
                       RotationalMotor {
-                        name "FR_L"
+                        name "motor.FR_L"
                         minPosition -3.14159265
                         maxPosition 3.14159265
                         maxTorque 10000
                       }
                       PositionSensor {
-                        name "Joint12_sensor"
+                        name "pos_sensor.FR_L"
                       }
                     ]
                     endPoint Solid {
-                      translation -0.129879 -0.005598 -0.026000
+                      translation -0.129879 0.000000 -0.026000
                       rotation 1.000000 0.000000 0.000000 3.141593
                       children [
                         Transform {
-                          scale 0.001000 0.001000 0.001000
+                          scale 1.000 1.000 1.000
                           children [
                             Shape {
                               appearance DEF Body12_material PBRAppearance {

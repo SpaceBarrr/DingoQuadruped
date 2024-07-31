@@ -34,29 +34,26 @@ def callback(data):
 
 robot = Robot()
 timeStep = int(robot.getBasicTimeStep())
-left = robot.getDevice('motor.left')
-right = robot.getDevice('motor.right')
-sensor = robot.getDevice('prox.horizontal.2')  # front central proximity sensor
+left = robot.getDevice('motor.RL_U')
+right = robot.getDevice('motor.RL_L')
+sensor = robot.getDevice('pos_sensor.FL_R')  # front central proximity sensor
 sensor.enable(timeStep)
-left.setPosition(float('inf'))  # turn on velocity control for both motors
-right.setPosition(float('inf'))
-velocity = 0
-left.setVelocity(velocity)
-right.setVelocity(velocity)
+left.setPosition(0)  # turn on velocity control for both motors
+right.setPosition(30)
+
 message = ''
 print('Initializing ROS: connecting to ' + os.environ['ROS_MASTER_URI'])
-robot.step(timeStep)
+#robot.step(timeStep)
 rospy.init_node('listener', anonymous=True)
 print('Subscribing to "motor" topic')
-robot.step(timeStep)
+#robot.step(timeStep)
 rospy.Subscriber('motor', Float64, callback)
 pub = rospy.Publisher('sensor', Float64, queue_size=10)
-print('Running the control loop')
-while robot.step(timeStep) != -1 and not rospy.is_shutdown():
-    pub.publish(sensor.getValue())
-    print('Published sensor value: ', sensor.getValue())
-    if message:
-        print(message)
-        message = ''
-    left.setVelocity(velocity)
-    right.setVelocity(velocity)
+# print('Running the control loop')
+# while robot.step(timeStep) != -1 and not rospy.is_shutdown():
+#     pub.publish(sensor.getValue())
+#     print('Published sensor value: ', sensor.getValue())
+#     if message:
+#         print(message)
+#         message = ''
+
