@@ -48,7 +48,7 @@ PROTO klp [
         }
         device [
           RotationalMotor {
-            name "Joint01"
+            name "FL_R"
             minPosition -3.14159265
             maxPosition 3.14159265
             maxTorque 10000
@@ -83,7 +83,7 @@ PROTO klp [
               }
               device [
                 RotationalMotor {
-                  name "Joint02"
+                  name "FL_U"
                   minPosition -3.14159265
                   maxPosition 3.14159265
                   maxTorque 10000
@@ -118,7 +118,7 @@ PROTO klp [
                     }
                     device [
                       RotationalMotor {
-                        name "Joint03"
+                        name "FL_L"
                         minPosition -3.14159265
                         maxPosition 3.14159265
                         maxTorque 10000
@@ -201,7 +201,7 @@ PROTO klp [
         }
         device [
           RotationalMotor {
-            name "Joint04"
+            name "RL_R"
             minPosition -3.14159265
             maxPosition 3.14159265
             maxTorque 10000
@@ -236,7 +236,7 @@ PROTO klp [
               }
               device [
                 RotationalMotor {
-                  name "Joint05"
+                  name "RL_U"
                   minPosition -3.14159265
                   maxPosition 3.14159265
                   maxTorque 10000
@@ -269,7 +269,7 @@ PROTO klp [
                     }
                     device [
                       RotationalMotor {
-                        name "Joint06"
+                        name "RL_L"
                         minPosition -3.14159265
                         maxPosition 3.14159265
                         maxTorque 10000
@@ -346,7 +346,7 @@ PROTO klp [
         }
         device [
           RotationalMotor {
-            name "Joint07"
+            name "RR_R"
             minPosition -3.14159265
             maxPosition 3.14159265
             maxTorque 10000
@@ -380,7 +380,7 @@ PROTO klp [
               }
               device [
                 RotationalMotor {
-                  name "Joint08"
+                  name "RR_U"
                   minPosition -3.14159265
                   maxPosition 3.14159265
                   maxTorque 10000
@@ -413,7 +413,7 @@ PROTO klp [
                     }
                     device [
                       RotationalMotor {
-                        name "Joint09"
+                        name "RR_L"
                         minPosition -3.14159265
                         maxPosition 3.14159265
                         maxTorque 10000
@@ -494,7 +494,7 @@ PROTO klp [
         }
         device [
           RotationalMotor {
-            name "Joint10"
+            name "FR_R"
             minPosition -3.14159265
             maxPosition 3.14159265
             maxTorque 10000
@@ -529,7 +529,7 @@ PROTO klp [
               }
               device [
                 RotationalMotor {
-                  name "Joint11"
+                  name "FR_U"
                   minPosition -3.14159265
                   maxPosition 3.14159265
                   maxTorque 10000
@@ -562,7 +562,7 @@ PROTO klp [
                     }
                     device [
                       RotationalMotor {
-                        name "Joint12"
+                        name "FR_L"
                         minPosition -3.14159265
                         maxPosition 3.14159265
                         maxTorque 10000

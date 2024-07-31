@@ -1,10 +1,10 @@
 <?xml version="1.0"?>
 <launch>
   <!-- start Webots -->
-  <node name="webots" pkg="webots_ros" type="webots_launcher.py" args="--world=/mnt/c/Users/Will/Documents/FYP/Code/dingo_ws/src/kelpie_webots/webot/worlds/default.wbt --mode=realtime --no-gui=false" required="true"/>
+  <node name="webots" pkg="kelpie_webots" type="webots_launcher.py" args="--world=src/kelpie_webots/launch/webots/worlds/kelpie_default.wbt --mode=realtime --no-gui=false --cwd=$(env KELPIE_WS)" required="true"/>
   <arg name="auto_close" default="false" doc="Startup mode"/>
   <env name="LD_LIBRARY_PATH" value="$(env LD_LIBRARY_PATH):$(env WEBOTS_HOME)/lib/controller"/>
   <env name="PYTHONPATH" value="$(env PYTHONPATH):$(env WEBOTS_HOME)/lib/controller/python"/>
-  <node name="webots_ros_python" pkg="webots_ros" type="ros_python.py" required="$(arg auto_close)"/>
+  <node name="webots_ros_python" pkg="kelpie_webots" type="ros_python.py" required="$(arg auto_close)"/>
   <node name="ros_controller" pkg="webots_ros" type="ros_controller.py" required="$(arg auto_close)"/>
 </launch>
