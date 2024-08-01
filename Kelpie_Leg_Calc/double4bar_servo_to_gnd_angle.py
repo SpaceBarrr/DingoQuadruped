@@ -7,8 +7,8 @@ from numpy import deg2rad, rad2deg
 link1 = {"a1": 35, "a2": 35, "a3": 37.6, "a4": 43}
 link2 = {"a1": 130, "a2": 43, "a3": 130, "a4": 37}
 
-servo_lower = 15    # Servo control for lower leg
-servo_upper = 10    # Servo control for upper leg
+servo_lower = 0    # Servo control for lower leg
+servo_upper = 0    # Servo control for upper leg
 
 # Convert physical 0 deg origin to mathematical 0 deg origin by doing 180 - (54.7681 + servo_lower, 54.7681 is taken
 # from the CAD.

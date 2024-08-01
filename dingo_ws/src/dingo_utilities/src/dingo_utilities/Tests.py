@@ -12,16 +12,16 @@
 # include("Types.jl")
 # include("Controller.jl")
 
-import numpy as np
 import matplotlib.pyplot as plt
-
-from dingo_control.Kinematics import leg_explicit_inverse_kinematics
+import numpy as np
 from PupperConfig import *
+from Types import MovementReference, GaitParams, StanceParams
+from dingo_control.Controller import *
 from dingo_control.Gaits import *
+from dingo_control.Kinematics import leg_explicit_inverse_kinematics
 from dingo_control.StanceController import position_delta, stance_foot_location
 from dingo_control.SwingLegController import *
-from Types import MovementReference, GaitParams, StanceParams, SwingParams
-from dingo_control.Controller import *
+
 
 # function round_(a, dec)
 #     return map(x -> round(x, digits=dec), a)

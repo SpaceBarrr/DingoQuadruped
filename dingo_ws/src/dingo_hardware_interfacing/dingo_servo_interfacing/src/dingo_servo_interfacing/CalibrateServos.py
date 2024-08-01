@@ -1,13 +1,13 @@
 #!/usr/bin/env python3
 # coding: utf-8
 import sys
+
 import numpy as np
-import math as m
 
 from ServoCalibrationDefinition import motor_config
 
 # FIRST define a new motor class
-Dingo  = motor_config()
+Dingo = motor_config()
 
 '''    HOW TO CALIBRATE THE MOTORS
 This is how the robot should look at the calibbration position of [0,0,90]
@@ -33,7 +33,8 @@ CALIBRATION PROCESS
                      [0 , 0 , 0 , 0 ]])
 3. Mount upper leg and lower leg servo horn **such that a positive calibration angle will achieve the desired position**.
     So, upper leg should be slightly angled up toward the back of the robot and lower leg servo horn
-    should be slightly angled down from the forward horizontal
+    should be slightly angled 
+    + down from the forward horizontal
 4. Run this script repeatedly and adjust calibration offsets until the deesired position is reached.
     It is suggested to calibrate hips first.
 
@@ -45,16 +46,15 @@ CALIBRATION PROCESS
 
 '''
 
-#-------- MOVING CALIBRATED LEGS TO THE HOME POSITION -------- #
+# -------- MOVING CALIBRATED LEGS TO THE HOME POSITION -------- #
 # ## Home position values:
-calibration_pos = [0,0,90] # [hip_servo angle, upper leg servo angle,lower leg servo angle]
-
+calibration_pos = [0, 0, 90]  # [hip_servo angle, upper leg servo angle,lower leg servo angle]
 
 # These three positions are presets for the robot standing in a low, medium and high stance.
 # Used for testing only
-low = [0,25,140]
-mid = [0,42,120]
-high = [0,50,110]
+low = [0, 25, 140]
+mid = [0, 42, 120]
+high = [0, 50, 110]
 
 position_dict = {
     "cal": calibration_pos,
@@ -92,10 +92,9 @@ else:
                 #  2  [front_right_lower, front_left_lower, back_right_lower, back_left_lower]] """
 
 offsets = np.array(
-                    [[70, 107, 115, 64],
-                    [35, 10, 15, 22],
-                    [16, 27, 35, 14]])
-
+    [[70, 107, 115, 64],
+     [35, 10, 15, 22],
+     [16, 27, 35, 14]])
 
 servo_name = ""
 if len(sys.argv) > 1 and sys.argv[1] in servo_dict:
@@ -107,24 +106,24 @@ if len(sys.argv) > 1 and sys.argv[1] in servo_dict:
         print('DINGO: Motors Relaxed.\n')
 
 if servo_name == "fr" or servo_name == "all":
-    Dingo.moveAbsAngle(Dingo.front_right_hip  ,offsets[0,0]+pos[0])
-    Dingo.moveAbsAngle(Dingo.front_right_upper,offsets[1,0]+pos[1])
-    Dingo.moveAbsAngle(Dingo.front_right_lower,offsets[2,0]+pos[2])
+    Dingo.moveAbsAngle(Dingo.front_right_hip, offsets[0, 0] + pos[0])
+    Dingo.moveAbsAngle(Dingo.front_right_upper, offsets[1, 0] + pos[1])
+    Dingo.moveAbsAngle(Dingo.front_right_lower, offsets[2, 0] + pos[2])
 
 if servo_name == "fl" or servo_name == "all":
-    Dingo.moveAbsAngle(Dingo.front_left_hip   ,offsets[0,1]+pos[0])
-    Dingo.moveAbsAngle(Dingo.front_left_upper ,offsets[1,1]+pos[1])
-    Dingo.moveAbsAngle(Dingo.front_left_lower ,offsets[2,1]+pos[2])
+    Dingo.moveAbsAngle(Dingo.front_left_hip, offsets[0, 1] + pos[0])
+    Dingo.moveAbsAngle(Dingo.front_left_upper, offsets[1, 1] + pos[1])
+    Dingo.moveAbsAngle(Dingo.front_left_lower, offsets[2, 1] + pos[2])
 
 if servo_name == "br" or servo_name == "all":
-    Dingo.moveAbsAngle(Dingo.back_right_hip   ,offsets[0,2]+pos[0])
-    Dingo.moveAbsAngle(Dingo.back_right_upper ,offsets[1,2]+pos[1])
-    Dingo.moveAbsAngle(Dingo.back_right_lower ,offsets[2,2]+pos[2])
+    Dingo.moveAbsAngle(Dingo.back_right_hip, offsets[0, 2] + pos[0])
+    Dingo.moveAbsAngle(Dingo.back_right_upper, offsets[1, 2] + pos[1])
+    Dingo.moveAbsAngle(Dingo.back_right_lower, offsets[2, 2] + pos[2])
 
 if servo_name == "bl" or servo_name == "all":
-    Dingo.moveAbsAngle(Dingo.back_left_hip    ,offsets[0,3]+pos[0])
-    Dingo.moveAbsAngle(Dingo.back_left_upper  ,offsets[1,3]+pos[1])
-    Dingo.moveAbsAngle(Dingo.back_left_lower  ,offsets[2,3]+pos[2])
+    Dingo.moveAbsAngle(Dingo.back_left_hip, offsets[0, 3] + pos[0])
+    Dingo.moveAbsAngle(Dingo.back_left_upper, offsets[1, 3] + pos[1])
+    Dingo.moveAbsAngle(Dingo.back_left_lower, offsets[2, 3] + pos[2])
 
 if servo_name == "relax":
     Dingo.relax_all_motors()
@@ -147,5 +146,3 @@ if servo_name == "relax":
 # Dingo.moveAbsAngle(Dingo.back_left_hip    ,offsets[0,3]+pos[0])
 # Dingo.moveAbsAngle(Dingo.back_left_upper  ,offsets[1,3]+pos[1])
 # Dingo.moveAbsAngle(Dingo.back_left_lower  ,offsets[2,3]+pos[2])
-
-

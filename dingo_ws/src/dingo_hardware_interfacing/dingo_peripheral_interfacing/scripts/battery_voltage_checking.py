@@ -1,10 +1,17 @@
+import rospy
+import signal
+import subprocess
+import sys
+import time
+
 import RPi.GPIO as GPIO
-import sys, rospy, signal, subprocess, time
 from std_msgs.msg import Float64, Bool
+
 
 def signal_handler(sig, frame):
     GPIO.cleanup()
     sys.exit(0)
+
 
 def shutdown():
     GPIO.cleanup()
@@ -12,9 +19,10 @@ def shutdown():
     time.sleep(5)
     subprocess.run(["sudo", "shutdown", "-h", "now"])
 
+
 def main():
     # Set the mode of the GPIO library
-    rospy.init_node("battery_monitor") 
+    rospy.init_node("battery_monitor")
     message_rate = 50
     rate = rospy.Rate(message_rate)
 
@@ -33,8 +41,8 @@ def main():
     GPIO.setup(battery_pin2_number, GPIO.IN)
     GPIO.setup(battery_pin3_number, GPIO.IN)
 
-    battery_percentage_publisher = rospy.Publisher("/battery_percentage", Float64, queue_size = 10)
-    estop_publisher = rospy.Publisher("/emergency_stop_status", Bool, queue_size = 10)
+    battery_percentage_publisher = rospy.Publisher("/battery_percentage", Float64, queue_size=10)
+    estop_publisher = rospy.Publisher("/emergency_stop_status", Bool, queue_size=10)
     current_estop_bit = 0
 
     number_of_low_battery_detections = 0
@@ -44,14 +52,14 @@ def main():
     battery_bit2 = GPIO.input(battery_pin2_number)
     battery_bit3 = GPIO.input(battery_pin3_number)
 
-    #Grab initial value and publish that immediately
+    # Grab initial value and publish that immediately
     if estop_bit == 0:
         estop_publisher.publish(0)
     elif estop_bit == 1:
         estop_publisher.publish(1)
         current_estop_bit = 1
-    
-    while not rospy.is_shutdown(): 
+
+    while not rospy.is_shutdown():
         # Read the digital values from the pins
         estop_bit = GPIO.input(estop_pin_number)
         battery_bit1 = GPIO.input(battery_pin1_number)
@@ -98,15 +106,15 @@ def main():
         battery_percentage_publisher.publish(value)
 
         if value == 0.0:
-            number_of_low_battery_detections = number_of_low_battery_detections+1
+            number_of_low_battery_detections = number_of_low_battery_detections + 1
             if (number_of_low_battery_detections > 30):
-                #shutdown()
+                # shutdown()
                 print("Would shut down if activated")
         else:
             if (number_of_low_battery_detections > 0):
-                number_of_low_battery_detections = number_of_low_battery_detections-1
-
+                number_of_low_battery_detections = number_of_low_battery_detections - 1
 
         rate.sleep()
+
 
 main()
