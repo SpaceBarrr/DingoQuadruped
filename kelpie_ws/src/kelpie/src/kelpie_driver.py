@@ -23,15 +23,14 @@ from kelpie_control.Controller import Controller
 from kelpie_control.State import State, BehaviorState
 from kelpie_control.Kinematics import four_legs_inverse_kinematics
 from kelpie_control.Config import Configuration
-
-from dingo_input_interfacing.InputInterface import InputInterface
+from kelpie_hardware_interface.ps4.Interface import Ps4Interface
 
 from std_msgs.msg import Bool
 
 if is_physical:
-    from dingo_servo_interfacing.HardwareInterface import HardwareInterface
-    from dingo_peripheral_interfacing.IMU import IMU
-    from dingo_control.Config import Leg_linkage
+    from kelpie_hardware_interface.servo.Interface import ServoInterface
+    from kelpie_hardware_interface.imu.IMU import IMU
+    from kelpie_control.Config import Leg_linkage
 
 
 class KelpieDriver:
@@ -63,7 +62,7 @@ class KelpieDriver:
         self.config = Configuration()
         if is_physical:
             self.linkage = Leg_linkage(self.config)
-            self.hardware_interface = HardwareInterface(self.linkage)
+            self.hardware_interface = ServoInterface(self.linkage)
             # Create imu handle
         if self.use_imu:
             self.imu = IMU()
@@ -76,7 +75,7 @@ class KelpieDriver:
 
         self.state = State()
         rospy.loginfo("Creating input listener...")
-        self.input_interface = InputInterface(self.config)
+        self.input_interface = Ps4Interface(self.config)
         rospy.loginfo("Input listener successfully initialised... Robot will now receive commands via Joy messages")
 
         rospy.loginfo("Summary of current gait parameters:")
