@@ -1,0 +1,17 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="launch_dingo" type="ShConfigurationType">
+    <option name="SCRIPT_TEXT" value="wsl.exe bash -ic &quot;source devel/setup.bash `&amp;`&amp; catkin_make `&amp;`&amp; roslaunch src/dingo/launch/dingo.launch is_sim:=1 is_physical:=0&quot;" />
+    <option name="INDEPENDENT_SCRIPT_PATH" value="false" />
+    <option name="SCRIPT_PATH" value="$PROJECT_DIR$/dingo_ws/src/kelpie_webots/webots_ros_python.launch" />
+    <option name="SCRIPT_OPTIONS" value="" />
+    <option name="INDEPENDENT_SCRIPT_WORKING_DIRECTORY" value="true" />
+    <option name="SCRIPT_WORKING_DIRECTORY" value="$PROJECT_DIR$/dingo_ws" />
+    <option name="INDEPENDENT_INTERPRETER_PATH" value="true" />
+    <option name="INTERPRETER_PATH" value="wsl.exe" />
+    <option name="INTERPRETER_OPTIONS" value="" />
+    <option name="EXECUTE_IN_TERMINAL" value="false" />
+    <option name="EXECUTE_SCRIPT_FILE" value="false" />
+    <envs />
+    <method v="2" />
+  </configuration>
+</component>
