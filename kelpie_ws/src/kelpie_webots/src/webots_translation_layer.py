@@ -32,28 +32,28 @@ LEG_FL = (
     KELPIE.getDevice('motor.FL_R'),
     KELPIE.getDevice('motor.FL_U'),
     KELPIE.getDevice('motor.FL_L'),
-    (1, -1, -1)
+    (1, 1, -1)
 )
 
 LEG_FR = (
     KELPIE.getDevice('motor.FR_R'),
     KELPIE.getDevice('motor.FR_U'),
     KELPIE.getDevice('motor.FR_L'),
-    (-1, 1, 1)
+    (-1, -1, 1)
 )
 
 LEG_RL = (
     KELPIE.getDevice('motor.RL_R'),
     KELPIE.getDevice('motor.RL_U'),
     KELPIE.getDevice('motor.RL_L'),
-    (-1, -1, -1)
+    (-1, 1, -1)
 )
 
 LEG_RR = (
     KELPIE.getDevice('motor.RR_R'),
     KELPIE.getDevice('motor.RR_U'),
     KELPIE.getDevice('motor.RR_L'),
-    (1, 1, 1)
+    (1, -1, 1)
 )
 
 
@@ -61,13 +61,13 @@ T_STEP = int(KELPIE.getBasicTimeStep())
 
 START_POS = leg_state()
 START_POS.roll = 0
-START_POS.upper = pi / 8
+START_POS.upper = pi/8
 START_POS.lower = pi/3
 
 def set_pos(leg, data):
     leg[0].setPosition(data.roll * leg[3][0])
     leg[1].setPosition(data.upper * leg[3][1])
-    leg[2].setPosition(data.lower * leg[3][2])
+    leg[2].setPosition((data.lower - pi/2) * leg[3][2])
 
 
 def callback(data):
@@ -82,7 +82,7 @@ def init():
     set_pos(LEG_RL, START_POS)
     set_pos(LEG_RR, START_POS)
 
-init()
+#init()
 print('Initializing ROS: connecting to ' + os.environ['ROS_MASTER_URI'])
 rospy.init_node('webot_joint_listener', anonymous=True)
 rospy.Subscriber("/leg_control/joint_states", joint_states, callback)
