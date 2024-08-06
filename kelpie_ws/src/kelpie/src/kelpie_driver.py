@@ -217,7 +217,7 @@ class KelpieDriver:
             rospy.logerr("ERROR: Robot currently estopped. Please release before trying to send commands")
 
     def publish_joints(self, joint_angles):
-        print(joint_angles, end="\n")
+        #print(joint_angles, end="\n")
         self.joint_states_msg.fr = self.build_leg_msg(self.fr_state_msg, joint_angles[:, 0])
         self.joint_states_msg.fl = self.build_leg_msg(self.fl_state_msg, joint_angles[:, 1])
         self.joint_states_msg.rr = self.build_leg_msg(self.rr_state_msg, joint_angles[:, 2])

@@ -639,7 +639,12 @@ PROTO klp [
     }
     physics Physics {
       density -1
-      mass 0.000000
+      mass 0.700000
+      centerOfMass [0.0072657 1.6909e-7 -0.037]
+      inertiaMatrix [
+        0.0181589 0.003064591 0.01991225
+        0.0000000 0.000000000 8.136020999e-8
+      ]
     }
   }
 }
