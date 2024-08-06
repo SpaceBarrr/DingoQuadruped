@@ -5,7 +5,6 @@ import time
 
 import numpy as np
 import rospy
-from std_msgs.msg import Float64
 
 # Fetching is_sim and is_physical from arguments
 args = rospy.myargv(argv=sys.argv)
@@ -22,15 +21,16 @@ from kelpie.msg import leg_state
 from kelpie_control.Controller import Controller
 from kelpie_control.State import State, BehaviorState
 from kelpie_control.Kinematics import four_legs_inverse_kinematics
-from kelpie_control.Config import Configuration
+from kelpie_common.Config import Configuration
 from kelpie_hardware_interface.ps4.Interface import Ps4Interface
 
 from std_msgs.msg import Bool
 
 if is_physical:
+
     from kelpie_hardware_interface.servo.Interface import ServoInterface
     from kelpie_hardware_interface.imu.IMU import IMU
-    from kelpie_control.Config import Leg_linkage
+    from kelpie_common.Config import Leg_linkage
 
 
 class KelpieDriver:
@@ -60,9 +60,9 @@ class KelpieDriver:
 
         # Create config
         self.config = Configuration()
-        if is_physical:
-            self.linkage = Leg_linkage(self.config)
-            self.hardware_interface = ServoInterface(self.linkage)
+        # if is_physical:
+        #     self.linkage = Leg_linkage(self.config)
+        #     self.hardware_interface = ServoInterface(self.linkage)
             # Create imu handle
         if self.use_imu:
             self.imu = IMU()
@@ -104,9 +104,9 @@ class KelpieDriver:
             self.controller.publish_task_space_command(self.state.rotated_foot_locations)
             self.publish_joints(self.state.joint_angles)
 
-            if self.is_physical:
-                # Update the pwm widths going to the servos
-                self.hardware_interface.set_actuator_postions(self.state.joint_angles)
+            # if self.is_physical:
+            #     # Update the pwm widths going to the servos
+            #     self.hardware_interface.set_actuator_postions(self.state.joint_angles)
             while self.state.currently_estopped == 0:
                 time.start = rospy.Time.now()
 
@@ -138,9 +138,9 @@ class KelpieDriver:
 
                     # If running simulator, publish joint angles to gazebo controller:
                     self.publish_joints(self.state.joint_angles)
-                    if self.is_physical:
-                        # Update the pwm widths going to the servos
-                        self.hardware_interface.set_actuator_postions(self.state.joint_angles)
+                    # if self.is_physical:
+                    #     # Update the pwm widths going to the servos
+                    #     self.hardware_interface.set_actuator_postions(self.state.joint_angles)
 
                     # rospy.loginfo('All angles: \n',np.round(np.degrees(state.joint_angles),2))
                     time.end = rospy.Time.now()
@@ -160,9 +160,9 @@ class KelpieDriver:
                 self.controller.publish_joint_space_command(self.state.joint_angles)
                 self.controller.publish_task_space_command(self.state.rotated_foot_locations)
                 self.publish_joints(self.state.joint_angles)
-                if self.is_physical:
-                    # Update the pwm widths going to the servos
-                    self.hardware_interface.set_actuator_postions(self.state.joint_angles)
+                # if self.is_physical:
+                #     # Update the pwm widths going to the servos
+                #     self.hardware_interface.set_actuator_postions(self.state.joint_angles)
                 while self.state.currently_estopped == 0:
                     command = self.input_interface.get_command(self.state, self.message_rate)
                     if command.joystick_control_event == 1:
@@ -188,8 +188,8 @@ class KelpieDriver:
             joint_angles = self.controller.inverse_kinematics(foot_locations, self.config)
             self.publish_joints(joint_angles)
 
-            if self.is_physical:
-                self.hardware_interface.set_actuator_postions(joint_angles)
+            # if self.is_physical:
+            #     self.hardware_interface.set_actuator_postions(joint_angles)
 
         elif self.external_commands_enabled == 0:
             rospy.logerr(
@@ -208,8 +208,8 @@ class KelpieDriver:
 
             self.publish_joints(self.state.joint_angles)
 
-            if self.is_physical:
-                self.hardware_interface.set_actuator_postions(joint_angles)
+            # if self.is_physical:
+            #     self.hardware_interface.set_actuator_postions(joint_angles)
 
         elif self.external_commands_enabled == 0:
             rospy.logerr(
@@ -218,7 +218,7 @@ class KelpieDriver:
             rospy.logerr("ERROR: Robot currently estopped. Please release before trying to send commands")
 
     def publish_joints(self, joint_angles):
-        #print(joint_angles)
+        print(joint_angles, end="\n")
         self.joint_states_msg.fr = self.build_leg_msg(self.fr_state_msg, joint_angles[:, 0])
         self.joint_states_msg.fl = self.build_leg_msg(self.fl_state_msg, joint_angles[:, 1])
         self.joint_states_msg.rr = self.build_leg_msg(self.rr_state_msg, joint_angles[:, 2])

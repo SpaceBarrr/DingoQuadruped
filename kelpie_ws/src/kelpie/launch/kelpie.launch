@@ -17,7 +17,7 @@
     </group>
     
     <!-- Kelpie Driver -->
-    <node pkg="kelpie" type="kelpie_driver.py"
-        name="kelpie" args="$(arg is_sim) $(arg is_physical) $(arg use_imu)" output="screen"/>
+    <node pkg="kelpie" type="kelpie_driver.py" name="kelpie" args="$(arg is_sim) $(arg is_physical) $(arg use_imu)" output="screen"/>
+
 </launch>
     
