@@ -27,10 +27,9 @@ from kelpie_hardware_interface.ps4.Interface import Ps4Interface
 from std_msgs.msg import Bool
 
 if is_physical:
-
-    from kelpie_hardware_interface.servo.Interface import ServoInterface
+    #from kelpie_hardware_interface.servo.Interface import ServoInterface
     from kelpie_hardware_interface.imu.IMU import IMU
-    from kelpie_common.Config import Leg_linkage
+    #from kelpie_common.Config import Leg_linkage
 
 
 class KelpieDriver:
