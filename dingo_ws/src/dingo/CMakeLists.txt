@@ -51,6 +51,7 @@ add_message_files(
    FILES
    joint_states.msg
    leg_state.msg
+   commands.msg
 )
 
 ## Generate services in the 'srv' folder

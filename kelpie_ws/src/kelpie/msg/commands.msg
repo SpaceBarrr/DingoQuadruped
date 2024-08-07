@@ -1,0 +1,9 @@
+int32 gait_toggle
+int32 hop_toggle
+int32 joystick_toggle
+float32 left_right_movement
+float32 forward_backward_movement
+float32 yaw
+float32 pitch
+float32 height
+float32 roll
