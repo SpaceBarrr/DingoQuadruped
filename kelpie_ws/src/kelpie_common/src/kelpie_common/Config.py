@@ -2,7 +2,7 @@ import math as m
 
 import numpy as np
 # from dingo_servo_interfacing.ServoCalibration import MICROS_PER_RAD, NEUTRAL_ANGLE_DEGREES
-from kelpie_hardware_interface.ps4.Ps4Config import PS4_COLOR, PS4_DEACTIVATED_COLOR
+from kelpie_hardware_interface.handheld_controller.Ps4Config import PS4_COLOR, PS4_DEACTIVATED_COLOR
 
 
 class Configuration:

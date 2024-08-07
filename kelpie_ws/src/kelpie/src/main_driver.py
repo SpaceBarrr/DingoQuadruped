@@ -22,8 +22,8 @@ from kelpie_control.Controller import Controller
 from kelpie_control.State import State, BehaviorState
 from kelpie_control.Kinematics import four_legs_inverse_kinematics
 from kelpie_common.Config import Configuration
-from kelpie_hardware_interface.ps4.Interface import Ps4Interface
-
+from kelpie_hardware_interface.handheld_controller.ps4 import Ps4Interface
+from command_input import InputSubscriber
 from std_msgs.msg import Bool
 
 if is_physical:
@@ -74,7 +74,7 @@ class KelpieDriver:
 
         self.state = State()
         rospy.loginfo("Creating input listener...")
-        self.input_interface = Ps4Interface(self.config)
+        self.input_interface = InputSubscriber(self.config)
         rospy.loginfo("Input listener successfully initialised... Robot will now receive commands via Joy messages")
 
         rospy.loginfo("Summary of current gait parameters:")
@@ -97,11 +97,13 @@ class KelpieDriver:
             rospy.loginfo("Manual robot control active. Currently not accepting external commands")
             # Always start Manual control with the robot standing still. Send default positions once
             command = self.input_interface.get_command(self.state, self.message_rate)
+
             self.state.behavior_state = BehaviorState.REST
             self.controller.run(self.state, command)
             self.controller.publish_joint_space_command(self.state.joint_angles)
             self.controller.publish_task_space_command(self.state.rotated_foot_locations)
             self.publish_joints(self.state.joint_angles)
+
 
             # if self.is_physical:
             #     # Update the pwm widths going to the servos

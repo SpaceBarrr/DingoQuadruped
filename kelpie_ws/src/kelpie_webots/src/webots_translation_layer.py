@@ -28,6 +28,7 @@ from std_msgs.msg import Float64
 from kelpie.msg import leg_state, joint_states
 
 KELPIE = Robot()
+
 LEG_FL = (
     KELPIE.getDevice('motor.FL_R'),
     KELPIE.getDevice('motor.FL_U'),
@@ -68,6 +69,7 @@ def set_pos(leg, data):
     leg[0].setPosition(data.roll * leg[3][0])
     leg[1].setPosition(data.upper * leg[3][1])
     leg[2].setPosition((data.lower - pi/2) * leg[3][2])
+    print(data)
 
 
 def callback(data):
@@ -85,7 +87,7 @@ def init():
 #init()
 print('Initializing ROS: connecting to ' + os.environ['ROS_MASTER_URI'])
 rospy.init_node('webot_joint_listener', anonymous=True)
-rospy.Subscriber("/leg_control/joint_states", joint_states, callback)
+rospy.Subscriber("/leg_control/joint_states", joint_states, callback, queue_size=1)
 
 print('Running the control loop')
 

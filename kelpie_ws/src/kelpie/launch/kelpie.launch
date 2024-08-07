@@ -7,17 +7,17 @@
     <arg name="use_imu" default="0"/>
 
     <!-- If want to use the joystick, launch joystick node -->
-    <group if="$(arg use_joystick)">
-        <node pkg="joy" type="joy_node" name="JOYSTICK">
-            <param name="autorepeat_rate" value="30"/>
-            <!-- <param name="joy_node/dev" value="/dev/input/js0"/>
-            <arg name="coalesce_interval" value="0.02"/>
-            -->
-        </node>
-    </group>
+<!--     <group if="$(arg use_joystick)"> -->
+<!--         <node pkg="joy" type="joy_node" name="JOYSTICK"> -->
+<!--             <param name="autorepeat_rate" value="30"/> -->
+<!--             <param name="joy_node/dev" value="/dev/input/js0"/> -->
+<!--             <arg name="coalesce_interval" value="0.02"/> -->
+
+<!--         </node> -->
+<!--     </group> -->
     
     <!-- Kelpie Driver -->
-    <node pkg="kelpie" type="kelpie_driver.py" name="kelpie" args="$(arg is_sim) $(arg is_physical) $(arg use_imu)" output="screen"/>
+    <node pkg="kelpie" type="main_driver.py" name="kelpie" args="$(arg is_sim) $(arg is_physical) $(arg use_imu)" output="screen"/>
 
 </launch>
     
