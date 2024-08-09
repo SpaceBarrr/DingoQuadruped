@@ -12,7 +12,7 @@ class ServoInterface:
         self.pwm_min = 370
         self.link = link
         self.servo_angles = np.zeros((3, 4))
-        self.kit = ServoKit(channels=16)  # Defininng a new set of servos uising the Adafruit ServoKit LIbrary
+        self.kit = ServoKit(channels=16, address=0x60)  # Defininng a new set of servos uising the Adafruit ServoKit LIbrary
 
         """ SERVO INDICES, CALIBRATION MULTIPLIERS AND OFFSETS
             #   ROW:    which joint of leg to control 0:hip, 1: upper leg, 2: lower leg
@@ -24,9 +24,10 @@ class ServoInterface:
                 #  2  [front_right_lower, front_left_lower, back_right_lower, back_left_lower]] 
 
            'pins' define the physical pin of the servos on the servoboard """
-        self.pins = np.array([[14, 10, 2, 6],
-                              [13, 9, 1, 5],
-                              [12, 8, 0, 4]])
+        self.pins = np.array([[6, 0, 9, 3],
+                              [7, 1, 10, 4],
+                              [8, 2, 11, 5]])
+
 
         """ 'servo_multipliers' and 'complementary_angle' both work to flip some angles, x, to (180-x) so that movement on each leg is consistent despite
             physical motor oritentation changes """
