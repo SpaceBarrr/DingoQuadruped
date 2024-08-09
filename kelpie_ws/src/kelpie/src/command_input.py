@@ -57,8 +57,11 @@ class InputSubscriber:
         # self.developing_command.joystick_control_event = self.joystick_control_event
 
         # Continuous Commands
-        x_vel = command.y * self.config.max_x_velocity  # ly
-        y_vel = command.x * self.config.max_y_velocity  # lx
+        x_vel = min(self.config.x_vel_tf(command.y),  self.config.max_x_velocity)   # ly
+        y_vel = min(self.config.y_vel_tf(command.x),  self.config.max_y_velocity)   # lx
+
+        # x_vel = command.y * self.config.max_x_velocity  # ly
+        # y_vel = command.x * self.config.max_y_velocity  # lx
         self.developing_command.horizontal_velocity = np.round(np.array([x_vel, y_vel]), self.rounding_dp)
 
         # Attitude

@@ -26,7 +26,7 @@ class Ds5Ros():
         self.joy_sub_topic = rospy.get_param("joy_sub", "joy/set_feedback")
 
         # controller is not straight zero for the axis. prevent tiny robot movements
-        self.deadband = rospy.get_param("deadzone", 0.05)
+        self.deadband = rospy.get_param("deadzone", 10)
 
         self.joy_sub = rospy.Subscriber(self.joy_sub_topic, JoyFeedbackArray, self.set_feedback)
         self.command_pub = rospy.Publisher("/command_input", commands, queue_size=0)
@@ -112,10 +112,13 @@ class Ds5Ros():
         # self.dualsense.state.RX/128.0         (R = Right, X = Left-right direction)
         # self.dualsense.state.RY/128.0         (R = Right, Y = Up-Down direction)
 
-        command.y = self.apply_deadband(self.dualsense.state.LY)
-        command.x = self.apply_deadband(self.dualsense.state.LX)
-        command.yaw = self.apply_deadband(self.dualsense.state.RX)
-        command.yaw = self.apply_deadband(self.dualsense.state.RX)
+        command.y = self.apply_deadband(self.dualsense.state.LY)/128        # Scale input to 0..1
+        command.x = self.apply_deadband(self.dualsense.state.LX)/128
+        command.yaw = self.apply_deadband(self.dualsense.state.RX)/128
+        command.yaw = self.apply_deadband(self.dualsense.state.RX)/128
+        command.roll = 0
+        command.pitch = 0
+
         command.gait_toggle = self.dualsense.state.L3
         command.hop_toggle = False
         command.joystick_toggle = self.dualsense.state.R3
@@ -161,7 +164,7 @@ class Ds5Ros():
             rate.sleep()
         self.dualsense.close()
     def apply_deadband(self, value):
-        self.deadband = 10
+        self.deadband = 15
         if abs(value) < self.deadband:
             value = 0.0
         return value

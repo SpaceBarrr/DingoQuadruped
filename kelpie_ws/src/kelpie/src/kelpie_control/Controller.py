@@ -156,6 +156,7 @@ class Controller:
             state.joint_angles = self.inverse_kinematics(
                 rotated_foot_locations, self.config
             )
+
             state.rotated_foot_locations = rotated_foot_locations
 
         elif state.behavior_state == BehaviorState.REST:

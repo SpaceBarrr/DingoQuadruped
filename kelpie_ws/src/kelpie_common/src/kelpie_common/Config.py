@@ -14,6 +14,8 @@ class Configuration:
         #################### COMMANDS ####################
         self.max_x_velocity = 1.2
         self.max_y_velocity = 0.5
+        self.y_vel_tf = lambda y: y * 1     # Allow arbitrary transformation function to be applied to controller inputs
+        self.x_vel_tf = lambda x: x * 1.2   # Allow arbitrary transformation function to be applied to controller inputs
         self.max_yaw_rate = 2.0
         self.max_pitch = 30.0 * np.pi / 180.0
 

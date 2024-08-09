@@ -127,7 +127,8 @@ class KelpieDriver:
                     self.imu.read_orientation() if self.use_imu else np.array([0, 0, 0])
                 )
                 [yaw, pitch, roll] = self.state.euler_orientation
-                # print('Yaw: ',np.round(yaw,2),'Pitch: ',np.round(pitch,2),'Roll: ',np.round(roll,2))
+                # print('Yaw: ',np.round(yaw,2),'Pitc
+                # ]\h: ',np.round(pitch,2),'Roll: ',np.round(roll,2))
                 # Step the controller forward by dt
                 self.controller.run(self.state, command)
 
