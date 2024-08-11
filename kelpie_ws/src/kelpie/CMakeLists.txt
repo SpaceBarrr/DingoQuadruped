@@ -53,7 +53,11 @@ add_message_files(
    joint_states.msg
    leg_state.msg
    commands.msg
+   att.msg
+   xyz_float32.msg
+   imu.msg
 )
+
 
 ## Generate services in the 'srv' folder
 # add_service_files(
