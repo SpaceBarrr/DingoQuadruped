@@ -11,6 +11,7 @@ from pydualsense.enums import ConnectionType
 
 class Ds5Ros():
     def __init__(self):
+        self.command = commands()
 
         self.logging_prefix = "DS5_ROS: "
 
@@ -20,7 +21,7 @@ class Ds5Ros():
         # create dualsense
         self.dualsense = pydualsense()
 
-        self.noderate = rospy.get_param("noderate", 50.0)
+        self.noderate = rospy.get_param("noderate", 20)
 
         # receive feedback from robot_joy_control node 
         self.joy_sub_topic = rospy.get_param("joy_sub", "joy/set_feedback")
@@ -29,7 +30,7 @@ class Ds5Ros():
         self.deadband = rospy.get_param("deadzone", 10)
 
         self.joy_sub = rospy.Subscriber(self.joy_sub_topic, JoyFeedbackArray, self.set_feedback)
-        self.command_pub = rospy.Publisher("/command_input", commands, queue_size=0)
+        self.command_pub = rospy.Publisher("/kelpie/command_input", commands, queue_size=1)
 
         self.maskR = 0xFF0000
         self.maskG = 0x00FF00
@@ -112,19 +113,20 @@ class Ds5Ros():
         # self.dualsense.state.RX/128.0         (R = Right, X = Left-right direction)
         # self.dualsense.state.RY/128.0         (R = Right, Y = Up-Down direction)
 
-        command.y = self.apply_deadband(self.dualsense.state.LY)/128        # Scale input to 0..1
-        command.x = self.apply_deadband(self.dualsense.state.LX)/128
-        command.yaw = self.apply_deadband(self.dualsense.state.RX)/128
-        command.yaw = self.apply_deadband(self.dualsense.state.RX)/128
-        command.roll = 0
-        command.pitch = 0
+        command.y = self.apply_deadband(self.dualsense.state.LY)/-128        # Scale input to 0..1
+        command.yaw_rate = self.apply_deadband(self.dualsense.state.LX) / -128
+
+        command.x = self.apply_deadband(self.dualsense.state.RX)/-128
+
+
+        command.roll_movement = 1 if self.dualsense.state.DpadRight else 0 if not self.dualsense.state.DpadLeft else -1
+        command.pitch = self.apply_deadband(self.dualsense.state.RY)/-128
 
         command.gait_toggle = self.dualsense.state.L3
-        command.hop_toggle = False
+        command.hop_toggle = self.dualsense.state.cross
         command.joystick_toggle = self.dualsense.state.R3
-        command.height_movement = 0
-        print(command)
-
+        command.height_movement = 1 if self.dualsense.state.DpadUp else 0 if not self.dualsense.state.DpadDown else -1
+        self.command = command
         # print(self.dualsense.state.L3)
         self.command_pub.publish(command)
 
@@ -155,6 +157,9 @@ class Ds5Ros():
                     if self.dualsense.determineConnectionType() == ConnectionType.USB:
                         # rospy.loginfo_throttle(2, "DS5_Ros is alive!")
                         self.command_publish()
+                        if __name__ == "__main__":
+                            self.print_command(self.command)
+
                     else:
                         rospy.logerr("Lost connection! Go back to init!")
                         self.node_state = 0
@@ -163,14 +168,35 @@ class Ds5Ros():
 
             rate.sleep()
         self.dualsense.close()
+        curses.echo()
+        curses.nocbreak()
+        curses.endwin()
     def apply_deadband(self, value):
-        self.deadband = 15
         if abs(value) < self.deadband:
             value = 0.0
         return value
 
+    @staticmethod
+    def print_command(command):
+        stdscr.addstr(0, 0, f"gait_toggle: {command.gait_toggle}")
+        stdscr.addstr(1, 0, f"hop_toggle: {command.hop_toggle}")
+        stdscr.addstr(2, 0, f"joystick_toggle: {command.joystick_toggle}")
+        stdscr.addstr(3, 0, f"x: {command.x:.4f}")
+        stdscr.addstr(4, 0, f"y: {command.y:.4f}")
+        stdscr.addstr(5, 0, f"roll_movement: {command.roll_movement:.4f}")
+        stdscr.addstr(6, 0, f"pitch: {command.pitch:.4f}")
+        stdscr.addstr(7, 0, f"yaw_rate: {command.yaw_rate:.4f}")
+        stdscr.addstr(8, 0, f"height_movement: {command.height_movement:.4f}")
+        stdscr.refresh()
+
 
 if __name__ == '__main__':
+    import curses
+    stdscr = curses.initscr()
+    curses.noecho()
+    curses.cbreak()
+
     rospy.init_node("ps5")
     ds5 = Ds5Ros()
     ds5.main_loop()
+

@@ -14,6 +14,8 @@ PROTO klp [
   field  SFBool      supervisor      FALSE  # Is `Robot.supervisor`.
   field  SFBool      synchronization TRUE   # Is `Robot.synchronization`.
   field  SFBool      selfCollision   FALSE  # Is `Robot.selfCollision`.
+  field  SFFloat     tibia_height    0.15
+  field  SFFloat     tibia_radius    0.02
 ]
 {
   Robot {
@@ -52,6 +54,7 @@ PROTO klp [
             minPosition -3.00000
             maxPosition 3.0000
             maxTorque 3.5
+            maxVelocity 4
           }
           PositionSensor {
             name "pos_sensor.FL_R"
@@ -87,6 +90,7 @@ PROTO klp [
                   minPosition -3.00000
                   maxPosition 3.0000
                   maxTorque 3.5
+                  maxVelocity 4
                 }
                 PositionSensor {
                   name "pos_sensor.FL_U"
@@ -122,6 +126,7 @@ PROTO klp [
                         minPosition -3.00000
                         maxPosition 3.0000
                         maxTorque 3.5
+                        maxVelocity 4
                       }
                       PositionSensor {
                         name "pos_sensor.FL_L"
@@ -147,10 +152,23 @@ PROTO klp [
                           ]
                         }
                       ]
+
                       name "Body03"
-                      boundingObject DEF meshes/collision/Body03_coll Mesh {
-                        url "../klp_urdf/meshes/collision/Body03_coll.stl"
+                      # boundingObject DEF meshes/collision/Body03_coll Mesh {
+                        # url "../klp_urdf/meshes/collision/Body03_coll.stl"
+                      # }
+                      boundingObject DEF meshes/collision/Body03_coll Pose {
+                        translation 0.05 0 0
+                        rotation 0 1 0 1.57079632679
+                        children [
+                          Capsule {
+                            height IS tibia_height
+                            radius IS tibia_radius
+                            subdivision 12
+                          }
+                        ]
                       }
+
                       physics Physics {
                         density -1
                         mass 0.019696
@@ -205,6 +223,7 @@ PROTO klp [
             minPosition -3.00000
             maxPosition 3.0000
             maxTorque 3.5
+            maxVelocity 4
           }
           PositionSensor {
             name "pos_sensor.RL_R"
@@ -240,6 +259,7 @@ PROTO klp [
                   minPosition -3.00000
                   maxPosition 3.0000
                   maxTorque 3.5
+                  maxVelocity 4
                 }
                 PositionSensor {
                   name "pos_sensor.RL_U"
@@ -273,6 +293,7 @@ PROTO klp [
                         minPosition -3.00000
                         maxPosition 3.0000
                         maxTorque 3.5
+                        maxVelocity 4
                       }
                       PositionSensor {
                         name "pos_sensor.RL_L"
@@ -350,6 +371,7 @@ PROTO klp [
             minPosition -3.00000
             maxPosition 3.0000
             maxTorque 3.5
+            maxVelocity 4
           }
           PositionSensor {
             name "pos_sensor.RR_R"
@@ -384,6 +406,7 @@ PROTO klp [
                   minPosition -3.00000
                   maxPosition 3.0000
                   maxTorque 3.5
+                  maxVelocity 4
                 }
                 PositionSensor {
                   name "pos_sensor.RR_U"
@@ -417,6 +440,7 @@ PROTO klp [
                         minPosition -3.00000
                         maxPosition 3.0000
                         maxTorque 3.5
+                        maxVelocity 4
                       }
                       PositionSensor {
                         name "pos_sensor.RR_L"
@@ -443,9 +467,21 @@ PROTO klp [
                         }
                       ]
                       name "Body09"
-                      boundingObject DEF meshes/collision/Body09_coll Mesh {
-                        url "../klp_urdf/meshes/collision/Body09_coll.stl"
+                      # boundingObject DEF meshes/collision/Body09_coll Mesh {
+                        # url "../klp_urdf/meshes/collision/Body09_coll.stl"
+                      # }
+                      boundingObject DEF meshes/collision/Body09_coll Pose{
+                      translation 0.05 0 0
+                        rotation 0 1 0 1.57079632679
+                        children [
+                          Capsule {
+                            height IS tibia_height
+                            radius IS tibia_radius
+                            subdivision 12
+                          }
+                        ]
                       }
+
                       physics Physics {
                         density -1
                         mass 0.019696
@@ -498,6 +534,7 @@ PROTO klp [
             minPosition -3.00000
             maxPosition 3.0000
             maxTorque 3.5
+            maxVelocity 4
           }
           PositionSensor {
             name "pos_sensor.FR_R"
@@ -533,6 +570,7 @@ PROTO klp [
                   minPosition -3.00000
                   maxPosition 3.0000
                   maxTorque 3.5
+                  maxVelocity 4
                 }
                 PositionSensor {
                   name "pos_sensor.FR_U"
@@ -566,6 +604,7 @@ PROTO klp [
                         minPosition -3.00000
                         maxPosition 3.0000
                         maxTorque 3.5
+                        maxVelocity 4
                       }
                       PositionSensor {
                         name "pos_sensor.FR_L"
@@ -631,6 +670,35 @@ PROTO klp [
             ]
           }
         }
+      }
+      Pose {
+        translation 0 0.0445 0
+        children [
+          Gyro {
+            name "IMU.gyr"
+            xAxis TRUE
+            yAxis TRUE
+            zAxis TRUE
+            resolution -1
+            noise 0
+          }
+          Accelerometer {
+            name "IMU.acc"
+            xAxis TRUE
+            yAxis TRUE
+            zAxis TRUE
+            resolution -1
+            noise 0
+          }
+          InertialUnit{
+            name "IMU.att"
+            xAxis TRUE
+            yAxis TRUE
+            zAxis TRUE
+            resolution -1
+            noise 0
+          }
+        ]
       }
     ]
     name IS name

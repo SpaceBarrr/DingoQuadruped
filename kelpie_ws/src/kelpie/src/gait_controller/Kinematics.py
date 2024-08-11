@@ -3,7 +3,7 @@ from math import *
 import numpy as np
 import rospy
 # import matplotlib.pyplot as plt
-from kelpie_control.util import RotMatrix3D, point_to_rad
+from gait_controller.util import RotMatrix3D, point_to_rad
 from numpy.linalg import norm
 
 

@@ -1,10 +1,14 @@
 #!/usr/bin/env python
 
+# Written by: William L
+# Last Modified 11/08/2024
+
+
 import numpy as np
 import rospy
-from kelpie_control.Command import Command
-from kelpie_control.State import BehaviorState
-from kelpie_control.Utilities import deadband, clipped_first_order_filter
+from gait_controller.Command import Command
+from gait_controller.State import BehaviorState
+from gait_controller.Utilities import deadband, clipped_first_order_filter
 #from sensor_msgs.msg import Joy
 from kelpie.msg import commands
 
@@ -23,7 +27,7 @@ class InputSubscriber:
         self.trot_event = 0
         self.joystick_control_event = 0
 
-        self.input_messages = rospy.Subscriber("/command_input", commands, self.input_callback)
+        self.input_messages = rospy.Subscriber("/kelpie/command_input", commands, self.input_callback)
         self.current_command = Command()
         self.new_command = Command()
         self.developing_command = Command()
@@ -65,9 +69,9 @@ class InputSubscriber:
         self.developing_command.horizontal_velocity = np.round(np.array([x_vel, y_vel]), self.rounding_dp)
 
         # Attitude
-        self.developing_command.roll_movement = -np.round(command.roll, self.rounding_dp)  # dpadx
+        self.developing_command.roll_movement = -np.round(command.roll_movement, self.rounding_dp)  # dpadx
         self.developing_command.pitch = np.round(command.pitch, self.rounding_dp) * self.config.max_pitch  # ry
-        self.developing_command.yaw_rate = np.round(command.yaw, self.rounding_dp) * self.config.max_yaw_rate  # rx
+        self.developing_command.yaw_rate = np.round(command.yaw_rate, self.rounding_dp) * self.config.max_yaw_rate  # rx
         self.developing_command.height_movement = np.round(command.height_movement, self.rounding_dp)  # dpady
 
         self.new_command = self.developing_command
