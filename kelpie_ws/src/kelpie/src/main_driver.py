@@ -53,7 +53,8 @@ class KelpieDriver:
 
         # self.joint_command_sub = rospy.Subscriber("/joint_space_cmd", JointSpace, self.run_joint_space_command)
         # self.task_command_sub = rospy.Subscriber("/task_space_cmd", TaskSpace, self.run_task_space_command)
-        self.estop_status_sub = rospy.Subscriber("/kelpie/emergency_stop_status", Bool, self.update_emergency_stop_status)
+        self.estop_status_sub = rospy.Subscriber("/kelpie/emergency_stop_status", Bool,
+                                                 self.update_emergency_stop_status)
         self.external_commands_enabled = 0
 
         self.joint_states_msg = joint_states()
@@ -62,7 +63,6 @@ class KelpieDriver:
         self.rl_state_msg = leg_state()
         self.rr_state_msg = leg_state()
 
-
         self.joint_publisher = rospy.Publisher("/kelpie/leg_control/joint_states", joint_states, queue_size=10)
 
         # Create config
@@ -70,7 +70,7 @@ class KelpieDriver:
         # if is_physical:
         #     self.linkage = Leg_linkage(self.config)
         #     self.hardware_interface = ServoInterface(self.linkage)
-            # Create imu handle
+        # Create imu handle
         if self.use_imu:
             self.imu = IMU()
 
@@ -87,16 +87,12 @@ class KelpieDriver:
 
         self.new_imu = ImuSubscriber()
 
-
-
         rospy.loginfo("Summary of current gait parameters:")
         rospy.loginfo("overlap time: %.2f", self.config.overlap_time)
         rospy.loginfo("swing time: %.2f", self.config.swing_time)
         rospy.loginfo("z clearance: %.2f", self.config.z_clearance)
         rospy.loginfo("back leg x shift: %.2f", self.config.rear_leg_x_shift)
         rospy.loginfo("front leg x shift: %.2f", self.config.front_leg_x_shift)
-
-
 
     def run(self):
         # Wait until the activate button has been pressed
@@ -117,7 +113,6 @@ class KelpieDriver:
             self.controller.publish_joint_space_command(self.state.joint_angles)
             self.controller.publish_task_space_command(self.state.rotated_foot_locations)
             self.publish_joints(self.state.joint_angles)
-
 
             # if self.is_physical:
             #     # Update the pwm widths going to the servos
@@ -247,8 +242,6 @@ class KelpieDriver:
     def build_leg_msg(msg, angles):
         msg.roll, msg.upper, msg.lower = angles[0], angles[1], angles[2]
         return msg
-
-
 
 
 def signal_handler(sig, frame):

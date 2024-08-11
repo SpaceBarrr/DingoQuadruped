@@ -2,29 +2,20 @@
 import os
 import numpy as np
 import rospy
-from kelpie.msg import leg_state, joint_states
-from kelpie_hardware_interface.servo.Interface import ServoInterface
-from kelpie_common.Config import Leg_linkage, Configuration
+from kelpie_hardware_interface.servo.servo_subscriber import ServoSubscriber
 
 
-CONFIG = Configuration()
-LINKAGE = Leg_linkage(CONFIG)
-SERVO_CONTROLLER = ServoInterface(LINKAGE)
-def convert_to_array(data):
-    joint_angles = np.zeros((3, 4))
-    joint_angles[:, 0] = data.fr.roll, data.fr.upper, data.fr.lower
-    joint_angles[:, 1] = data.fl.roll, data.fl.upper, data.fl.lower
-    joint_angles[:, 2] = data.rr.roll, data.rr.upper, data.rr.lower
-    joint_angles[:, 3] = data.rl.roll, data.rl.upper, data.rl.lower
-    return joint_angles
 
-def callback(data):
-    joint_angles = convert_to_array(data)
-    SERVO_CONTROLLER.set_actuator_postions(joint_angles)
+if __name__ == '__main__':
+    print('Initializing ROS: connecting to ' + os.environ['ROS_MASTER_URI'])
+    rospy.init_node('kelpie_hardware', anonymous=True)
+
+    # Start subscribers
+    servo_subscriber = ServoSubscriber()
+    while True:
+        # Publish data
+        pass
 
 
-print('Initializing ROS: connecting to ' + os.environ['ROS_MASTER_URI'])
-rospy.init_node('joint_listener', anonymous=True)
-rospy.Subscriber("/leg_control/joint_states", joint_states, callback)
-rospy.spin()
+    rospy.spin()
 

@@ -121,3 +121,8 @@ class motor_config():
         # self.back_left_hip   = 83 (all angles to be output are: 180-(theta + 6)  )
         # self.back_left_upper = 9
         # self.back_left_lower = 5
+
+
+
+
+
