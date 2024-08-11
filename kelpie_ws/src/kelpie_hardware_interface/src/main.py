@@ -10,12 +10,10 @@ if __name__ == '__main__':
     print('Initializing ROS: connecting to ' + os.environ['ROS_MASTER_URI'])
     rospy.init_node('kelpie_hardware', anonymous=True)
 
-    # Start subscribers
+    # Start main subscribers
     servo_subscriber = ServoSubscriber()
     while True:
+        # TODO: Publish data
         # Publish data
         pass
-
-
-    rospy.spin()
 
