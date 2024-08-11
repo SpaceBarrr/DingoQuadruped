@@ -11,7 +11,7 @@ class Ps4Interface:
 
         self.noderate = rospy.get_param("noderate", 50.0)
         self.joy_sub = rospy.Subscriber("joy", Joy, self.input_callback)
-        self.command_pub = rospy.Publisher("/command_input", commands)
+        self.command_pub = rospy.Publisher("/kelpie/command_input", commands)
 
 
     def input_callback(self, msg):
@@ -23,9 +23,9 @@ class Ps4Interface:
         command.x = self.apply_deadband(msg.axes[0])  # ly
         command.y = self.apply_deadband(msg.axes[1])  # lx
         command.pitch = self.apply_deadband(msg.axes[4])  # ry
-        command.yaw = self.apply_deadband(msg.axes[3])  # rx
+        command.yaw_rate = self.apply_deadband(msg.axes[3])  # rx
         command.height_movement = msg.axes[7]  # dpady
-        command.roll = msg.axes[6]  # dpadx
+        command.roll_movement = msg.axes[6]  # dpadx
 
         self.command_pub.publish(command)
         print(command)

@@ -18,16 +18,25 @@
 This is a simple example of a Webots controller running a Python ROS node thanks to rospy.
 The robot is publishing the value of its front distance sensor and receving motor commands (velocity).
 """
-
+import ctypes
 import os
-import time
 from math import pi
 import rospy
-from controller import Robot
-from std_msgs.msg import Float64
-from kelpie.msg import leg_state, joint_states
+from controller import Robot, Gyro, Motor, Accelerometer, InertialUnit
+from kelpie.msg import leg_state, joint_states, imu, att, xyz_float32
+from controller.wb import wb
 
+# Set global parameters
+SAMPLE_RATE = 1 / 30
+
+START_POS = leg_state()
+START_POS.roll = 0
+START_POS.upper = pi / 8
+START_POS.lower = pi / 3
+
+# Get robot motors
 KELPIE = Robot()
+T_STEP = int(KELPIE.getBasicTimeStep())
 
 LEG_FL = (
     KELPIE.getDevice('motor.FL_R'),
@@ -40,14 +49,14 @@ LEG_FR = (
     KELPIE.getDevice('motor.FR_R'),
     KELPIE.getDevice('motor.FR_U'),
     KELPIE.getDevice('motor.FR_L'),
-    (-1, -1, 1)
+    (1, -1, 1)
 )
 
 LEG_RL = (
     KELPIE.getDevice('motor.RL_R'),
     KELPIE.getDevice('motor.RL_U'),
     KELPIE.getDevice('motor.RL_L'),
-    (-1, 1, -1)
+    (1, 1, -1)
 )
 
 LEG_RR = (
@@ -57,40 +66,97 @@ LEG_RR = (
     (1, -1, 1)
 )
 
+# Get IMU devices
+ACC: Accelerometer = KELPIE.getDevice('IMU.acc')
+GYRO: Gyro = KELPIE.getDevice('IMU.gyr')
+ATT: InertialUnit = KELPIE.getDevice('IMU.att')
 
-T_STEP = int(KELPIE.getBasicTimeStep())
+# Init IMU
+wb.wb_accelerometer_enable(ACC._tag, ctypes.c_double(SAMPLE_RATE))
+wb.wb_gyro_enable(GYRO._tag, ctypes.c_double(SAMPLE_RATE))
+wb.wb_inertial_unit_enable(ATT._tag, ctypes.c_double(SAMPLE_RATE))
 
-START_POS = leg_state()
-START_POS.roll = 0
-START_POS.upper = pi/8
-START_POS.lower = pi/3
+# Create messages
+IMU_MSG = imu()
+IMU_MSG.att = att()
+IMU_MSG.acc = xyz_float32()
+IMU_MSG.gyro = xyz_float32()
 
-def set_pos(leg, data):
+# Create joint states global var
+JOINT_DATA: joint_states = None
+
+
+
+
+def set_pos(leg, data: leg_state):
+    """
+    Sets the leg position of the robot in Webots
+    :param leg: Leg array, containing Roll, Upper, Lower and direction.
+    :param data: The leg_state message containing Roll, Upper, Lower angles.
+    :return:
+    """
     leg[0].setPosition(data.roll * leg[3][0])
     leg[1].setPosition(data.upper * leg[3][1])
-    leg[2].setPosition((data.lower - pi/2) * leg[3][2])
-    print(data)
+    leg[2].setPosition((data.lower - pi / 2) * leg[3][2])
 
 
-def callback(data):
-    set_pos(LEG_FL, data.fl)
-    set_pos(LEG_FR, data.fr)
-    set_pos(LEG_RL, data.rl)
-    set_pos(LEG_RR, data.rr)
+def set_vel(leg, torque: float):
+    """
+    Sets max torque. This is unused (and untested).
+    :param leg: Leg array, containing Roll, Upper, Lower and direction.
+    :param torque: Torque value in Nm
+    :return:
+    """
+    wb.wb_motor_set_velocity(leg[0]._tag, ctypes.c_double(torque))
+    wb.wb_motor_set_velocity(leg[1]._tag, ctypes.c_double(torque))
+    wb.wb_motor_set_velocity(leg[2]._tag, ctypes.c_double(torque))
+    print(leg[0].getMaxVelocity())
 
-def init():
+
+def callback(data: joint_states):
+    """
+    Callback function for subscriber
+    :param data: joint_states message.
+    :return:
+    """
+    global JOINT_DATA
+    JOINT_DATA = data
+
+
+def init_pos():
+    """
+    Initialise sim to a certain start position.
+    :return:
+    """
     set_pos(LEG_FL, START_POS)
     set_pos(LEG_FR, START_POS)
     set_pos(LEG_RL, START_POS)
     set_pos(LEG_RR, START_POS)
 
-#init()
-print('Initializing ROS: connecting to ' + os.environ['ROS_MASTER_URI'])
-rospy.init_node('webot_joint_listener', anonymous=True)
-rospy.Subscriber("/leg_control/joint_states", joint_states, callback, queue_size=1)
 
+#init_pos()
+
+# Initialise ROS nodes
+print('Initializing ROS: connecting to ' + os.environ['ROS_MASTER_URI'])
+rospy.init_node('webots_translation_layer', anonymous=True)
+rospy.Subscriber("/kelpie/leg_control/joint_states", joint_states, callback, queue_size=1)
+IMU_PUBLISHER = rospy.Publisher("/kelpie/imu", imu, queue_size=1)
 print('Running the control loop')
 
 while KELPIE.step(T_STEP) != -1 and not rospy.is_shutdown():
-    pass
+    acc = ACC.getValues()
+    gyro = GYRO.getValues()
+    att = ATT.getRollPitchYaw()
+    IMU_MSG.att.roll, IMU_MSG.att.pitch, IMU_MSG.att.yaw = att[0], att[1], att[2]
+    IMU_MSG.acc.x, IMU_MSG.acc.y, IMU_MSG.acc.z = acc[0], acc[1], acc[2]
+    IMU_MSG.gyro.x, IMU_MSG.gyro.y, IMU_MSG.gyro.z = gyro[0], gyro[1], gyro[2]
+    IMU_PUBLISHER.publish(IMU_MSG)
 
+    if JOINT_DATA is None:
+        # Skip if no joint data has been received.
+        continue
+
+    set_pos(LEG_FL, JOINT_DATA.fl)
+    set_pos(LEG_FR, JOINT_DATA.fr)
+    set_pos(LEG_RL, JOINT_DATA.rl)
+    set_pos(LEG_RR, JOINT_DATA.rr)

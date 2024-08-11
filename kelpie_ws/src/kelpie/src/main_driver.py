@@ -18,13 +18,13 @@ else:
     use_imu = int(args[3])
 from kelpie.msg import joint_states
 from kelpie.msg import leg_state
-from kelpie_control.Controller import Controller
-from kelpie_control.State import State, BehaviorState
-from kelpie_control.Kinematics import four_legs_inverse_kinematics
+from gait_controller.Controller import Controller
+from gait_controller.State import State, BehaviorState
+from gait_controller.Kinematics import four_legs_inverse_kinematics
 from kelpie_common.Config import Configuration
-from kelpie_hardware_interface.handheld_controller.ps4 import Ps4Interface
-from command_input import InputSubscriber
+from subscribers.command_input_subscriber import InputSubscriber
 from std_msgs.msg import Bool
+from subscribers.imu_subscriber import ImuSubscriber
 
 if is_physical:
     #from kelpie_hardware_interface.servo.Interface import ServoInterface
@@ -45,7 +45,7 @@ class KelpieDriver:
 
         # self.joint_command_sub = rospy.Subscriber("/joint_space_cmd", JointSpace, self.run_joint_space_command)
         # self.task_command_sub = rospy.Subscriber("/task_space_cmd", TaskSpace, self.run_task_space_command)
-        self.estop_status_sub = rospy.Subscriber("/emergency_stop_status", Bool, self.update_emergency_stop_status)
+        self.estop_status_sub = rospy.Subscriber("/kelpie/emergency_stop_status", Bool, self.update_emergency_stop_status)
         self.external_commands_enabled = 0
 
         self.joint_states_msg = joint_states()
@@ -55,7 +55,7 @@ class KelpieDriver:
         self.rr_state_msg = leg_state()
 
 
-        self.joint_publisher_array = rospy.Publisher("/leg_control/joint_states", joint_states, queue_size=0)
+        self.joint_publisher_array = rospy.Publisher("/kelpie/leg_control/joint_states", joint_states, queue_size=10)
 
         # Create config
         self.config = Configuration()
@@ -77,12 +77,18 @@ class KelpieDriver:
         self.input_interface = InputSubscriber(self.config)
         rospy.loginfo("Input listener successfully initialised... Robot will now receive commands via Joy messages")
 
+        self.new_imu = ImuSubscriber()
+
+
+
         rospy.loginfo("Summary of current gait parameters:")
         rospy.loginfo("overlap time: %.2f", self.config.overlap_time)
         rospy.loginfo("swing time: %.2f", self.config.swing_time)
         rospy.loginfo("z clearance: %.2f", self.config.z_clearance)
         rospy.loginfo("back leg x shift: %.2f", self.config.rear_leg_x_shift)
         rospy.loginfo("front leg x shift: %.2f", self.config.front_leg_x_shift)
+
+
 
     def run(self):
         # Wait until the activate button has been pressed
@@ -220,6 +226,7 @@ class KelpieDriver:
             rospy.logerr("ERROR: Robot currently estopped. Please release before trying to send commands")
 
     def publish_joints(self, joint_angles):
+        #print(joint_angles, end="\n")
         #print(joint_angles, end="\n")
         self.joint_states_msg.fr = self.build_leg_msg(self.fr_state_msg, joint_angles[:, 0])
         self.joint_states_msg.fl = self.build_leg_msg(self.fl_state_msg, joint_angles[:, 1])

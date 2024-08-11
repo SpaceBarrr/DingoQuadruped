@@ -2,11 +2,11 @@ from math import degrees
 
 import numpy as np
 import rospy
-from kelpie_control.Gaits import GaitController
-from kelpie_control.StanceController import StanceController
-from kelpie_control.State import BehaviorState
-from kelpie_control.SwingLegController import SwingController
-from kelpie_control.Utilities import clipped_first_order_filter
+from gait_controller.Gaits import GaitController
+from gait_controller.StanceController import StanceController
+from gait_controller.State import BehaviorState
+from gait_controller.SwingLegController import SwingController
+from gait_controller.Utilities import clipped_first_order_filter
 from geometry_msgs.msg import Point
 from std_msgs.msg import Header
 from transforms3d.euler import euler2mat
