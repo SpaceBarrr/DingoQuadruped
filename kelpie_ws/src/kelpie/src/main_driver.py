@@ -16,16 +16,26 @@ else:
     is_sim = int(args[1])
     is_physical = int(args[2])
     use_imu = int(args[3])
+
+# Import messages
 from kelpie.msg import joint_states
 from kelpie.msg import leg_state
+from std_msgs.msg import Bool
+
+# Import gait controllers
 from gait_controller.Controller import Controller
 from gait_controller.State import State, BehaviorState
 from gait_controller.Kinematics import four_legs_inverse_kinematics
 from kelpie_common.Config import Configuration
-from subscribers.command_input_subscriber import InputSubscriber
-from std_msgs.msg import Bool
-from subscribers.imu_subscriber import ImuSubscriber
 
+# Import subscribers
+from subscribers.command_input_subscriber import InputSubscriber
+from subscribers.imu_subscriber import ImuSubscriber
+from subscribers.motor_current_subscriber import MotorCurrentSubscriber
+
+from imu_control.calibrate import Calibrator
+
+# TODO: Deprecate below if statement.
 if is_physical:
     #from kelpie_hardware_interface.servo.Interface import ServoInterface
     from kelpie_hardware_interface.imu.IMU import IMU
@@ -33,8 +43,6 @@ if is_physical:
 
 
 class KelpieDriver:
-
-
     def __init__(self, is_sim, is_physical, use_imu):
         self.message_rate = 50
         self.rate = rospy.Rate(self.message_rate)
@@ -55,7 +63,7 @@ class KelpieDriver:
         self.rr_state_msg = leg_state()
 
 
-        self.joint_publisher_array = rospy.Publisher("/kelpie/leg_control/joint_states", joint_states, queue_size=10)
+        self.joint_publisher = rospy.Publisher("/kelpie/leg_control/joint_states", joint_states, queue_size=10)
 
         # Create config
         self.config = Configuration()
@@ -233,7 +241,7 @@ class KelpieDriver:
         self.joint_states_msg.rr = self.build_leg_msg(self.rr_state_msg, joint_angles[:, 2])
         self.joint_states_msg.rl = self.build_leg_msg(self.rl_state_msg, joint_angles[:, 3])
 
-        self.joint_publisher_array.publish(self.joint_states_msg)
+        self.joint_publisher.publish(self.joint_states_msg)
 
     @staticmethod
     def build_leg_msg(msg, angles):

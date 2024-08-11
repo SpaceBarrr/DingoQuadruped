@@ -88,7 +88,7 @@ JOINT_DATA: joint_states = None
 
 
 
-def set_pos(leg, data: leg_state):
+def set_pos(leg, data: leg_state) -> None:
     """
     Sets the leg position of the robot in Webots
     :param leg: Leg array, containing Roll, Upper, Lower and direction.
@@ -100,7 +100,7 @@ def set_pos(leg, data: leg_state):
     leg[2].setPosition((data.lower - pi / 2) * leg[3][2])
 
 
-def set_vel(leg, torque: float):
+def set_vel(leg, torque: float) -> None:
     """
     Sets max torque. This is unused (and untested).
     :param leg: Leg array, containing Roll, Upper, Lower and direction.
@@ -113,11 +113,11 @@ def set_vel(leg, torque: float):
     print(leg[0].getMaxVelocity())
 
 
-def callback(data: joint_states):
+def callback(data: joint_states) -> None:
     """
     Callback function for subscriber
     :param data: joint_states message.
-    :return:
+    :return: None
     """
     global JOINT_DATA
     JOINT_DATA = data
