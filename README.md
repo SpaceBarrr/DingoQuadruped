@@ -59,12 +59,17 @@ For getting bluetooth controller working (for instance PS4 controller)
     - `sudo apt-get install bluetooth bluez bluez-tools`
     - `sudo apt-get install pi-bluetooth`
 - To pair and connect a controller:
-    - `bluetoothctl scan on`
-    - `bluetoothctl pair AA:BB:CC:11:22:33` (example device)
-    - `bluetoothctl connect AA:BB:CC:11:22:33`
-    - `bluetoothctl trust AA:BB:CC:11:22:33`
-- To test the controller
+    - `bluetoothctl`
+    - `scan on`
+    - `trust AA:BB:CC:11:22:33` (example device)
+    - `pair AA:BB:CC:11:22:33` 
+    - `connect AA:BB:CC:11:22:33`
+- To test the controller:
     - `jstest /dev/input/js0`
+- To list connected devices:
+    - `bluetoothctl paired-devices`
+- To later forget the controller:
+    - `bluetoothctl remove AA:BB:CC:11:22:33`
 
 At this stage, the controller will only connect if you run `bluetoothctl` in the terminal, and then press the pair button on the controller. To bypass the step of running `bluetoothctl`, do the following:
 - Create a shell script called connect_controller.sh (Make a note of where you create it) with the following contents:
