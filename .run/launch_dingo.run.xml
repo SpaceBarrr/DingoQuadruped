@@ -1,6 +1,6 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="roslaunch_wsl" type="ShConfigurationType">
-    <option name="SCRIPT_TEXT" value="wsl.exe bash -ic &quot;source devel/setup.bash `&amp;`&amp; catkin_make `&amp;`&amp; roslaunch src/kelpie_webots/launch/webots_ros_python.launch&quot;" />
+  <configuration default="false" name="launch_dingo" type="ShConfigurationType">
+    <option name="SCRIPT_TEXT" value="wsl.exe bash -ic &quot;source devel/setup.bash `&amp;`&amp; catkin_make `&amp;`&amp; roslaunch src/dingo/launch/dingo.launch is_sim:=1 is_physical:=0&quot;" />
     <option name="INDEPENDENT_SCRIPT_PATH" value="false" />
     <option name="SCRIPT_PATH" value="$PROJECT_DIR$/dingo_ws/src/kelpie_webots/webots_ros_python.launch" />
     <option name="SCRIPT_OPTIONS" value="" />

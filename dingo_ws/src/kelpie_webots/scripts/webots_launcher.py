@@ -22,8 +22,8 @@ being exported as '<webots_ros webots_extra_project_path="${prefix}"/>'
 
 import optparse
 import os
-import sys
 import subprocess
+import sys
 
 
 def get_plugin_paths(package, attrib):
@@ -46,6 +46,7 @@ def get_plugin_paths(package, attrib):
     found_paths = stdout.split(" ")
     return ":".join(found_paths[1::2])
 
+
 webots_extra_project_path = get_plugin_paths("webots_ros", "webots_extra_project_path")
 
 if webots_extra_project_path:
@@ -61,7 +62,6 @@ optParser.add_option("--mode", dest="mode", default="realtime", help="Startup mo
 optParser.add_option("--no-gui", dest="noGui", default="false", help="Start Webots with minimal GUI.")
 optParser.add_option("--stream", dest="stream", default="false", help="Start Webots streaming server.")
 options, args = optParser.parse_args()
-
 
 if 'WEBOTS_HOME' not in os.environ:
     sys.exit('WEBOTS_HOME environment variable not defined.')

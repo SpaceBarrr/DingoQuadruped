@@ -1,0 +1,718 @@
+#VRML_SIM R2023b utf8
+# license: Apache License 2.0
+# license url: http://www.apache.org/licenses/LICENSE-2.0
+# This is a proto file for Webots for the klp
+# Extracted from: /mnt/c/Users/Will/Documents/FYP/Code/webot/klp_urdf/klp.urdf
+
+PROTO klp [
+  field  SFVec3f     translation     0 0 0
+  field  SFRotation  rotation        0 0 1 0
+  field  SFString    name            "klp"  # Is `Robot.name`.
+  field  SFString    controller      "<extern>" # Is `Robot.controller`.
+  field  MFString    controllerArgs  []     # Is `Robot.controllerArgs`.
+  field  SFString    customData      ""     # Is `Robot.customData`.
+  field  SFBool      supervisor      FALSE  # Is `Robot.supervisor`.
+  field  SFBool      synchronization TRUE   # Is `Robot.synchronization`.
+  field  SFBool      selfCollision   FALSE  # Is `Robot.selfCollision`.
+  field  SFFloat     tibia_height    0.15
+  field  SFFloat     tibia_radius    0.02
+]
+{
+  Robot {
+    translation IS translation
+    rotation IS rotation
+    controller IS controller
+    controllerArgs IS controllerArgs
+    customData IS customData
+    supervisor IS supervisor
+    synchronization IS synchronization
+    selfCollision IS selfCollision
+    children [
+      Transform {
+        scale 1.000 1.000 1.000
+        children [
+          Shape {
+            appearance DEF Base_material PBRAppearance {
+              baseColor 0.500000 0.500000 0.500000
+              roughness 1.000000
+              metalness 0
+            }
+            geometry DEF meshes/visual/base Mesh {
+              url "../klp_urdf/meshes/visual/base.stl"
+            }
+          }
+        ]
+      }
+      HingeJoint {
+        jointParameters HingeJointParameters {
+          axis 0.000000 -0.000000 -1.000000
+          anchor 0.065000 0.048000 0.102500
+        }
+        device [
+          RotationalMotor {
+            name "motor.FL_R"
+            minPosition -3.00000
+            maxPosition 3.0000
+            maxTorque 3.5
+            maxVelocity 4
+          }
+          PositionSensor {
+            name "pos_sensor.FL_R"
+          }
+        ]
+        endPoint Solid {
+          translation 0.065000 0.048000 0.102500
+          rotation 1.000000 0.000000 0.000000 3.141593
+          children [
+            Transform {
+              scale 1.000 1.000 1.000
+              children [
+                Shape {
+                  appearance DEF Body01_material PBRAppearance {
+                    baseColor 0.500000 0.500000 0.500000
+                    roughness 1.000000
+                    metalness 0
+                  }
+                  geometry DEF meshes/visual/Body01 Mesh {
+                    url "../klp_urdf/meshes/visual/Body01.stl"
+                  }
+                }
+              ]
+            }
+            HingeJoint {
+              jointParameters HingeJointParameters {
+                axis -1.000000 0.000000 0.000000
+                anchor 0.028400 -0.013100 -0.027400
+              }
+              device [
+                RotationalMotor {
+                  name "motor.FL_U"
+                  minPosition -3.00000
+                  maxPosition 3.0000
+                  maxTorque 3.5
+                  maxVelocity 4
+                }
+                PositionSensor {
+                  name "pos_sensor.FL_U"
+                }
+              ]
+              endPoint Solid {
+                translation 0.028400 -0.013100 -0.027400
+                rotation -0.707107 0.000000 0.707107 3.141593
+                children [
+                  Transform {
+                    scale 1.000 1.000 1.000
+                    children [
+                      Shape {
+                        appearance DEF Body02_material PBRAppearance {
+                          baseColor 0.500000 0.500000 0.500000
+                          roughness 1.000000
+                          metalness 0
+                        }
+                        geometry DEF meshes/visual/Body02 Mesh {
+                          url "../klp_urdf/meshes/visual/Body02.stl"
+                        }
+                      }
+                    ]
+                  }
+                  HingeJoint {
+                    jointParameters HingeJointParameters {
+                      axis 0.000000 -0.000000 -1.000000
+                      anchor -0.129879 -0.005598 -0.026000
+                    }
+                    device [
+                      RotationalMotor {
+                        name "motor.FL_L"
+                        minPosition -3.00000
+                        maxPosition 3.0000
+                        maxTorque 3.5
+                        maxVelocity 4
+                      }
+                      PositionSensor {
+                        name "pos_sensor.FL_L"
+                      }
+                    ]
+                    endPoint Solid {
+                      translation -0.129879 0.000000 -0.026000
+                      rotation 1.000000 0.000000 0.000000 3.141593
+                      children [
+                        Transform {
+                          scale 1.000 1.000 1.000
+                          children [
+                            Shape {
+                              appearance DEF Body03_material PBRAppearance {
+                                baseColor 0.500000 0.500000 0.500000
+                                roughness 1.000000
+                                metalness 0
+                              }
+                              geometry DEF meshes/visual/Body03 Mesh {
+                                url "../klp_urdf/meshes/visual/Body03.stl"
+                              }
+                            }
+                          ]
+                        }
+                      ]
+
+                      name "Body03"
+                      # boundingObject DEF meshes/collision/Body03_coll Mesh {
+                        # url "../klp_urdf/meshes/collision/Body03_coll.stl"
+                      # }
+                      boundingObject DEF meshes/collision/Body03_coll Pose {
+                        translation 0.05 0 0
+                        rotation 0 1 0 1.57079632679
+                        children [
+                          Capsule {
+                            height IS tibia_height
+                            radius IS tibia_radius
+                            subdivision 12
+                          }
+                        ]
+                      }
+
+                      physics Physics {
+                        density -1
+                        mass 0.019696
+                        centerOfMass [ 0.048968 0.046003 -0.005200 ]
+                        inertiaMatrix [
+                          2.377000e-05 2.578000e-05 4.778000e-05
+                          -2.329000e-05 0.000000e+00 0.000000e+00
+                        ]
+                      }
+                    }
+                  }
+                ]
+                name "Body02"
+                boundingObject DEF meshes/collision/Body02_coll Mesh {
+                  url "../klp_urdf/meshes/collision/Body02_coll.stl"
+                }
+                physics Physics {
+                  density -1
+                  mass 0.011388
+                  centerOfMass [ -0.033120 -0.001428 -0.014473 ]
+                  inertiaMatrix [
+                    1.270000e-06 2.168000e-05 2.156000e-05
+                    -8.800000e-07 -2.350000e-06 -1.000000e-07
+                  ]
+                }
+              }
+            }
+          ]
+          name "Body01"
+          boundingObject DEF meshes/collision/Body01_coll Mesh {
+            url "../klp_urdf/meshes/collision/Body01_coll.stl"
+          }
+          physics Physics {
+            density -1
+            mass 0.148655
+            centerOfMass [ 0.007159 0.000309 -0.037034 ]
+            inertiaMatrix [
+              1.811500e-04 2.249400e-04 1.645100e-04
+              -1.890000e-06 2.270000e-06 -4.116000e-05
+            ]
+          }
+        }
+      }
+      HingeJoint {
+        jointParameters HingeJointParameters {
+          axis 0.000000 0.000000 1.000000
+          anchor 0.065000 0.048200 -0.102500
+        }
+        device [
+          RotationalMotor {
+            name "motor.RL_R"
+            minPosition -3.00000
+            maxPosition 3.0000
+            maxTorque 3.5
+            maxVelocity 4
+          }
+          PositionSensor {
+            name "pos_sensor.RL_R"
+          }
+        ]
+        endPoint Solid {
+          translation 0.065000 0.048200 -0.102500
+          rotation 0.000000 0.000000 1.000000 3.141593
+          children [
+            Transform {
+              scale 1.000 1.000 1.000
+              children [
+                Shape {
+                  appearance DEF Body04_material PBRAppearance {
+                    baseColor 0.500000 0.500000 0.500000
+                    roughness 1.000000
+                    metalness 0
+                  }
+                  geometry DEF meshes/visual/Body04 Mesh {
+                    url "../klp_urdf/meshes/visual/Body04.stl"
+                  }
+                }
+              ]
+            }
+            HingeJoint {
+              jointParameters HingeJointParameters {
+                axis 1.000000 0.000000 0.000000
+                anchor -0.027200 -0.015500 -0.047600
+              }
+              device [
+                RotationalMotor {
+                  name "motor.RL_U"
+                  minPosition -3.00000
+                  maxPosition 3.0000
+                  maxTorque 3.5
+                  maxVelocity 4
+                }
+                PositionSensor {
+                  name "pos_sensor.RL_U"
+                }
+              ]
+              endPoint Solid {
+                translation -0.027200 -0.015500 -0.047600
+                rotation -0.707107 -0.000000 -0.707107 3.141593
+                children [
+                  Transform {
+                    scale 1.000 1.000 1.000
+                    children [
+                      Shape {
+                        appearance DEF Body05_material PBRAppearance {
+                          baseColor 0.500000 0.500000 0.500000
+                          roughness 1.000000
+                          metalness 0
+                        }
+                        geometry USE meshes/visual/Body02
+                      }
+                    ]
+                  }
+                  HingeJoint {
+                    jointParameters HingeJointParameters {
+                      axis 0.000000 -0.000000 -1.000000
+                      anchor -0.129879 -0.005598 -0.026000
+                    }
+                    device [
+                      RotationalMotor {
+                        name "motor.RL_L"
+                        minPosition -3.00000
+                        maxPosition 3.0000
+                        maxTorque 3.5
+                        maxVelocity 4
+                      }
+                      PositionSensor {
+                        name "pos_sensor.RL_L"
+                      }
+                    ]
+                    endPoint Solid {
+                      translation -0.129879 0.000000 -0.026000
+                      rotation 1.000000 0.000000 0.000000 3.141593
+                      children [
+                        Transform {
+                          scale 1.000 1.000 1.000
+                          children [
+                            Shape {
+                              appearance DEF Body06_material PBRAppearance {
+                                baseColor 0.500000 0.500000 0.500000
+                                roughness 1.000000
+                                metalness 0
+                              }
+                              geometry USE meshes/visual/Body03
+                            }
+                          ]
+                        }
+                      ]
+                      name "Body06"
+                      boundingObject USE meshes/collision/Body03_coll
+                      physics Physics {
+                        density -1
+                        mass 0.019696
+                        centerOfMass [ 0.048968 0.046003 -0.005200 ]
+                        inertiaMatrix [
+                          2.377000e-05 2.578000e-05 4.778000e-05
+                          -2.329000e-05 0.000000e+00 0.000000e+00
+                        ]
+                      }
+                    }
+                  }
+                ]
+                name "Body05"
+                boundingObject USE meshes/collision/Body02_coll
+                physics Physics {
+                  density -1
+                  mass 0.011388
+                  centerOfMass [ -0.033120 -0.001428 -0.014473 ]
+                  inertiaMatrix [
+                    1.270000e-06 2.168000e-05 2.156000e-05
+                    -8.800000e-07 -2.350000e-06 -1.000000e-07
+                  ]
+                }
+              }
+            }
+          ]
+          name "Body04"
+          boundingObject DEF meshes/collision/Body04_coll Mesh {
+            url "../klp_urdf/meshes/collision/Body04_coll.stl"
+          }
+          physics Physics {
+            density -1
+            mass 0.148655
+            centerOfMass [ -0.007159 -0.000309 -0.037034 ]
+            inertiaMatrix [
+              1.811500e-04 2.249400e-04 1.645100e-04
+              -1.890000e-06 -2.270000e-06 4.116000e-05
+            ]
+          }
+        }
+      }
+      HingeJoint {
+        jointParameters HingeJointParameters {
+          axis 0.000000 0.000000 1.000000
+          anchor -0.065000 0.048000 -0.102500
+        }
+        device [
+          RotationalMotor {
+            name "motor.RR_R"
+            minPosition -3.00000
+            maxPosition 3.0000
+            maxTorque 3.5
+            maxVelocity 4
+          }
+          PositionSensor {
+            name "pos_sensor.RR_R"
+          }
+        ]
+        endPoint Solid {
+          translation -0.065000 0.048000 -0.102500
+          children [
+            Transform {
+              scale 1.000 1.000 1.000
+              children [
+                Shape {
+                  appearance DEF Body07_material PBRAppearance {
+                    baseColor 0.500000 0.500000 0.500000
+                    roughness 1.000000
+                    metalness 0
+                  }
+                  geometry DEF meshes/visual/Body07 Mesh {
+                    url "../klp_urdf/meshes/visual/Body07.stl"
+                  }
+                }
+              ]
+            }
+            HingeJoint {
+              jointParameters HingeJointParameters {
+                axis 1.000000 0.000000 0.000000
+                anchor -0.027200 0.015500 -0.047600
+              }
+              device [
+                RotationalMotor {
+                  name "motor.RR_U"
+                  minPosition -3.00000
+                  maxPosition 3.0000
+                  maxTorque 3.5
+                  maxVelocity 4
+                }
+                PositionSensor {
+                  name "pos_sensor.RR_U"
+                }
+              ]
+              endPoint Solid {
+                translation -0.027200 0.015500 -0.047600
+                rotation -0.707107 -0.000000 -0.707107 3.141593
+                children [
+                  Transform {
+                    scale 1.000 1.000 1.000
+                    children [
+                      Shape {
+                        appearance DEF Body08_material PBRAppearance {
+                          baseColor 0.500000 0.500000 0.500000
+                          roughness 1.000000
+                          metalness 0
+                        }
+                        geometry USE meshes/visual/Body02
+                      }
+                    ]
+                  }
+                  HingeJoint {
+                    jointParameters HingeJointParameters {
+                      axis 0.000000 -0.000000 -1.000000
+                      anchor -0.129879 -0.005598 -0.026000
+                    }
+                    device [
+                      RotationalMotor {
+                        name "motor.RR_L"
+                        minPosition -3.00000
+                        maxPosition 3.0000
+                        maxTorque 3.5
+                        maxVelocity 4
+                      }
+                      PositionSensor {
+                        name "pos_sensor.RR_L"
+                      }
+                    ]
+                    endPoint Solid {
+                      translation -0.129879 0.000000 -0.026000
+                      rotation 1.000000 0.000000 0.000000 3.141593
+                      children [
+                        Transform {
+                          scale 1.000 1.000 1.000
+                          children [
+                            Shape {
+                              appearance DEF Body09_material PBRAppearance {
+                                baseColor 0.500000 0.500000 0.500000
+                                roughness 1.000000
+                                metalness 0
+                              }
+                              geometry DEF meshes/visual/Body09 Mesh {
+                                url "../klp_urdf/meshes/visual/Body09.stl"
+                              }
+                            }
+                          ]
+                        }
+                      ]
+                      name "Body09"
+                      # boundingObject DEF meshes/collision/Body09_coll Mesh {
+                        # url "../klp_urdf/meshes/collision/Body09_coll.stl"
+                      # }
+                      boundingObject DEF meshes/collision/Body09_coll Pose{
+                      translation 0.05 0 0
+                        rotation 0 1 0 1.57079632679
+                        children [
+                          Capsule {
+                            height IS tibia_height
+                            radius IS tibia_radius
+                            subdivision 12
+                          }
+                        ]
+                      }
+
+                      physics Physics {
+                        density -1
+                        mass 0.019696
+                        centerOfMass [ 0.065255 -0.015997 -0.005200 ]
+                        inertiaMatrix [
+                          4.310000e-06 4.523000e-05 4.778000e-05
+                          1.118000e-05 0.000000e+00 0.000000e+00
+                        ]
+                      }
+                    }
+                  }
+                ]
+                name "Body08"
+                boundingObject USE meshes/collision/Body02_coll
+                physics Physics {
+                  density -1
+                  mass 0.011388
+                  centerOfMass [ -0.001428 0.033120 -0.014473 ]
+                  inertiaMatrix [
+                    2.168000e-05 1.270000e-06 2.156000e-05
+                    8.800000e-07 -1.000000e-07 2.350000e-06
+                  ]
+                }
+              }
+            }
+          ]
+          name "Body07"
+          boundingObject DEF meshes/collision/Body07_coll Mesh {
+            url "../klp_urdf/meshes/collision/Body07_coll.stl"
+          }
+          physics Physics {
+            density -1
+            mass 0.148655
+            centerOfMass [ 0.000309 -0.007159 -0.037034 ]
+            inertiaMatrix [
+              2.249400e-04 1.811500e-04 1.645100e-04
+              1.890000e-06 -4.206000e-05 -2.310000e-06
+            ]
+          }
+        }
+      }
+      HingeJoint {
+        jointParameters HingeJointParameters {
+          axis 0.000000 0.000000 -1.000000
+          anchor -0.065000 0.048000 0.102500
+        }
+        device [
+          RotationalMotor {
+            name "motor.FR_R"
+            minPosition -3.00000
+            maxPosition 3.0000
+            maxTorque 3.5
+            maxVelocity 4
+          }
+          PositionSensor {
+            name "pos_sensor.FR_R"
+          }
+        ]
+        endPoint Solid {
+          translation -0.065000 0.048000 0.102500
+          rotation 0.000000 1.000000 0.000000 3.141593
+          children [
+            Transform {
+              scale 1.000 1.000 1.000
+              children [
+                Shape {
+                  appearance DEF Body10_material PBRAppearance {
+                    baseColor 0.500000 0.500000 0.500000
+                    roughness 1.000000
+                    metalness 0
+                  }
+                  geometry DEF meshes/visual/Body10 Mesh {
+                    url "../klp_urdf/meshes/visual/Body10.stl"
+                  }
+                }
+              ]
+            }
+            HingeJoint {
+              jointParameters HingeJointParameters {
+                axis -1.000000 0.000000 0.000000
+                anchor 0.028400 0.013100 -0.027400
+              }
+              device [
+                RotationalMotor {
+                  name "motor.FR_U"
+                  minPosition -3.00000
+                  maxPosition 3.0000
+                  maxTorque 3.5
+                  maxVelocity 4
+                }
+                PositionSensor {
+                  name "pos_sensor.FR_U"
+                }
+              ]
+              endPoint Solid {
+                translation 0.028400 0.013100 -0.027400
+                rotation -0.707107 0.000000 0.707107 3.141593
+                children [
+                  Transform {
+                    scale 1.000 1.000 1.000
+                    children [
+                      Shape {
+                        appearance DEF Body11_material PBRAppearance {
+                          baseColor 0.500000 0.500000 0.500000
+                          roughness 1.000000
+                          metalness 0
+                        }
+                        geometry USE meshes/visual/Body02
+                      }
+                    ]
+                  }
+                  HingeJoint {
+                    jointParameters HingeJointParameters {
+                      axis 0.000000 -0.000000 -1.000000
+                      anchor -0.129879 -0.005598 -0.026000
+                    }
+                    device [
+                      RotationalMotor {
+                        name "motor.FR_L"
+                        minPosition -3.00000
+                        maxPosition 3.0000
+                        maxTorque 3.5
+                        maxVelocity 4
+                      }
+                      PositionSensor {
+                        name "pos_sensor.FR_L"
+                      }
+                    ]
+                    endPoint Solid {
+                      translation -0.129879 0.000000 -0.026000
+                      rotation 1.000000 0.000000 0.000000 3.141593
+                      children [
+                        Transform {
+                          scale 1.000 1.000 1.000
+                          children [
+                            Shape {
+                              appearance DEF Body12_material PBRAppearance {
+                                baseColor 0.500000 0.500000 0.500000
+                                roughness 1.000000
+                                metalness 0
+                              }
+                              geometry USE meshes/visual/Body09
+                            }
+                          ]
+                        }
+                      ]
+                      name "Body12"
+                      boundingObject USE meshes/collision/Body09_coll
+                      physics Physics {
+                        density -1
+                        mass 0.019696
+                        centerOfMass [ 0.065255 -0.015997 -0.005200 ]
+                        inertiaMatrix [
+                          4.310000e-06 4.523000e-05 4.778000e-05
+                          1.118000e-05 0.000000e+00 0.000000e+00
+                        ]
+                      }
+                    }
+                  }
+                ]
+                name "Body11"
+                boundingObject USE meshes/collision/Body02_coll
+                physics Physics {
+                  density -1
+                  mass 0.011388
+                  centerOfMass [ -0.001428 0.033120 -0.014473 ]
+                  inertiaMatrix [
+                    2.168000e-05 1.270000e-06 2.156000e-05
+                    8.800000e-07 -1.000000e-07 2.350000e-06
+                  ]
+                }
+              }
+            }
+          ]
+          name "Body10"
+          boundingObject DEF meshes/collision/Body10_coll Mesh {
+            url "../klp_urdf/meshes/collision/Body10_coll.stl"
+          }
+          physics Physics {
+            density -1
+            mass 0.148655
+            centerOfMass [ 0.000308 -0.007159 -0.037034 ]
+            inertiaMatrix [
+              2.249400e-04 1.811500e-04 1.645100e-04
+              1.890000e-06 -4.206000e-05 -2.310000e-06
+            ]
+          }
+        }
+      }
+      Pose {
+        translation 0 0.0445 0
+        children [
+          Gyro {
+            name "IMU.gyr"
+            xAxis TRUE
+            yAxis TRUE
+            zAxis TRUE
+            resolution -1
+            noise 0
+          }
+          Accelerometer {
+            name "IMU.acc"
+            xAxis TRUE
+            yAxis TRUE
+            zAxis TRUE
+            resolution -1
+            noise 0
+          }
+          InertialUnit{
+            name "IMU.att"
+            xAxis TRUE
+            yAxis TRUE
+            zAxis TRUE
+            resolution -1
+            noise 0
+          }
+        ]
+      }
+    ]
+    name IS name
+    boundingObject DEF meshes/collision/base_coll Mesh {
+      url "../klp_urdf/meshes/collision/base_coll.stl"
+    }
+    physics Physics {
+      density -1
+      mass 0.700000
+      centerOfMass [0.0072657 1.6909e-7 -0.037]
+      inertiaMatrix [
+        0.0181589 0.003064591 0.01991225
+        0.0000000 0.000000000 8.136020999e-8
+      ]
+    }
+  }
+}

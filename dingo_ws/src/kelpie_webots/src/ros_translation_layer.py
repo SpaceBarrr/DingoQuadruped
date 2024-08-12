@@ -19,10 +19,11 @@ This is a simple example of a Webots controller running a Python ROS node thanks
 The robot is publishing the value of its front distance sensor and receving motor commands (velocity).
 """
 
-import rospy
-from std_msgs.msg import Float64
-from controller import Robot
 import os
+
+import rospy
+from controller import Robot
+from std_msgs.msg import Float64
 
 
 def callback(data):
@@ -43,10 +44,10 @@ right.setPosition(30)
 
 message = ''
 print('Initializing ROS: connecting to ' + os.environ['ROS_MASTER_URI'])
-#robot.step(timeStep)
+# robot.step(timeStep)
 rospy.init_node('listener', anonymous=True)
 print('Subscribing to "motor" topic')
-#robot.step(timeStep)
+# robot.step(timeStep)
 rospy.Subscriber('motor', Float64, callback)
 pub = rospy.Publisher('sensor', Float64, queue_size=10)
 # print('Running the control loop')
@@ -56,4 +57,3 @@ pub = rospy.Publisher('sensor', Float64, queue_size=10)
 #     if message:
 #         print(message)
 #         message = ''
-

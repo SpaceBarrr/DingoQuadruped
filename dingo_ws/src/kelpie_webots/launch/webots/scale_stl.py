@@ -1,6 +1,7 @@
-import numpy
-from stl import mesh
 import os
+
+from stl import mesh
+
 mesh_path = "klp_urdf/meshes/collision/"
 meshes = os.listdir(mesh_path)
 print(meshes)

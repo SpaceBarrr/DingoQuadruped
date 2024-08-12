@@ -1,0 +1,372 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<robot name="Robot">
+    <link name="Base">
+        <inertial>
+            <mass value="0"/>
+            <inertia ixx="0" ixy="0" ixz="0" iyy="0" iyz="0" izz="0"/>
+        </inertial>
+        <visual>
+            <origin rpy="0.00000000 0.00000000 0.00000000" xyz="0.00000000 0.00000000 0.00000000"/>
+            <geometry>
+                <mesh filename="meshes\visual\base.stl" scale="1.00000000 1.00000000 1.00000000"/>
+            </geometry>
+            <material name="">
+                <color rgba="0.50000000 0.50000000 0.50000000 1.00000000"/>
+            </material>
+        </visual>
+        <collision>
+            <origin rpy="0.00000000 0.00000000 0.00000000" xyz="0.00000000 0.00000000 0.00000000"/>
+            <geometry>
+                <mesh filename="meshes\collision\base_coll.stl" scale="1.00000000 1.00000000 1.00000000"/>
+            </geometry>
+        </collision>
+    </link>
+    <link name="Body01">
+        <inertial>
+            <origin rpy="0.00000000 0.00000000 0.00000000" xyz="0.00715934  0.00030873 -0.03703405"/>
+            <mass value="0.14865458"/>
+            <inertia ixx="0.00018115" ixy="-0.00000189" ixz="0.00000227" iyy="0.00022494" iyz="-0.00004116" izz="0.00016451"/>
+        </inertial>
+        <visual>
+            <origin rpy="0.00000000 0.00000000 0.00000000" xyz="0.00000000 0.00000000 0.00000000"/>
+            <geometry>
+                <mesh filename="meshes\visual\Body01.stl" scale="1.00000000 1.00000000 1.00000000"/>
+            </geometry>
+            <material name="">
+                <color rgba="0.50000000 0.50000000 0.50000000 1.00000000"/>
+            </material>
+        </visual>
+        <collision>
+            <origin rpy="0.00000000 0.00000000 0.00000000" xyz="0.00000000 0.00000000 0.00000000"/>
+            <geometry>
+                <mesh filename="meshes\collision\Body01_coll.stl" scale="1.00000000 1.00000000 1.00000000"/>
+            </geometry>
+        </collision>
+    </link>
+    <link name="Body02">
+        <inertial>
+            <origin rpy="0.00000000 0.00000000 0.00000000" xyz="-0.03312008 -0.00142791 -0.01447259"/>
+            <mass value="0.01138778"/>
+            <inertia ixx="0.00000127" ixy="-0.00000088" ixz="-0.00000235" iyy="0.00002168" iyz="-0.00000010" izz="0.00002156"/>
+        </inertial>
+        <visual>
+            <origin rpy="0.00000000 0.00000000 0.00000000" xyz="0.00000000 0.00000000 0.00000000"/>
+            <geometry>
+                <mesh filename="meshes\visual\Body02.stl" scale="1.00000000 1.00000000 1.00000000"/>
+            </geometry>
+            <material name="">
+                <color rgba="0.50000000 0.50000000 0.50000000 1.00000000"/>
+            </material>
+        </visual>
+        <collision>
+            <origin rpy="0.00000000 0.00000000 0.00000000" xyz="0.00000000 0.00000000 0.00000000"/>
+            <geometry>
+                <mesh filename="meshes\collision\Body02_coll.stl" scale="1.00000000 1.00000000 1.00000000"/>
+            </geometry>
+        </collision>
+    </link>
+    <link name="Body03">
+        <inertial>
+            <origin rpy="0.00000000 0.00000000 0.00000000" xyz="0.04896763  0.04600256 -0.00520000"/>
+            <mass value="0.01969612"/>
+            <inertia ixx="0.00002377" ixy="-0.00002329" ixz="0.00000000" iyy="0.00002578" iyz="0.00000000" izz="0.00004778"/>
+        </inertial>
+        <visual>
+            <origin rpy="0.00000000 0.00000000 0.00000000" xyz="0.00000000 0.00000000 0.00000000"/>
+            <geometry>
+                <mesh filename="meshes\visual\Body03.stl" scale="1.00000000 1.00000000 1.00000000"/>
+            </geometry>
+            <material name="">
+                <color rgba="0.50000000 0.50000000 0.50000000 1.00000000"/>
+            </material>
+        </visual>
+        <collision>
+            <origin rpy="0.00000000 0.00000000 0.00000000" xyz="0.00000000 0.00000000 0.00000000"/>
+            <geometry>
+                <mesh filename="meshes\collision\Body03_coll.stl" scale="1.00000000 1.00000000 1.00000000"/>
+            </geometry>
+        </collision>
+    </link>
+    <link name="Body04">
+        <inertial>
+            <origin rpy="0.00000000 0.00000000 0.00000000" xyz="-0.00715934 -0.00030856 -0.03703405"/>
+            <mass value="0.14865458"/>
+            <inertia ixx="0.00018115" ixy="-0.00000189" ixz="-0.00000227" iyy="0.00022494" iyz="0.00004116" izz="0.00016451"/>
+        </inertial>
+        <visual>
+            <origin rpy="0.00000000 0.00000000 0.00000000" xyz="0.00000000 0.00000000 0.00000000"/>
+            <geometry>
+                <mesh filename="meshes\visual\Body04.stl" scale="1.00000000 1.00000000 1.00000000"/>
+            </geometry>
+            <material name="">
+                <color rgba="0.50000000 0.50000000 0.50000000 1.00000000"/>
+            </material>
+        </visual>
+        <collision>
+            <origin rpy="0.00000000 0.00000000 0.00000000" xyz="0.00000000 0.00000000 0.00000000"/>
+            <geometry>
+                <mesh filename="meshes\collision\Body04_coll.stl" scale="1.00000000 1.00000000 1.00000000"/>
+            </geometry>
+        </collision>
+    </link>
+    <link name="Body05">
+        <inertial>
+            <origin rpy="0.00000000 0.00000000 0.00000000" xyz="-0.03312008 -0.00142791 -0.01447259"/>
+            <mass value="0.01138778"/>
+            <inertia ixx="0.00000127" ixy="-0.00000088" ixz="-0.00000235" iyy="0.00002168" iyz="-0.00000010" izz="0.00002156"/>
+        </inertial>
+        <visual>
+            <origin rpy="0.00000000 0.00000000 0.00000000" xyz="0.00000000 0.00000000 0.00000000"/>
+            <geometry>
+                <mesh filename="meshes\visual\Body02.stl" scale="1.00000000 1.00000000 1.00000000"/>
+            </geometry>
+            <material name="">
+                <color rgba="0.50000000 0.50000000 0.50000000 1.00000000"/>
+            </material>
+        </visual>
+        <collision>
+            <origin rpy="0.00000000 0.00000000 0.00000000" xyz="0.00000000 0.00000000 0.00000000"/>
+            <geometry>
+                <mesh filename="meshes\collision\Body02_coll.stl" scale="1.00000000 1.00000000 1.00000000"/>
+            </geometry>
+        </collision>
+    </link>
+    <link name="Body06">
+        <inertial>
+            <origin rpy="0.00000000 0.00000000 0.00000000" xyz="0.04896763  0.04600256 -0.00520000"/>
+            <mass value="0.01969612"/>
+            <inertia ixx="0.00002377" ixy="-0.00002329" ixz="0.00000000" iyy="0.00002578" iyz="0.00000000" izz="0.00004778"/>
+        </inertial>
+        <visual>
+            <origin rpy="0.00000000 0.00000000 0.00000000" xyz="0.00000000 0.00000000 0.00000000"/>
+            <geometry>
+                <mesh filename="meshes\visual\Body03.stl" scale="1.00000000 1.00000000 1.00000000"/>
+            </geometry>
+            <material name="">
+                <color rgba="0.50000000 0.50000000 0.50000000 1.00000000"/>
+            </material>
+        </visual>
+        <collision>
+            <origin rpy="0.00000000 0.00000000 0.00000000" xyz="0.00000000 0.00000000 0.00000000"/>
+            <geometry>
+                <mesh filename="meshes\collision\Body03_coll.stl" scale="1.00000000 1.00000000 1.00000000"/>
+            </geometry>
+        </collision>
+    </link>
+    <link name="Body07">
+        <inertial>
+            <origin rpy="0.00000000 0.00000000 0.00000000" xyz="0.00030881 -0.00715933 -0.03703405"/>
+            <mass value="0.14865458"/>
+            <inertia ixx="0.00022494" ixy="0.00000189" ixz="-0.00004206" iyy="0.00018115" iyz="-0.00000231" izz="0.00016451"/>
+        </inertial>
+        <visual>
+            <origin rpy="0.00000000 0.00000000 0.00000000" xyz="0.00000000 0.00000000 0.00000000"/>
+            <geometry>
+                <mesh filename="meshes\visual\Body07.stl" scale="1.00000000 1.00000000 1.00000000"/>
+            </geometry>
+            <material name="">
+                <color rgba="0.50000000 0.50000000 0.50000000 1.00000000"/>
+            </material>
+        </visual>
+        <collision>
+            <origin rpy="0.00000000 0.00000000 0.00000000" xyz="0.00000000 0.00000000 0.00000000"/>
+            <geometry>
+                <mesh filename="meshes\collision\Body07_coll.stl" scale="1.00000000 1.00000000 1.00000000"/>
+            </geometry>
+        </collision>
+    </link>
+    <link name="Body08">
+        <inertial>
+            <origin rpy="0.00000000 0.00000000 0.00000000" xyz="-0.00142791  0.03312008 -0.01447259"/>
+            <mass value="0.01138778"/>
+            <inertia ixx="0.00002168" ixy="0.00000088" ixz="-0.00000010" iyy="0.00000127" iyz="0.00000235" izz="0.00002156"/>
+        </inertial>
+        <visual>
+            <origin rpy="0.00000000 0.00000000 0.00000000" xyz="0.00000000 0.00000000 0.00000000"/>
+            <geometry>
+                <mesh filename="meshes\visual\Body02.stl" scale="1.00000000 1.00000000 1.00000000"/>
+            </geometry>
+            <material name="">
+                <color rgba="0.50000000 0.50000000 0.50000000 1.00000000"/>
+            </material>
+        </visual>
+        <collision>
+            <origin rpy="0.00000000 0.00000000 0.00000000" xyz="0.00000000 0.00000000 0.00000000"/>
+            <geometry>
+                <mesh filename="meshes\collision\Body02_coll.stl" scale="1.00000000 1.00000000 1.00000000"/>
+            </geometry>
+        </collision>
+    </link>
+    <link name="Body09">
+        <inertial>
+            <origin rpy="0.00000000 0.00000000 0.00000000" xyz="0.06525451 -0.01599730 -0.00520000"/>
+            <mass value="0.01969612"/>
+            <inertia ixx="0.00000431" ixy="0.00001118" ixz="0.00000000" iyy="0.00004523" iyz="0.00000000" izz="0.00004778"/>
+        </inertial>
+        <visual>
+            <origin rpy="0.00000000 0.00000000 0.00000000" xyz="0.00000000 0.00000000 0.00000000"/>
+            <geometry>
+                <mesh filename="meshes\visual\Body09.stl" scale="1.00000000 1.00000000 1.00000000"/>
+            </geometry>
+            <material name="">
+                <color rgba="0.50000000 0.50000000 0.50000000 1.00000000"/>
+            </material>
+        </visual>
+        <collision>
+            <origin rpy="0.00000000 0.00000000 0.00000000" xyz="0.00000000 0.00000000 0.00000000"/>
+            <geometry>
+                <mesh filename="meshes\collision\Body09_coll.stl" scale="1.00000000 1.00000000 1.00000000"/>
+            </geometry>
+        </collision>
+    </link>
+    <link name="Body10">
+        <inertial>
+            <origin rpy="0.00000000 0.00000000 0.00000000" xyz="0.00030831 -0.00715935 -0.03703405"/>
+            <mass value="0.14865458"/>
+            <inertia ixx="0.00022494" ixy="0.00000189" ixz="-0.00004206" iyy="0.00018115" iyz="-0.00000231" izz="0.00016451"/>
+        </inertial>
+        <visual>
+            <origin rpy="0.00000000 0.00000000 0.00000000" xyz="0.00000000 0.00000000 0.00000000"/>
+            <geometry>
+                <mesh filename="meshes\visual\Body10.stl" scale="1.00000000 1.00000000 1.00000000"/>
+            </geometry>
+            <material name="">
+                <color rgba="0.50000000 0.50000000 0.50000000 1.00000000"/>
+            </material>
+        </visual>
+        <collision>
+            <origin rpy="0.00000000 0.00000000 0.00000000" xyz="0.00000000 0.00000000 0.00000000"/>
+            <geometry>
+                <mesh filename="meshes\collision\Body10_coll.stl" scale="1.00000000 1.00000000 1.00000000"/>
+            </geometry>
+        </collision>
+    </link>
+    <link name="Body11">
+        <inertial>
+            <origin rpy="0.00000000 0.00000000 0.00000000" xyz="-0.00142791  0.03312008 -0.01447259"/>
+            <mass value="0.01138778"/>
+            <inertia ixx="0.00002168" ixy="0.00000088" ixz="-0.00000010" iyy="0.00000127" iyz="0.00000235" izz="0.00002156"/>
+        </inertial>
+        <visual>
+            <origin rpy="0.00000000 0.00000000 0.00000000" xyz="0.00000000 0.00000000 0.00000000"/>
+            <geometry>
+                <mesh filename="meshes\visual\Body02.stl" scale="1.00000000 1.00000000 1.00000000"/>
+            </geometry>
+            <material name="">
+                <color rgba="0.50000000 0.50000000 0.50000000 1.00000000"/>
+            </material>
+        </visual>
+        <collision>
+            <origin rpy="0.00000000 0.00000000 0.00000000" xyz="0.00000000 0.00000000 0.00000000"/>
+            <geometry>
+                <mesh filename="meshes\collision\Body02_coll.stl" scale="1.00000000 1.00000000 1.00000000"/>
+            </geometry>
+        </collision>
+    </link>
+    <link name="Body12">
+        <inertial>
+            <origin rpy="0.00000000 0.00000000 0.00000000" xyz="0.06525451 -0.01599730 -0.00520000"/>
+            <mass value="0.01969612"/>
+            <inertia ixx="0.00000431" ixy="0.00001118" ixz="0.00000000" iyy="0.00004523" iyz="0.00000000" izz="0.00004778"/>
+        </inertial>
+        <visual>
+            <origin rpy="0.00000000 0.00000000 0.00000000" xyz="0.00000000 0.00000000 0.00000000"/>
+            <geometry>
+                <mesh filename="meshes\visual\Body09.stl" scale="1.00000000 1.00000000 1.00000000"/>
+            </geometry>
+            <material name="">
+                <color rgba="0.50000000 0.50000000 0.50000000 1.00000000"/>
+            </material>
+        </visual>
+        <collision>
+            <origin rpy="0.00000000 0.00000000 0.00000000" xyz="0.00000000 0.00000000 0.00000000"/>
+            <geometry>
+                <mesh filename="meshes\collision\Body09_coll.stl" scale="1.00000000 1.00000000 1.00000000"/>
+            </geometry>
+        </collision>
+    </link>
+    <joint name="Joint01" type="revolute">
+        <parent link="Base"/>
+        <child link="Body01"/>
+        <origin rpy="3.14159265 0.00000000 0.00000000" xyz="0.06500000 0.04800000 0.10250000"/>
+        <axis xyz="0.00000000 0.00000000 1.00000000"/>
+        <limit lower="-3.14159265" upper="3.14159265" effort="0" velocity="0"/>
+    </joint>
+    <joint name="Joint02" type="revolute">
+        <parent link="Body01"/>
+        <child link="Body02"/>
+        <origin rpy="-3.14159265  1.57079633  0.00000000" xyz="0.02840000 -0.01310000 -0.02740000"/>
+        <axis xyz="0.00000000 0.00000000 1.00000000"/>
+        <limit lower="-3.14159265" upper="3.14159265" effort="0" velocity="0"/>
+    </joint>
+    <joint name="Joint03" type="revolute">
+        <parent link="Body02"/>
+        <child link="Body03"/>
+        <origin rpy="3.14159265 0.00000000 0.00000000" xyz="-0.12990000  0.00000000 -0.02600000"/>
+        <axis xyz="0.00000000 0.00000000 1.00000000"/>
+        <limit lower="-3.14159265" upper="3.14159265" effort="0" velocity="0"/>
+    </joint>
+    <joint name="Joint04" type="revolute">
+        <parent link="Base"/>
+        <child link="Body04"/>
+        <origin rpy="0.00000000 0.00000000 3.14159265" xyz="0.06500000  0.04820000 -0.10250000"/>
+        <axis xyz="0.00000000 0.00000000 1.00000000"/>
+        <limit lower="-3.14159265" upper="3.14159265" effort="0" velocity="0"/>
+    </joint>
+    <joint name="Joint05" type="revolute">
+        <parent link="Body04"/>
+        <child link="Body05"/>
+        <origin rpy="-3.14159265 -1.57079633  0.00000000" xyz="-0.02720000 -0.01550000 -0.04760000"/>
+        <axis xyz="0.00000000 0.00000000 1.00000000"/>
+        <limit lower="-3.14159265" upper="3.14159265" effort="0" velocity="0"/>
+    </joint>
+    <joint name="Joint06" type="revolute">
+        <parent link="Body05"/>
+        <child link="Body06"/>
+        <origin rpy="3.14159265 0.00000000 0.00000000" xyz="-0.12990000  0.00000000 -0.02600000"/>
+        <axis xyz="0.00000000 0.00000000 1.00000000"/>
+        <limit lower="-3.14159265" upper="3.14159265" effort="0" velocity="0"/>
+    </joint>
+    <joint name="Joint07" type="revolute">
+        <parent link="Base"/>
+        <child link="Body07"/>
+        <origin rpy="0.00000000 0.00000000 0.00000000" xyz="-0.06500000  0.04800013 -0.10250000"/>
+        <axis xyz="0.00000000 0.00000000 1.00000000"/>
+        <limit lower="-3.14159265" upper="3.14159265" effort="0" velocity="0"/>
+    </joint>
+    <joint name="Joint08" type="revolute">
+        <parent link="Body07"/>
+        <child link="Body08"/>
+        <origin rpy="-3.14159265 -1.57079633  0.00000000" xyz="-0.02720000  0.01550000 -0.04760000"/>
+        <axis xyz="0.00000000 0.00000000 1.00000000"/>
+        <limit lower="-3.14159265" upper="3.14159265" effort="0" velocity="0"/>
+    </joint>
+    <joint name="Joint09" type="revolute">
+        <parent link="Body08"/>
+        <child link="Body09"/>
+        <origin rpy="3.14159265 0.00000000 0.00000000" xyz="-0.12987943  0.00000000 -0.02600000"/>
+        <axis xyz="0.00000000 0.00000000 1.00000000"/>
+        <limit lower="-3.14159265" upper="3.14159265" effort="0" velocity="0"/>
+    </joint>
+    <joint name="Joint10" type="revolute">
+        <parent link="Base"/>
+        <child link="Body10"/>
+        <origin rpy="3.14159265 0.00000000 3.14159265" xyz="-0.06500000  0.04800013  0.10250000"/>
+        <axis xyz="0.00000000 0.00000000 1.00000000"/>
+        <limit lower="-3.14159265" upper="3.14159265" effort="0" velocity="0"/>
+    </joint>
+    <joint name="Joint11" type="revolute">
+        <parent link="Body10"/>
+        <child link="Body11"/>
+        <origin rpy="-3.14159265  1.57079633  0.00000000" xyz="0.02840000  0.01310000 -0.02740000"/>
+        <axis xyz="0.00000000 0.00000000 1.00000000"/>
+        <limit lower="-3.14159265" upper="3.14159265" effort="0" velocity="0"/>
+    </joint>
+    <joint name="Joint12" type="revolute">
+        <parent link="Body11"/>
+        <child link="Body12"/>
+        <origin rpy="3.14159265 0.00000000 0.00000000" xyz="-0.12987943  0.00000000 -0.02600000"/>
+        <axis xyz="0.00000000 0.00000000 1.00000000"/>
+        <limit lower="-3.14159265" upper="3.14159265" effort="0" velocity="0"/>
+    </joint>
+</robot>
