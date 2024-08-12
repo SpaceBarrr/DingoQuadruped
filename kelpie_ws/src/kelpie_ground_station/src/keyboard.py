@@ -111,10 +111,6 @@ class Keyboard:
         self.command_pub.publish(self.command)
 
 
-    def signal_handler(sig, frame):
-        sys.exit(0)
-
-
     def main_loop(self):
         rate = rospy.Rate(self.noderate)
 
