@@ -94,7 +94,8 @@ else:
 offsets = np.array(
     [[70, 107, 115, 64],
      [35, 10, 15, 22],
-     [16, 27, 35, 14]])
+     [16, 27, 35, 14]]
+)
 
 servo_name = ""
 if len(sys.argv) > 1 and sys.argv[1] in servo_dict:

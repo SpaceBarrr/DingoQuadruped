@@ -71,9 +71,12 @@ class ServoInterface:
         possible_joint_angles = impose_physical_limits(joint_angles)
 
         # Convert to servo angles
-        self.joint_angles_to_servo_angles(possible_joint_angles)
+        angles = self.joint_angles_to_servo_angles(possible_joint_angles)
 
         # print('Final angles for actuation: ',self.servo_angles)    
+        self.set_servo_angles(angles)
+
+    def set_servo_angles(self, angles):
         for leg_index in range(4):
             for axis_index in range(3):
                 try:
@@ -111,6 +114,7 @@ class ServoInterface:
         
         """
 
+        servo_angles = np.zeros((3, 4))
         for leg in range(4):
             THETA2, THETA3 = joint_angles[1:, leg]
 
@@ -118,19 +122,23 @@ class ServoInterface:
                                                     THETA3 + np.pi / 2)  # TODO draw a diagram to describe this transformatin from IK frame to LINK analysis frame
 
             # Adding offset from IK angle definition to servo angle definition, and conversion to degrees
-            self.servo_angles[0, leg] = m.degrees(joint_angles[0, leg])  # servo zero is same as IK zero
-            self.servo_angles[1, leg] = m.degrees(THETA2)  # servo zero is same as IK zero
-            self.servo_angles[2, leg] = m.degrees(m.pi / 2 + m.pi - THETA0)  # servo zero is different to IK zero
+            servo_angles[0, leg] = m.degrees(joint_angles[0, leg])  # servo zero is same as IK zero
+            servo_angles[1, leg] = m.degrees(THETA2)  # servo zero is same as IK zero
+            servo_angles[2, leg] = m.degrees(m.pi / 2 + m.pi - THETA0)  # servo zero is different to IK zero
         # print('Uncorrected servo_angles: ',self.servo_angles)
 
         # Adding final physical offset angles from servo calibration and clipping to 180 degree max
-        self.servo_angles = np.clip(self.servo_angles + self.physical_calibration_offsets, 0, 180)
+        servo_angles = np.clip(servo_angles + self.physical_calibration_offsets, 0, 180)
 
         # print('Unflipped servo_angles: ',self.servo_angles)
 
         # Accounting for difference in configuration of servos (some are mounted backwards)
-        self.servo_angles = np.round(np.multiply(self.servo_angles, self.servo_multipliers) + self.complementary_angle,
+        servo_angles = np.round(np.multiply(servo_angles, self.servo_multipliers) + self.complementary_angle,
                                      1)
+
+        return servo_angles
+
+
 
 
 ### FUNCTIONS ###
