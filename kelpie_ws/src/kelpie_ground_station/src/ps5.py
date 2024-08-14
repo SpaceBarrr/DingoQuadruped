@@ -9,7 +9,7 @@ from pydualsense import *
 from pydualsense.enums import ConnectionType
 
 
-class Ds5Ros():
+class Ds5Ros:
     def __init__(self):
         self.command = commands()
 
@@ -94,7 +94,6 @@ class Ds5Ros():
         # self.dualsense.state.DpadLeft
         #
 
-
         # self.dualsense.state.L1
         # self.dualsense.state.L2Btn    # L2 boolean button
         # self.dualsense.state.L2       # L2 analog values
@@ -113,14 +112,13 @@ class Ds5Ros():
         # self.dualsense.state.RX/128.0         (R = Right, X = Left-right direction)
         # self.dualsense.state.RY/128.0         (R = Right, Y = Up-Down direction)
 
-        command.y = self.apply_deadband(self.dualsense.state.LY)/-128        # Scale input to 0..1
+        command.y = self.apply_deadband(self.dualsense.state.LY) / -128  # Scale input to 0..1
         command.yaw_rate = self.apply_deadband(self.dualsense.state.LX) / -128
 
-        command.x = self.apply_deadband(self.dualsense.state.RX)/-128
-
+        command.x = self.apply_deadband(self.dualsense.state.RX) / -128
 
         command.roll_movement = 1 if self.dualsense.state.DpadRight else 0 if not self.dualsense.state.DpadLeft else -1
-        command.pitch = self.apply_deadband(self.dualsense.state.RY)/-128
+        command.pitch = self.apply_deadband(self.dualsense.state.RY) / -128
 
         command.gait_toggle = self.dualsense.state.L3
         command.hop_toggle = self.dualsense.state.cross
@@ -129,7 +127,6 @@ class Ds5Ros():
         self.command = command
         # print(self.dualsense.state.L3)
         self.command_pub.publish(command)
-
 
     def main_loop(self):
         rate = rospy.Rate(self.noderate)
@@ -171,6 +168,7 @@ class Ds5Ros():
         curses.echo()
         curses.nocbreak()
         curses.endwin()
+
     def apply_deadband(self, value):
         if abs(value) < self.deadband:
             value = 0.0
@@ -192,6 +190,7 @@ class Ds5Ros():
 
 if __name__ == '__main__':
     import curses
+
     stdscr = curses.initscr()
     curses.noecho()
     curses.cbreak()
@@ -199,4 +198,3 @@ if __name__ == '__main__':
     rospy.init_node("ps5")
     ds5 = Ds5Ros()
     ds5.main_loop()
-
