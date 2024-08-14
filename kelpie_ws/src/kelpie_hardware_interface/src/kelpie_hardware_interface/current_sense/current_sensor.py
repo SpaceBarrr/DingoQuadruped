@@ -18,9 +18,9 @@ class SensorIdx(IntEnum):
 
 
 class MotorChan(IntEnum):
-    ROLL = 0
-    UPPER = 1
-    LOWER = 2
+    R = 0
+    U = 1
+    L = 2
 
 
 class CurrentSensor:
@@ -77,7 +77,7 @@ class LegCurrentSensors:
                       C_VBUS_CONV_TIME_MASK |
                       C_SHUNT_CONV_TIME_MASK |
                       C_MODE_MASK,
-                 value=C_AVERAGING_128_SAMPLES |
+                 value=C_AVERAGING_16_SAMPLES |
                        C_VBUS_CONV_TIME_8MS |
                        C_SHUNT_CONV_TIME_8MS |
                        C_MODE_SHUNT_AND_BUS_CONTINOUS
@@ -127,3 +127,8 @@ class LegCurrentSensors:
 
     def get_shunt_voltage(self, idx: int, channel: int) -> float:
         return self._current_sensors[idx].get_shunt_voltage(channel)
+
+if __name__ == '__main__':
+    string = "fr u"
+    items = string.split(" ")
+    print(MotorChan[items[1].upper()].value)

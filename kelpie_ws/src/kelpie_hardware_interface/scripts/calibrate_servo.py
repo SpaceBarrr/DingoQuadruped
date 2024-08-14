@@ -6,6 +6,10 @@ import numpy as np
 
 from kelpie_hardware_interface.servo.Interface import ServoInterface
 from kelpie_common.Config import Leg_linkage, Configuration
+import curses
+import time
+from kelpie_hardware_interface.current_sense.current_sensor import LegCurrentSensors, SensorIdx, MotorChan
+
 
 DIR_PATH = os.path.dirname(os.path.realpath(__file__))
 
@@ -40,48 +44,78 @@ class CalibrateServo:
                            "rr l": 0, "rl r": 0, "rl u": 0, "rl l": 0}
         self._set_start_pos()
 
-    def _set_start_pos(self):
-        self.servo_interface.physical_calibration_offsets = self._format_offset()
-        self.servo_angles = np.array(
-            [[self.ANGLES["fr r"], self.ANGLES["fl r"], self.ANGLES["rr r"], self.ANGLES["rl r"]],
-             [self.ANGLES["fr u"], self.ANGLES["fl u"], self.ANGLES["rr u"], self.ANGLES["rl u"]],
-             [self.ANGLES["fr l"], self.ANGLES["fl l"], self.ANGLES["rr l"], self.ANGLES["rl l"]]])
+        self.leg_currents = LegCurrentSensors(fr_addr=0,
+                                              fl_addr=0,
+                                              rr_addr=0,
+                                              rl_addr=0)
 
+    def _set_start_pos(self):
+        self.servo_interface.physical_calibration_offsets = self._format_angles(self.offset)
+        self.servo_angles = self._format_angles(self.ANGLES)
         self.servo_interface.set_servo_angles(self.servo_angles)
 
-    def _format_offset(self):
-        return np.array([
-            [self.offset["fr r"], self.offset["fl r"], self.offset["rr r"], self.offset["rl r"]],
-            [self.offset["fr u"], self.offset["fl u"], self.offset["rr u"], self.offset["rl u"]],
-            [self.offset["fr l"], self.offset["fl l"], self.offset["rr l"], self.offset["rl l"]]
-        ])
-
     def run(self):
+        stdscr = curses.initscr()
+        stdscr.clear()
+
+        curses.noecho()
+        curses.cbreak()
+
         motor = "fr r"
+
         while motor != "q":
-            motor = input(f"\n{list(self.offset.keys())}\nselect motor (q to exit): ")
+            motor = self.str_input(stdscr,
+                                   0,
+                                   0,
+                                   f"\n{list(self.offset.keys())}\nselect motor (q to exit): ",
+                                   line_offset=3).decode("utf-8").lower()
+
             if motor == "q":
                 break
             elif motor.lower() == "relax":
                 self.servo_interface.relax_all_motors()
                 continue
             elif motor not in list(self.offset.keys()):
-                print("Invalid motor selection")
+                stdscr.addstr(3, 0, "Invalid motor selection")
+                stdscr.refresh()
+                time.sleep(0.5)
+                stdscr.clear()
                 continue
+            else:
+                stdscr.nodelay(True)
+                curses.noecho()
+
+                motor_enums = motor.split(" ")
+                sensor = SensorIdx[motor_enums[0].upper()].value
+                channel = MotorChan[motor_enums[1].upper()].value
+
+            stdscr.refresh()
             value = 0
 
             while value != "q":
-                print(f"\tCurrent value: {self.offset[motor]}")
-                value = input(f"\tAngle (q to exit): ")
-                if value == "q":
-                    break
-                try:
-                    self.offset[motor] = float(value)
-                    self.servo_interface.physical_calibration_offsets = self._format_offset()
-                    self.servo_interface.set_servo_angles(self.servo_angles)
-                except ValueError as error:
-                    print(f"\tInvalid angle: {error}")
+                stdscr.clear()
+                stdscr.addstr(0, 0, f"Use 'w' and 's' to change servo angles")
+                stdscr.addstr(1, 0, f"Current angle: {self.offset[motor]}")
+                stdscr.addstr(2, 0, f"Servo Current: {self.leg_currents.get_shunt_current(sensor, channel)}")
+                stdscr.addstr(3, 0, "")
+                value = stdscr.getch()
+                if value == -1:
                     continue
+
+                if value == ord("q"):
+                    stdscr.nodelay(False)
+                    break
+
+                elif value == ord("w"):
+                    self.offset[motor] += 1
+
+                elif value == ord("s"):
+                    self.offset[motor] -= 1
+
+                self.servo_interface.physical_calibration_offsets = self._format_angles(self.offset)
+                self.servo_interface.set_servo_angles(self.servo_angles)
+                curses.flushinp()
+                time.sleep(0.04)
 
         new_angles = {"fr": {"roll": self.offset["fr r"], "upper": self.offset["fr u"], "lower": self.offset["fr l"]},
                       "fl": {"roll": self.offset["fl r"], "upper": self.offset["fl u"], "lower": self.offset["fl l"]},
@@ -89,6 +123,22 @@ class CalibrateServo:
                       "rl": {"roll": self.offset["rl r"], "upper": self.offset["rl u"], "lower": self.offset["rl l"]}
                       }
         yaml.dump(new_angles, open(f"{DIR_PATH}/calibrate_servo_angles.yaml", "w+"))
+
+    @staticmethod
+    def _format_angles(arr):
+        return np.array([
+            [arr["fr r"], arr["fl r"], arr["rr r"], arr["rl r"]],
+            [arr["fr u"], arr["fl u"], arr["rr u"], arr["rl u"]],
+            [arr["fr l"], arr["fl l"], arr["rr l"], arr["rl l"]]
+        ])
+
+    @staticmethod
+    def str_input(stdscr, r, c, prompt_string, line_offset=1):
+        curses.echo()
+        stdscr.addstr(r, c, prompt_string)
+        stdscr.refresh()
+        input = stdscr.getstr(r + line_offset, c, 20)
+        return input  # ^^^^  reading input at next line
 
 
 if __name__ == "__main__":
