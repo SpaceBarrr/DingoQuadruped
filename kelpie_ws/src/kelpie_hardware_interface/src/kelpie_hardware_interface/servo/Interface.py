@@ -30,10 +30,21 @@ class ServoInterface:
 
         """ 'servo_multipliers' and 'complementary_angle' both work to flip some angles, x, to (180-x) so that movement on each leg is consistent despite
             physical motor oritentation changes """
+        # self.servo_multipliers = np.array(
+        #     [[1, 1, 1, -1],
+        #      [1, -1, 1, -1],
+        #      [1, -1, 1, -1]])
+        
         self.servo_multipliers = np.array(
             [[-1, 1, 1, -1],
              [1, -1, 1, -1],
              [1, -1, 1, -1]])
+        
+        # self.complementary_angle = np.array(
+        #     [[0, 0, 0, 180],
+        #      [0, 180, 0, 180],
+        #      [0, 180, 0, 180]])
+        
         self.complementary_angle = np.array(
             [[180, 0, 0, 180],
              [0, 180, 0, 180],
@@ -77,17 +88,28 @@ class ServoInterface:
         self.set_servo_angles(angles)
 
     def set_servo_angles(self, angles):
+        # Adding final physical offset angles from servo calibration and clipping to 180 degree max
+        angles = np.clip(angles + self.physical_calibration_offsets, 0, 180)
+
+        # print('Unflipped servo_angles: ',self.servo_angles)
+
+        # Accounting for difference in configuration of servos (some are mounted backwards)
+        angles = np.round(np.multiply(angles, self.servo_multipliers) + self.complementary_angle, 1)
+
         for leg_index in range(4):
             for axis_index in range(3):
                 try:
-                    self.kit.servo[self.pins[axis_index, leg_index]].angle = self.servo_angles[axis_index, leg_index]
-                except:
+                    
+                    self.kit.servo[self.pins[axis_index, leg_index]].angle = angles[axis_index, leg_index]
+                except Exception as error:
+                    print(self.pins[axis_index, leg_index], angles[axis_index, leg_index])
+                    print(error, end="\n\n")
                     rospy.logwarn("Warning - I2C IO error")
 
     ##  This method is used only in the calibrate servos file will make something similar to command individual actuators. 
     # def set_actuator_position(self, joint_angle, axis, leg):
     #     send_servo_command(self.pi, self.pwm_params, self.servo_params, joint_angle, axis, leg)
-    def relax_all_motors(self, servo_list=np.ones((3, 4))):
+    def relax_motors(self, servo_list=np.ones((3, 4))):
         """Relaxes desired servos so that they appear to be turned off. 
 
         Parameters
@@ -99,6 +121,19 @@ class ServoInterface:
             for axis_index in range(3):
                 if servo_list[axis_index, leg_index] == 1:
                     self.kit.servo[self.pins[axis_index, leg_index]].angle = None
+
+    def relax_all_motors(self):
+        """Relaxes desired servos so that they appear to be turned off. 
+
+        Parameters
+        ----------
+        servo_list : 3x4 numpy array of 1's and zeros. Row = Actuator; Column = leg.
+                    If a Given actuator is 0 is 1 it should be deactivated, if it is 0 is should be left on. 
+        """
+        for leg_index in range(4):
+            for axis_index in range(3):
+                self.kit.servo[self.pins[axis_index, leg_index]].angle = None
+
 
     def joint_angles_to_servo_angles(self, joint_angles):
         """Converts joint found via inverse kinematics to the angles needed at the servo using linkage analysis.
@@ -126,15 +161,6 @@ class ServoInterface:
             servo_angles[1, leg] = m.degrees(THETA2)  # servo zero is same as IK zero
             servo_angles[2, leg] = m.degrees(m.pi / 2 + m.pi - THETA0)  # servo zero is different to IK zero
         # print('Uncorrected servo_angles: ',self.servo_angles)
-
-        # Adding final physical offset angles from servo calibration and clipping to 180 degree max
-        servo_angles = np.clip(servo_angles + self.physical_calibration_offsets, 0, 180)
-
-        # print('Unflipped servo_angles: ',self.servo_angles)
-
-        # Accounting for difference in configuration of servos (some are mounted backwards)
-        servo_angles = np.round(np.multiply(servo_angles, self.servo_multipliers) + self.complementary_angle,
-                                     1)
 
         return servo_angles
 

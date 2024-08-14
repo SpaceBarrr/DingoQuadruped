@@ -9,7 +9,8 @@ from kelpie_common.Config import Leg_linkage, Configuration
 class ServoSubscriber:
     def __init__(self):
         self.servo_interface = ServoInterface(Leg_linkage(Configuration()))
-        rospy.Subscriber("/leg_control/joint_states", joint_states, self.callback)
+        rospy.Subscriber("/kelpie/leg_control/joint_states", joint_states, self.callback)
+        print("started")
 
     def callback(self, data):
         joint_angles = self.convert_to_array(data)
