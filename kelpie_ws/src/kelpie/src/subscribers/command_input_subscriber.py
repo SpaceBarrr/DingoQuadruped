@@ -20,12 +20,14 @@ class InputSubscriber:
         self.previous_state = BehaviorState.REST
         self.previous_hop_toggle = 0
         self.previous_joystick_toggle = 0
+        self.previous_calibrate_toggle = 0
 
         self.rounding_dp = 2
 
         self.hop_event = 0
         self.trot_event = 0
         self.joystick_control_event = 0
+        self.calibrate_event = 0
 
         self.input_messages = rospy.Subscriber("/kelpie/command_input", commands, self.input_callback)
         self.current_command = Command()
@@ -36,6 +38,7 @@ class InputSubscriber:
         gait_toggle = command.gait_toggle
         hop_toggle = command.hop_toggle
         joystick_toggle = command.joystick_toggle
+        calibrate_toggle = command.calibration_toggle
 
         self.developing_command = Command()
         # Discrete commands
@@ -51,10 +54,14 @@ class InputSubscriber:
         if not self.joystick_control_event:
             self.joystick_control_event = (joystick_toggle and not self.previous_joystick_toggle)
 
+        if not self.calibrate_event:
+            self.calibrate_event = (calibrate_toggle and not self.previous_calibrate_toggle)
+
         # Update previous values for toggles and state
         self.previous_gait_toggle = gait_toggle
         self.previous_hop_toggle = hop_toggle
         self.previous_joystick_toggle = joystick_toggle
+        self.previous_calibrate_toggle = calibrate_toggle
 
         # self.developing_command.trot_event = self.trot_event
         # self.developing_command.hop_event = self.hop_event
@@ -84,9 +91,11 @@ class InputSubscriber:
         self.current_command.trot_event = self.trot_event
         self.current_command.hop_event = self.hop_event
         self.current_command.joystick_control_event = self.joystick_control_event
+        self.current_command.calibrate = self.calibrate_event
         self.hop_event = False
         self.trot_event = False
         self.joystick_control_event = False
+        self.calibrate_event = False
 
         message_dt = 1.0 / message_rate
 

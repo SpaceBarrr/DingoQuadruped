@@ -28,5 +28,9 @@ class ImuSubscriber:
         self.acc[:] = imu_data.acc.x, imu_data.acc.y, imu_data.acc.z
         self.gyro[:] = imu_data.gyro.x, imu_data.gyro.y, imu_data.gyro.z
 
+        self.att = np.round(self.att, decimals=3)
+        self.acc = np.round(self.acc, decimals=3)
+        self.gyro = np.round(self.gyro, decimals=3)
+
 
 
