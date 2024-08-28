@@ -49,8 +49,8 @@ torque = j.' *[Fx; Fy];
 %% Calculate mock values
 clc;
 % Set upper and lower angles.
-servo_upper_const = deg2rad(0);
-servo_lower_const = deg2rad(29);
+servo_upper_const = deg2rad(-10);
+servo_lower_const = deg2rad(20);
 force_x = 0; % In kg
 force_y = 1.5; % In kg
 g = 9.81
