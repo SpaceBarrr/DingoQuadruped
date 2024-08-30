@@ -16,10 +16,14 @@ def build_leg_msg(msg, angles):
 
 class RollingAverage:
     def __init__(self, window=10):
+        self.window = window
         self._circular_queue = deque([np.inf]*window, maxlen=window)
 
     def append(self, value):
         self._circular_queue.append(value)
+
+    def reset(self):
+        self._circular_queue = deque([np.inf] * self.window, maxlen=self.window)
 
     @property
     def average(self):

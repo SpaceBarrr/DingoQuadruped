@@ -19,6 +19,7 @@ class Ps4Interface:
 
         command.gait_toggle = msg.buttons[5]  # R1
         command.hop_toggle = msg.buttons[0]  # x
+        command.calibration_toggle = msg.buttons[1]  # x
         command.joystick_toggle = msg.buttons[4]  # L1
         command.x = self.apply_deadband(msg.axes[0])  # ly
         command.y = self.apply_deadband(msg.axes[1])  # lx

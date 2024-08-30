@@ -8,7 +8,7 @@ from kelpie_hardware_interface.servo.Interface import ServoInterface
 from kelpie_common.Config import Leg_linkage, Configuration
 import curses
 import time
-from kelpie_hardware_interface.current_sense.current_sensor import LegCurrentSensors, SensorIdx, MotorChan
+from kelpie_hardware_interface.current_sense.current_sensor import SensorIdx, MotorChan
 
 
 DIR_PATH = os.path.dirname(os.path.realpath(__file__))
