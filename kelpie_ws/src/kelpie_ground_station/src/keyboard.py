@@ -23,11 +23,9 @@ class Keyboard:
 
         self.speed_multiplier = 1
 
-
     def on_press(self, key):
         if hasattr(key, 'char'):
             key = key.char
-
         # increase speed
         if key == keyboard.Key.shift:
             self.speed_multiplier = 2
@@ -64,7 +62,8 @@ class Keyboard:
             self.command.hop_toggle = True
         elif key == keyboard.Key.backspace:
             self.command.joystick_toggle = True
-
+        elif key == 'c' or key == 'C':
+            self.command.calibration_toggle = True
 
     def on_release(self, key):
         if hasattr(key, 'char'):
@@ -105,11 +104,12 @@ class Keyboard:
             self.command.hop_toggle = False
         elif key == keyboard.Key.backspace:
             self.command.joystick_toggle = False
-
+        elif key == 'c' or key == 'C':
+            self.command.calibration_toggle = False
 
     def command_publish(self):
+        print(self.command)
         self.command_pub.publish(self.command)
-
 
     def main_loop(self):
         rate = rospy.Rate(self.noderate)

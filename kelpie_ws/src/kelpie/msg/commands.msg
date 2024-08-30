@@ -1,5 +1,6 @@
 bool gait_toggle
 bool hop_toggle
+bool calibration_toggle
 bool joystick_toggle
 float32 x               # LEFT-RIGHT movement
 float32 y               # FORWARD-BACKWARD movement

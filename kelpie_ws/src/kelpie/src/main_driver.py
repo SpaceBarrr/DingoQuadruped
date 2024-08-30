@@ -27,13 +27,13 @@ from gait_controller.Controller import Controller
 from gait_controller.State import State, BehaviorState
 from gait_controller.Kinematics import four_legs_inverse_kinematics
 from kelpie_common.Config import Configuration
+from kelpie_common.Utilities import build_leg_msg
 
 # Import subscribers
 from subscribers.command_input_subscriber import InputSubscriber
 from subscribers.imu_subscriber import ImuSubscriber
 from subscribers.motor_current_subscriber import MotorCurrentSubscriber
-
-from imu_control.calibrate import Calibrator
+from calibrator.current_sensor_calibrate import Calibrator
 
 # TODO: Deprecate below if statement.
 if is_physical:
@@ -86,6 +86,8 @@ class KelpieDriver:
         rospy.loginfo("Input listener successfully initialised... Robot will now receive commands via Joy messages")
 
         self.new_imu = ImuSubscriber()
+        self.motor_currents = MotorCurrentSubscriber()
+        self.calibrator = Calibrator(self.new_imu, self.motor_currents, self.joint_publisher)
 
         rospy.loginfo("Summary of current gait parameters:")
         rospy.loginfo("overlap time: %.2f", self.config.overlap_time)
@@ -122,6 +124,11 @@ class KelpieDriver:
 
                 # Update the robot controller's parameters
                 command = self.input_interface.get_command(self.state, self.message_rate)
+                if command.calibrate:
+                    print("Calibrating")
+                    self.calibrator.run(self.state.joint_angles)
+
+
                 if command.joystick_control_event == 1:
                     if self.state.currently_estopped == 0:
                         self.external_commands_enabled = 1
@@ -231,17 +238,14 @@ class KelpieDriver:
     def publish_joints(self, joint_angles):
         #print(joint_angles, end="\n")
         #print(joint_angles, end="\n")
-        self.joint_states_msg.fr = self.build_leg_msg(self.fr_state_msg, joint_angles[:, 0])
-        self.joint_states_msg.fl = self.build_leg_msg(self.fl_state_msg, joint_angles[:, 1])
-        self.joint_states_msg.rr = self.build_leg_msg(self.rr_state_msg, joint_angles[:, 2])
-        self.joint_states_msg.rl = self.build_leg_msg(self.rl_state_msg, joint_angles[:, 3])
+        self.joint_states_msg.fr = build_leg_msg(self.fr_state_msg, joint_angles[:, 0])
+        self.joint_states_msg.fl = build_leg_msg(self.fl_state_msg, joint_angles[:, 1])
+        self.joint_states_msg.rr = build_leg_msg(self.rr_state_msg, joint_angles[:, 2])
+        self.joint_states_msg.rl = build_leg_msg(self.rl_state_msg, joint_angles[:, 3])
 
         self.joint_publisher.publish(self.joint_states_msg)
 
-    @staticmethod
-    def build_leg_msg(msg, angles):
-        msg.roll, msg.upper, msg.lower = angles[0], angles[1], angles[2]
-        return msg
+
 
 
 def signal_handler(sig, frame):

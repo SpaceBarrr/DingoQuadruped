@@ -3,6 +3,7 @@ import math as m
 import numpy as np
 # from dingo_servo_interfacing.ServoCalibration import MICROS_PER_RAD, NEUTRAL_ANGLE_DEGREES
 from kelpie_hardware_interface.handheld_controller.Ps4Config import PS4_COLOR, PS4_DEACTIVATED_COLOR
+from enum import Enum
 
 
 class Configuration:
@@ -14,8 +15,8 @@ class Configuration:
         #################### COMMANDS ####################
         self.max_x_velocity = 1.2
         self.max_y_velocity = 0.5
-        self.y_vel_tf = lambda y: y * 1     # Allow arbitrary transformation function to be applied to controller inputs
-        self.x_vel_tf = lambda x: x * 1.2   # Allow arbitrary transformation function to be applied to controller inputs
+        self.y_vel_tf = lambda y: y * 1  # Allow arbitrary transformation function to be applied to controller inputs
+        self.x_vel_tf = lambda x: x * 1.2  # Allow arbitrary transformation function to be applied to controller inputs
         self.max_yaw_rate = 2.0
         self.max_pitch = 30.0 * np.pi / 180.0
 
@@ -214,3 +215,21 @@ class Leg_linkage:
         self.hip_width = configuration.L1 * 1000
         self.gamma = m.atan(28.80 / 20.20)
         self.EDC = m.acos((self.c ** 2 + self.h ** 2 - self.e ** 2) / (2 * self.c * self.h))
+
+
+class ServoIndex(Enum):
+    FR_R = (0, 0)
+    FR_U = (1, 0)
+    FR_L = (2, 0)
+
+    FL_R = (0, 1)
+    FL_U = (1, 1)
+    FL_L = (2, 1)
+
+    RR_R = (0, 2)
+    RR_U = (1, 2)
+    RR_L = (2, 2)
+
+    RL_R = (0, 3)
+    RL_U = (1, 3)
+    RL_L = (2, 3)

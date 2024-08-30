@@ -20,3 +20,4 @@ class Command:
         self.hop_event = False
         self.trot_event = False
         self.joystick_control_event = False
+        self.calibrate = False

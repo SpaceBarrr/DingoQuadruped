@@ -220,3 +220,4 @@ class Controller:
 
         rotated_foot_locations = rmat.T @ foot_locations
         return rotated_foot_locations
+ 
