@@ -11,7 +11,7 @@ class Ps4Interface:
 
         self.noderate = rospy.get_param("noderate", 50.0)
         self.joy_sub = rospy.Subscriber("joy", Joy, self.input_callback)
-        self.command_pub = rospy.Publisher("/kelpie/command_input", commands)
+        self.command_pub = rospy.Publisher("/kelpie/command_input", commands, queue_size=1)
 
 
     def input_callback(self, msg):

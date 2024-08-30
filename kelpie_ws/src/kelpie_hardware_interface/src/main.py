@@ -3,7 +3,8 @@ import os
 import numpy as np
 import rospy
 from kelpie_hardware_interface.servo.servo_subscriber import ServoSubscriber
-
+from kelpie_hardware_interface.handheld_controller.ps4 import Ps4Interface
+import time
 
 
 if __name__ == '__main__':
@@ -12,8 +13,8 @@ if __name__ == '__main__':
 
     # Start main subscribers
     servo_subscriber = ServoSubscriber()
+    ps4 = Ps4Interface()
     while True:
-        # TODO: Publish data
-        # Publish data
+        time.sleep(0.1)
         pass
 

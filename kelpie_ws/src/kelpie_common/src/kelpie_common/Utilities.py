@@ -8,3 +8,11 @@ def deadband(value, band_radius):
 def clipped_first_order_filter(input, target, max_rate, tau):
     rate = (target - input) / tau
     return np.clip(rate, -max_rate, max_rate)
+
+
+def format_angles(arr):
+        return np.array([
+            [arr["fr r"], arr["fl r"], arr["rr r"], arr["rl r"]],
+            [arr["fr u"], arr["fl u"], arr["rr u"], arr["rl u"]],
+            [arr["fr l"], arr["fl l"], arr["rr l"], arr["rl l"]]
+        ])

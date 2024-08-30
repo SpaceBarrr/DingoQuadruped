@@ -10,3 +10,5 @@ dingo_ws/.vscode/*
 .idea/*
 dingo_ws/src/.vscode/*
 Kelpie_Main_Board/History/*
+/kelpie_ws/build/
+/kelpie_ws/devel/

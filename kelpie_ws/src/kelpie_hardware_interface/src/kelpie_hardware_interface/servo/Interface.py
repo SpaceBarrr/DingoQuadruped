@@ -1,9 +1,12 @@
 #!/usr/bin/env python3
 import math as m
+import yaml
+import os
 
 import numpy as np
 import rospy
 from adafruit_servokit import ServoKit
+from kelpie_common.Utilities import format_angles
 
 class ServoInterface:
     def __init__(self, link):
@@ -30,20 +33,10 @@ class ServoInterface:
 
         """ 'servo_multipliers' and 'complementary_angle' both work to flip some angles, x, to (180-x) so that movement on each leg is consistent despite
             physical motor oritentation changes """
-        # self.servo_multipliers = np.array(
-        #     [[1, 1, 1, -1],
-        #      [1, -1, 1, -1],
-        #      [1, -1, 1, -1]])
-        
         self.servo_multipliers = np.array(
             [[-1, 1, 1, -1],
              [1, -1, 1, -1],
              [1, -1, 1, -1]])
-        
-        # self.complementary_angle = np.array(
-        #     [[0, 0, 0, 180],
-        #      [0, 180, 0, 180],
-        #      [0, 180, 0, 180]])
         
         self.complementary_angle = np.array(
             [[180, 0, 0, 180],
@@ -57,10 +50,21 @@ class ServoInterface:
             - Offsets for UPPER leg servos map allign the servo so that it is horizontal toward the back of the robot at an input of zero degrees, direct from the IK. 
             - Offsets for LOWER leg servos map allign the servo so that it is vertically down at zero degrees. Note that IK requires a transformation of
                 angle_sent_to_servo = (180-angle_from_IK) + 90 degrees to map to this physcial servo location.  """
-        self.physical_calibration_offsets = np.array(
-            [[80,  140, 110, 70],
-            [16,  0,   18,  0],
-            [-10, -15 ,  -5,   0]])
+        
+        DIR_PATH = os.path.dirname(os.path.realpath(__file__)).replace("/src/kelpie_hardware_interface/servo","/scripts")
+        if os.path.isfile(f"{DIR_PATH}/calibrate_servo_angles.yaml"):
+            with open(f"{DIR_PATH}/calibrate_servo_angles.yaml") as stream:
+                raw_angles = yaml.load(stream, Loader=yaml.SafeLoader)
+                offsets = {
+                "fr r": raw_angles["fr"]["roll"], "fr u": raw_angles["fr"]["upper"], "fr l": raw_angles["fr"]["lower"],
+                "fl r": raw_angles["fl"]["roll"], "fl u": raw_angles["fl"]["upper"], "fl l": raw_angles["fl"]["lower"],
+                "rr r": raw_angles["rr"]["roll"], "rr u": raw_angles["rr"]["upper"], "rr l": raw_angles["rr"]["lower"],
+                "rl r": raw_angles["rl"]["roll"], "rl u": raw_angles["rl"]["upper"], "rl l": raw_angles["rl"]["lower"]
+            }
+            self.physical_calibration_offsets = format_angles(offsets)
+        else:
+            rospy.logwarn("Could not find calibrate_servo_angles.yaml - Using defaults...")
+            self.physical_calibration_offsets = np.zeros((3,4))
         # applying calibration values to all servos
         self.create()
 

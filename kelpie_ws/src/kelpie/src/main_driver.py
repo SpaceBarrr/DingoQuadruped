@@ -63,7 +63,7 @@ class KelpieDriver:
         self.rl_state_msg = leg_state()
         self.rr_state_msg = leg_state()
 
-        self.joint_publisher = rospy.Publisher("/kelpie/leg_control/joint_states", joint_states, queue_size=10)
+        self.joint_publisher = rospy.Publisher("/kelpie/leg_control/joint_states", joint_states, queue_size=1)
 
         # Create config
         self.config = Configuration()

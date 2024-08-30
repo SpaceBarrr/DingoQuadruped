@@ -18,9 +18,9 @@ class SensorIdx(IntEnum):
 
 
 class MotorChan(IntEnum):
-    R = 0
-    U = 1
-    L = 2
+    R = 1
+    U = 2
+    L = 3
 
 
 class CurrentSensor:
@@ -123,7 +123,7 @@ class LegCurrentSensors:
         return total
 
     def get_shunt_current(self, idx: int, channel: int) -> float:
-        return self._current_sensors[idx].get_current(channel)
+        return float(self._current_sensors[idx].get_current(channel))
 
     def get_shunt_voltage(self, idx: int, channel: int) -> float:
         return self._current_sensors[idx].get_shunt_voltage(channel)
