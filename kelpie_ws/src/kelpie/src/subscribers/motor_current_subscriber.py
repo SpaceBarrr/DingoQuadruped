@@ -18,17 +18,17 @@ class MotorCurrentSubscriber:
         self.rl = np.zeros((3,))
         rospy.Subscriber("/kelpie/leg_control/currents", joint_states, self.callback, queue_size=1)
 
-    def callback(self, imu_data: joint_states) -> None:
+    def callback(self, current_data: joint_states) -> None:
         """
         Callback function for IMU subscriber.
-        :param imu_data: The IMU data, expected as imu message format
+        :param current_data: The IMU data, expected as imu message format
         :return: None
         """
         # Keep pointer/reference. Do not overwrite with new class reference.
-        self.fr[:] = joint_states.fr.roll, joint_states.fr.upper, joint_states.fr.lower
-        self.fl[:] = joint_states.fr.roll, joint_states.fr.upper, joint_states.fr.lower
-        self.rr[:] = joint_states.fr.roll, joint_states.fr.upper, joint_states.fr.lower
-        self.rr[:] = joint_states.fr.roll, joint_states.fr.upper, joint_states.fr.lower
+        self.fr[:] = current_data.fr.roll, current_data.fr.upper, current_data.fr.lower
+        self.fl[:] = current_data.fr.roll, current_data.fr.upper, current_data.fr.lower
+        self.rr[:] = current_data.fr.roll, current_data.fr.upper, current_data.fr.lower
+        self.rr[:] = current_data.fr.roll, current_data.fr.upper, current_data.fr.lower
 
 
 

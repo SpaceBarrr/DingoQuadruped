@@ -22,10 +22,6 @@ def format_angles(arr):
             [arr["fr l"], arr["fl l"], arr["rr l"], arr["rl l"]]
         ])
 
-def build_leg_msg(msg, angles):
-    msg.roll, msg.upper, msg.lower = angles[0], angles[1], angles[2]
-    return msg
-
 
 class RollingAverage:
     def __init__(self, window=10):

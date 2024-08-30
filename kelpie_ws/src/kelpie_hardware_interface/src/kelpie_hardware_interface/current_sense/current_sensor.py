@@ -82,16 +82,6 @@ class LegCurrentSensors:
                        C_SHUNT_CONV_TIME_8MS |
                        C_MODE_SHUNT_AND_BUS_CONTINOUS
                  ):
-        """
-        Initializes a new sensors objects.
-        :param fr_addr:
-        :param fl_addr:
-        :param rr_addr:
-        :param rl_addr:
-        :param reg:
-        :param mask:
-        :param value:
-        """
         self._current_sensors: List[CurrentSensor] = [CurrentSensor(fr_addr, reg=reg, mask=mask, value=value),
                                                       CurrentSensor(fl_addr, reg=reg, mask=mask, value=value),
                                                       CurrentSensor(rr_addr, reg=reg, mask=mask, value=value),
