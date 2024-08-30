@@ -29,8 +29,8 @@ class Calibrator:
         self.rl_state_msg = leg_state()
         self.rr_state_msg = leg_state()
         self.joint_angles = np.zeros((3, 4))
-        self.rolling_avg_acc = RollingAverage(window=10)
-        self.rolling_avg_gyro = RollingAverage(window=10)
+        self.rolling_avg_acc = RollingAverage(window=10, initial=np.inf)
+        self.rolling_avg_gyro = RollingAverage(window=10, initial=np.inf)
 
     def run(self, init_state):
         """

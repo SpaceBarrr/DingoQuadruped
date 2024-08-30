@@ -24,15 +24,16 @@ def format_angles(arr):
 
 
 class RollingAverage:
-    def __init__(self, window=10):
+    def __init__(self, window=10, initial=0):
         self.window = window
-        self._circular_queue = deque([np.inf]*window, maxlen=window)
+        self.initial = initial
+        self._circular_queue = deque([initial]*window, maxlen=window)
 
     def append(self, value):
         self._circular_queue.append(value)
 
     def reset(self):
-        self._circular_queue = deque([np.inf] * self.window, maxlen=self.window)
+        self._circular_queue = deque([self.initial] * self.window, maxlen=self.window)
 
     @property
     def average(self):

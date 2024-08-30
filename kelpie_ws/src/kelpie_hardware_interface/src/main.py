@@ -21,7 +21,7 @@ CURRENT_SENSORS = LegCurrentSensors(fr_addr=0x43, # 1000 0011
                                  rr_addr=0x42, # 1000 0010
                                  rl_addr=0x40) # 1000 0000
 LEG_CURRENTS = np.zeros((3, 4))
-MOTOR_CURRENT_PUB = rospy.Publisher("/kelpie/leg_control/currents", CURRENT_MSG, queue_size=1)
+MOTOR_CURRENT_PUB = rospy.Publisher("/kelpie/leg_control/currents", joint_states, queue_size=1)
 
 def get_currents(servo):
     sensor = SensorIdx[servo].value

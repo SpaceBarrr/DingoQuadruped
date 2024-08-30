@@ -259,6 +259,7 @@ def impose_physical_limits(desired_joint_angles):
     possble_joint_angles: numpy array 3x4 of float angles (radians)
         The angles that will be attempted to be implemeneted, limited to a possible range
     '''
+    return desired_joint_angles
     possible_joint_angles = np.zeros((3, 4))
 
     for i in range(4):
