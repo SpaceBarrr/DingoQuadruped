@@ -25,9 +25,11 @@ import rospy
 from controller import Robot, Gyro, Motor, Accelerometer, InertialUnit
 from kelpie.msg import leg_state, joint_states, imu, att, xyz_float32
 from controller.wb import wb
+from numpy import deg2rad
+import time
 
 # Set global parameters
-SAMPLE_RATE = 1 / 30
+SAMPLE_RATE = 1
 
 START_POS = leg_state()
 START_POS.roll = 0
@@ -72,9 +74,9 @@ GYRO: Gyro = KELPIE.getDevice('IMU.gyr')
 ATT: InertialUnit = KELPIE.getDevice('IMU.att')
 
 # Init IMU
-wb.wb_accelerometer_enable(ACC._tag, ctypes.c_double(SAMPLE_RATE))
-wb.wb_gyro_enable(GYRO._tag, ctypes.c_double(SAMPLE_RATE))
-wb.wb_inertial_unit_enable(ATT._tag, ctypes.c_double(SAMPLE_RATE))
+GYRO.enable(SAMPLE_RATE)
+ACC.enable(SAMPLE_RATE)
+ATT.enable(SAMPLE_RATE)
 
 # Create messages
 IMU_MSG = imu()
@@ -84,20 +86,27 @@ IMU_MSG.gyro = xyz_float32()
 
 # Create joint states global var
 JOINT_DATA: joint_states = None
+GLOBAL_TIME = time.time()
+
+# Every second, add error to FL and RL upper legs.
+ERROR_FL = lambda: (0, (GLOBAL_TIME - time.time()) * deg2rad(0.5), 0)
+ERROR_RL = lambda: (0, (GLOBAL_TIME - time.time()) * deg2rad(0.5), 0)
+
+ERROR_FR = lambda: (0, 0, 0)
+ERROR_RR = lambda: (0, 0, 0)
 
 
-
-
-def set_pos(leg, data: leg_state) -> None:
+def set_pos(leg, data: leg_state, error: tuple) -> None:
     """
     Sets the leg position of the robot in Webots
+    :param error:
     :param leg: Leg array, containing Roll, Upper, Lower and direction.
     :param data: The leg_state message containing Roll, Upper, Lower angles.
     :return:
     """
-    leg[0].setPosition(data.roll * leg[3][0])
-    leg[1].setPosition(data.upper * leg[3][1])
-    leg[2].setPosition((data.lower - pi / 2) * leg[3][2])
+    leg[0].setPosition(data.roll * leg[3][0] + error[0])
+    leg[1].setPosition(data.upper * leg[3][1] + error[1])
+    leg[2].setPosition((data.lower - pi / 2) * leg[3][2] + error[2])
 
 
 def set_vel(leg, torque: float) -> None:
@@ -148,6 +157,7 @@ while KELPIE.step(T_STEP) != -1 and not rospy.is_shutdown():
     gyro = GYRO.getValues()
     att = ATT.getRollPitchYaw()
     IMU_MSG.att.roll, IMU_MSG.att.pitch, IMU_MSG.att.yaw = att[0], att[1], att[2]
+    IMU_MSG.att.roll, IMU_MSG.att.pitch, IMU_MSG.att.yaw = att[2], att[0] - pi / 2, att[1]
     IMU_MSG.acc.x, IMU_MSG.acc.y, IMU_MSG.acc.z = acc[0], acc[1], acc[2]
     IMU_MSG.gyro.x, IMU_MSG.gyro.y, IMU_MSG.gyro.z = gyro[0], gyro[1], gyro[2]
     IMU_PUBLISHER.publish(IMU_MSG)
@@ -156,7 +166,7 @@ while KELPIE.step(T_STEP) != -1 and not rospy.is_shutdown():
         # Skip if no joint data has been received.
         continue
 
-    set_pos(LEG_FL, JOINT_DATA.fl)
-    set_pos(LEG_FR, JOINT_DATA.fr)
-    set_pos(LEG_RL, JOINT_DATA.rl)
-    set_pos(LEG_RR, JOINT_DATA.rr)
+    set_pos(LEG_FL, JOINT_DATA.fl, ERROR_FL())
+    set_pos(LEG_FR, JOINT_DATA.fr, ERROR_FR())
+    set_pos(LEG_RL, JOINT_DATA.rl, ERROR_RL())
+    set_pos(LEG_RR, JOINT_DATA.rr, ERROR_RR())

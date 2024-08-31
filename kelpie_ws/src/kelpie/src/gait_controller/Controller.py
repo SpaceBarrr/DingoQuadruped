@@ -20,6 +20,7 @@ class Controller:
             self,
             config,
             inverse_kinematics,
+            imu
     ):
         self.config = config
 
@@ -44,6 +45,7 @@ class Controller:
                                         BehaviorState.FINISHHOP: BehaviorState.TROT}
         self.activate_transition_mapping = {BehaviorState.DEACTIVATED: BehaviorState.REST,
                                             BehaviorState.REST: BehaviorState.DEACTIVATED}
+        self.imu = imu
 
     def step_gait(self, state, command):
         """Calculate the desired foot locations for the next timestep
@@ -186,7 +188,7 @@ class Controller:
             )
 
             # Construct foot rotation matrix to compensate for body tilt
-            rotated_foot_locations = self.stabilise_with_IMU(rotated_foot_locations, state.euler_orientation)
+            rotated_foot_locations = self.stabilise_with_IMU(rotated_foot_locations)
 
             state.joint_angles = self.inverse_kinematics(
                 rotated_foot_locations, self.config
@@ -209,9 +211,9 @@ class Controller:
         )
         return state.joint_angles
 
-    def stabilise_with_IMU(self, foot_locations, orientation):
+    def stabilise_with_IMU(self, foot_locations):
         ''' Applies euler orientatin data of pitch roall and yaw to stabilise hte robt. Current only applying to pitch.'''
-        yaw, pitch, roll = orientation
+        roll, pitch, yaw = self.imu.att[0], self.imu.att[1], self.imu.att[2]
         # print('Yaw: ',np.round(np.degrees(yaw)),'Pitch: ',np.round(np.degrees(pitch)),'Roll: ',np.round(np.degrees(roll)))
         correction_factor = 0.5
         max_tilt = 0.4  # radians

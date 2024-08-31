@@ -13,3 +13,5 @@ Kelpie_Main_Board/History/*
 /kelpie_ws/src/kelpie_hardware_interface/scripts/calibrate_servo_angles.yaml
 /kelpie_ws/devel/
 /kelpie_ws/build/
+/kelpie_ws/src/CMakeLists.txt
+/kelpie_ws/.catkin_workspace

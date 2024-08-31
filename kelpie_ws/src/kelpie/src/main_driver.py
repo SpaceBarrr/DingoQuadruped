@@ -51,6 +51,9 @@ class KelpieDriver:
         self.is_physical = is_physical
         self.use_imu = use_imu
 
+        self.new_imu = ImuSubscriber()
+        self.motor_currents = MotorCurrentSubscriber()
+
         # self.joint_command_sub = rospy.Subscriber("/joint_space_cmd", JointSpace, self.run_joint_space_command)
         # self.task_command_sub = rospy.Subscriber("/task_space_cmd", TaskSpace, self.run_task_space_command)
         self.estop_status_sub = rospy.Subscriber("/kelpie/emergency_stop_status", Bool,
@@ -78,6 +81,7 @@ class KelpieDriver:
         self.controller = Controller(
             self.config,
             four_legs_inverse_kinematics,
+            imu=self.new_imu
         )
 
         self.state = State()
@@ -85,8 +89,7 @@ class KelpieDriver:
         self.input_interface = InputSubscriber(self.config)
         rospy.loginfo("Input listener successfully initialised... Robot will now receive commands via Joy messages")
 
-        self.new_imu = ImuSubscriber()
-        self.motor_currents = MotorCurrentSubscriber()
+
         self.calibrator = Calibrator(self.new_imu, self.motor_currents, self.joint_publisher)
 
         rospy.loginfo("Summary of current gait parameters:")

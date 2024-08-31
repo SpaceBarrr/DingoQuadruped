@@ -6,7 +6,7 @@
 
 PROTO klp [
   field  SFVec3f     translation     0 0 0
-  field  SFRotation  rotation        0 0 1 0
+  field  SFRotation  rotation        1 0 0 1.57079632679
   field  SFString    name            "klp"  # Is `Robot.name`.
   field  SFString    controller      "<extern>" # Is `Robot.controller`.
   field  MFString    controllerArgs  []     # Is `Robot.controllerArgs`.
