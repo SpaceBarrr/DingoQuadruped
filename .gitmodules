@@ -1,3 +1,4 @@
 [submodule "kelpie_ws/src/kelpie_hardware_interface/scripts/Adafruit_CircuitPython_LSM6DS"]
 	path = kelpie_ws/src/kelpie_hardware_interface/src/kelpie_hardware_interface/imu/Adafruit_CircuitPython_LSM6DS
 	url = https://github.com/SpaceBarrr/Adafruit_CircuitPython_LSM6DS
+	branch = main
