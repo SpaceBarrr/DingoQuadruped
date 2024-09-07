@@ -13,9 +13,9 @@ i2c = board.I2C()  # uses board.SCL and board.SDA
 sensor = LSM6DSV16X(i2c)
 
 while True:
-    print("Acceleration: X:%.2f, Y: %.2f, Z: %.2f m/s^2" % (sensor.acceleration))
-    print("Gyro X:%.2f, Y: %.2f, Z: %.2f radians/s" % (sensor.gyro))
-    print(f"Temp: {sensor.temperature}")
-    print(f"Quaternion: {sensor.quaternion}")
-    print("")
+    # print("Acceleration: X:%.2f, Y: %.2f, Z: %.2f m/s^2" % (sensor.acceleration))
+    # print("Gyro X:%.2f, Y: %.2f, Z: %.2f radians/s" % (sensor.gyro))
+    # print(f"Temp: {sensor.temperature}")
+    # print(f"Quaternion: {sensor.quaternion}")
+    sensor.quaternion
     time.sleep(0.5)
