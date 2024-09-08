@@ -10,23 +10,22 @@ from lsm6dsv16x import LSM6DSV16X, FIFOMode
 
 i2c = board.I2C()  # uses board.SCL and board.SDA
 # i2c = board.STEMMA_I2C()  # For using the built-in STEMMA QT connector on a microcontroller
-sensor: LSM6DSV16X = LSM6DSV16X(i2c)
-sensor.fifo_mode = FIFOMode.CONTINUOUS_MODE
+sensor: LSM6DSV16X = LSM6DSV16X(i2c, sensor_fusion=True)
+sensor.fifo_mode = FIFOMode.LSM6DSV16X_CONTINUOUS_WTM_TO_FULL_MODE
 sensor.fifo_watermark = 1
-sensor.sflp_game_vec_batch = False
-sensor.sflp_gravity_vec_batch = True
-sensor.sflp_g_bias_batch = True
+sensor.sflp_game_vec_batch = True
+sensor.sflp_gravity_vec_batch = False
+sensor.sflp_g_bias_batch = False
 sensor.sflp_init = True
-sensor.enable_sflp()
 while True:
     # print("Acceleration: X:%.2f, Y: %.2f, Z: %.2f m/s^2" % (sensor.acceleration))
     # print("Gyro X:%.2f, Y: %.2f, Z: %.2f radians/s" % (sensor.gyro))
     # print(f"Temp: {sensor.temperature}")
     # print(f"Quaternion: {sensor.quaternion}")
     status = sensor.read_status()
-    val = sensor.gravity_vec
+    val = sensor.quaternion
     if val is None:
         continue
     x, y, z = val
-    print(f"samples: {status.samples:3.0f}, x:{x:5.0f}, y:{y:5.0f}: z:{z:5.0f}", end="\r")
+    print(f"samples: {status.samples:3.0f}, x:{x:5.5f}, y:{y:5.5f}, z:{z:5.5f}", end="\r")
     time.sleep(0.1)
