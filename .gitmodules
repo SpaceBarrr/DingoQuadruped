@@ -1,4 +1,3 @@
-[submodule "kelpie_ws/src/kelpie_hardware_interface/scripts/Spacebarrr_CircuitPython_LSM6DS"]
-	path = kelpie_ws/src/kelpie_hardware_interface/src/kelpie_hardware_interface/imu/Adafruit_CircuitPython_LSM6DS
-	url = https://github.com/SpaceBarrr/Adafruit_CircuitPython_LSM6DS
-	branch = main
+[submodule "kelpie_ws/src/kelpie_hardware_interface/src/kelpie_hardware_interface/imu/CircuitPython_LSM6DSV16X"]
+	path = kelpie_ws/src/kelpie_hardware_interface/src/kelpie_hardware_interface/imu/CircuitPython_LSM6DSV16X
+	url = https://github.com/SpaceBarrr/CircuitPython_LSM6DSV16X.git
