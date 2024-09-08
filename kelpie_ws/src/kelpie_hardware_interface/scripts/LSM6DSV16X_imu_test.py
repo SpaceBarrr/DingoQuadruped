@@ -17,5 +17,8 @@ while True:
     # print("Gyro X:%.2f, Y: %.2f, Z: %.2f radians/s" % (sensor.gyro))
     # print(f"Temp: {sensor.temperature}")
     # print(f"Quaternion: {sensor.quaternion}")
-    sensor.quaternion
-    time.sleep(0.5)
+    x, y, z = sensor.quaternion
+    print(f"x:{x:5.0f}, y:{y:5.0f}: z:{z:5.0f}", end="\r")
+    time.sleep(0.001)
+    print("test")
+    
