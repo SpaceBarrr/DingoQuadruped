@@ -11,7 +11,7 @@ from lsm6dsv16x import LSM6DSV16X, FIFOMode
 i2c = board.I2C()  # uses board.SCL and board.SDA
 # i2c = board.STEMMA_I2C()  # For using the built-in STEMMA QT connector on a microcontroller
 sensor: LSM6DSV16X = LSM6DSV16X(i2c)
-sensor.fifo_mode = FIFOMode.LSM6DSV16X_CONTINUOUS_MODE
+sensor.fifo_mode = FIFOMode.CONTINUOUS_MODE
 sensor.fifo_watermark = 1
 sensor.sflp_game_vec_batch = False
 sensor.sflp_gravity_vec_batch = True
