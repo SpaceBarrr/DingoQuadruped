@@ -44,6 +44,7 @@ The following flow diagram shows a simplified overview of how a joystick command
 - Install necessary python packages via `pip install spidev transforms3d adafruit-circuitpython-bno055 pillow rpi.gpio pyserial`
 - Change directory to the home folder: `cd ~`
 - Clone this (the Dingo Quadruped) repository using git: `git clone ...`
+- Update all submodules: `git submodule update --init`
 - Move into the dingo_ws folder: `cd /DingoQuadruped/dingo_ws`
 - Initialise rosdep: `sudo rosdep init`
 - Fetch dependencies with rosdep: `rosdep update`
@@ -198,6 +199,9 @@ Do the following:
     - `sudo systemctl mask serial-getty@ttyS0.service`
  
 Test whether serial is working by running the Dingo code. It should attempt to connect to the Arduino and successfully do so, which can be seen via the code printing to the terminal that publishers have been established. If it errors, first check your wiring to the arduino, and that the arduino has been flashed correctly. If this does not work, further research and trial/error will be needed. Look for articles like [this one](https://devicetests.com/enabling-uart-communication-raspberry-pi-4-ubuntu-20-04)
+
+#### Setting up Voltage Monitoring
+The voltage monitoring on this robot was done using the TLA2024IRUGT chip. Please install the required library to run it with `pip3 install adafruit-circuitpython-tla202x`
 
 #### SD Card Backup
 It's a good idea to backup the sdcard every so often. Here is how to do that on linux.
