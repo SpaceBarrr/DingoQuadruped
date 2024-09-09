@@ -3,9 +3,9 @@
 #import chardet
 import os
 import sys 
+import socket
 import time
 import logging
-import spidev as SPI
 from PIL import Image,ImageDraw,ImageFont
 
 sys.path.insert(0,
@@ -19,7 +19,13 @@ DC = 25
 BL = 18
 bus = 0 
 device = 0 
+ssid = os.popen("iwgetid -r").read().strip()
+hostname = socket.gethostname()
+ip_address = socket.gethostbyname(hostname)
+battery_percentage = 0.7
+
 logging.basicConfig(level=logging.DEBUG)
+
 try:
     # display with hardware SPI:
     ''' Warning!!!Don't  creation of multiple displayer objects!!! '''
@@ -33,55 +39,53 @@ try:
     disp.bl_DutyCycle(50)
 
     # Create blank image for drawing.
-    image1 = Image.new("RGB", (disp.width,disp.height ), "WHITE")
+    image1 = Image.new("RGB", (disp.height, disp.width), "black")
     draw = ImageDraw.Draw(image1)
 
-    logging.info("draw point")
+    # rospy.loginfo("Importing fonts...")
+    Font1 = ImageFont.truetype("/usr/share/fonts/truetype/Font02.ttf", 25)
+    Font1_small = ImageFont.truetype("/usr/share/fonts/truetype/Font02.ttf", 20)
+    Font1_large = ImageFont.truetype("/usr/share/fonts/truetype/Font02.ttf", 60)
+    Font2 = ImageFont.truetype("/usr/share/fonts/truetype/Font01.ttf", 35)
+    Font3 = ImageFont.truetype("/usr/share/fonts/truetype/Font02.ttf", 120)
 
-    draw.rectangle((5,10,6,11), fill = "BLACK")
-    draw.rectangle((5,25,7,27), fill = "BLACK")
-    draw.rectangle((5,40,8,43), fill = "BLACK")
-    draw.rectangle((5,55,9,59), fill = "BLACK")
+    draw.text((20, 110), 'SSID: ' + ssid, fill="WHITE", font=Font1)
+    draw.text((20, 135), 'IP: ' + ip_address, fill="WHITE", font=Font1)
+    current_time = time.strftime("%I:%M:%S%p")
+    draw.text((220, 0), current_time, fill="WHITE", font=Font1_small)
 
-    logging.info("draw rectangle")
-    draw.rectangle([(20,10),(70,60)],fill = "WHITE",outline="BLUE")
-    draw.rectangle([(85,10),(130,60)],fill = "BLUE")
+    ## Battery indication bar
+    black = Image.new("RGB", (320, 172), "black")
 
-    logging.info("draw line")
-    draw.line([(20, 10),(70, 60)], fill = "RED",width = 1)
-    draw.line([(70, 10),(20, 60)], fill = "RED",width = 1)
-    draw.line([(110,65),(110,115)], fill = "RED",width = 1)
-    draw.line([(85,90),(135,90)], fill = "RED",width = 1)
+    print(os.getcwd() + "\n")
+    batt_status = Image.open('../lib/emptybatterystatus_white.png')
 
+    batt_draw = ImageDraw.Draw(batt_status)
 
-    logging.info("draw circle")
-    draw.arc((85,65,135,115),0, 360, fill =(0,255,0))
-    draw.ellipse((20,65,70,115), fill = (0,255,0))
+    if battery_percentage <= 0.20:
+        batt_fill = "RED"
+    elif 0.20 < battery_percentage <= 0.60:
+        batt_fill = "#d49b00"  # yellow
+    else:
+        batt_fill = "#09ab00"  # green
 
-    logging.info("draw text")
-    Font1 = ImageFont.truetype("../Font/Font01.ttf",25)
-    Font2 = ImageFont.truetype("../Font/Font01.ttf",35)
-    Font3 = ImageFont.truetype("../Font/Font02.ttf",32)
+    batt_draw.rounded_rectangle([(42, 92), (42 + (153 * battery_percentage), 170)], 8, fill=batt_fill)
+    batt_draw.text((68, 95), str(int(battery_percentage * 100)) + "%", fill="WHITE", font=Font1_large)
+    batt_scale_factor = 0.8
+    resized_batt_status = batt_status.resize(
+        (int(batt_status.size[0] * batt_scale_factor), int(batt_status.size[1] * batt_scale_factor)))
+    image1.paste(resized_batt_status, (62, -40), resized_batt_status.convert('RGBA'))
 
-    draw.rectangle([(0,120),(140,153)],fill = "BLUE")
-    draw.text((5, 120), 'Hello world', fill = "RED",font=Font1)
-    draw.rectangle([(0,155),(172,195)],fill = "RED")
-    draw.text((1, 155), 'WaveShare', fill = "WHITE",font=Font2)
-    draw.text((5, 190), '1234567890', fill = "GREEN",font=Font3)
-    text= u"微雪电子"
-    draw.text((5, 230),text, fill = "BLUE",font=Font3)
-    image1=image1.rotate(0)
+    image1 = image1.rotate(0)
+    image1 = image1.transpose(Image.ROTATE_270)
     disp.ShowImage(image1)
-    time.sleep(3)
-    logging.info("show image")
-    image = Image.open('LCD_1inch47.jpg')	
-    image = image.rotate(0)
-    disp.ShowImage(image)
+
     time.sleep(3)
     disp.module_exit()
-    logging.info("quit:")
+
 except IOError as e:
     logging.info(e)    
+
 except KeyboardInterrupt:
     disp.module_exit()
     logging.info("quit:")
