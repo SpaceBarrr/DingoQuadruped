@@ -1,11 +1,11 @@
-LTspice 24.0.9 for Windows
-Circuit: * C:\Users\cianr\OneDrive\Documents\DingoQuadruped\PCBs\PDB\Battery_Mon_Sim.asc
-Start Time: Sun Apr  7 10:32:59 2024
+LTspice 24.0.12 for Windows
+Circuit: * C:\Users\Will\Documents\FYP\Software\Kelpie_Main_Board\Simulation\Battery_Mon_Sim.asc
+Start Time: Mon Sep  9 16:31:06 2024
 solver = Normal
-Maximum thread count: 16
+Maximum thread count: 8
 tnom = 27
 temp = 27
 method = modified trap
 Direct Newton iteration for .op point succeeded.
-Total elapsed time: 0.125 seconds.
+Total elapsed time: 0.214 seconds.
 
