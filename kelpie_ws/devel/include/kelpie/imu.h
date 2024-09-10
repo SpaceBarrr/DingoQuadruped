@@ -18,6 +18,8 @@
 #include <kelpie/att.h>
 #include <kelpie/xyz_float32.h>
 #include <kelpie/xyz_float32.h>
+#include <kelpie/xyz_float32.h>
+#include <kelpie/xyz_float32.h>
 
 namespace kelpie
 {
@@ -29,12 +31,16 @@ struct imu_
   imu_()
     : att()
     , acc()
-    , gyro()  {
+    , gyro()
+    , gbias()
+    , grav()  {
     }
   imu_(const ContainerAllocator& _alloc)
     : att(_alloc)
     , acc(_alloc)
-    , gyro(_alloc)  {
+    , gyro(_alloc)
+    , gbias(_alloc)
+    , grav(_alloc)  {
   (void)_alloc;
     }
 
@@ -48,6 +54,12 @@ struct imu_
 
    typedef  ::kelpie::xyz_float32_<ContainerAllocator>  _gyro_type;
   _gyro_type gyro;
+
+   typedef  ::kelpie::xyz_float32_<ContainerAllocator>  _gbias_type;
+  _gbias_type gbias;
+
+   typedef  ::kelpie::xyz_float32_<ContainerAllocator>  _grav_type;
+  _grav_type grav;
 
 
 
@@ -80,7 +92,9 @@ bool operator==(const ::kelpie::imu_<ContainerAllocator1> & lhs, const ::kelpie:
 {
   return lhs.att == rhs.att &&
     lhs.acc == rhs.acc &&
-    lhs.gyro == rhs.gyro;
+    lhs.gyro == rhs.gyro &&
+    lhs.gbias == rhs.gbias &&
+    lhs.grav == rhs.grav;
 }
 
 template<typename ContainerAllocator1, typename ContainerAllocator2>
@@ -137,12 +151,12 @@ struct MD5Sum< ::kelpie::imu_<ContainerAllocator> >
 {
   static const char* value()
   {
-    return "a3e3586bb29c60a67ccc92ece7869236";
+    return "ce43921e7b399d3ef9d38833a187cc81";
   }
 
   static const char* value(const ::kelpie::imu_<ContainerAllocator>&) { return value(); }
-  static const uint64_t static_value1 = 0xa3e3586bb29c60a6ULL;
-  static const uint64_t static_value2 = 0x7ccc92ece7869236ULL;
+  static const uint64_t static_value1 = 0xce43921e7b399d3eULL;
+  static const uint64_t static_value2 = 0xf9d38833a187cc81ULL;
 };
 
 template<class ContainerAllocator>
@@ -164,6 +178,8 @@ struct Definition< ::kelpie::imu_<ContainerAllocator> >
     return "att att\n"
 "xyz_float32 acc\n"
 "xyz_float32 gyro\n"
+"xyz_float32 gbias\n"
+"xyz_float32 grav\n"
 "\n"
 "================================================================================\n"
 "MSG: kelpie/att\n"
@@ -197,6 +213,8 @@ namespace serialization
       stream.next(m.att);
       stream.next(m.acc);
       stream.next(m.gyro);
+      stream.next(m.gbias);
+      stream.next(m.grav);
     }
 
     ROS_DECLARE_ALLINONE_SERIALIZER
@@ -224,6 +242,12 @@ struct Printer< ::kelpie::imu_<ContainerAllocator> >
     s << indent << "gyro: ";
     s << std::endl;
     Printer< ::kelpie::xyz_float32_<ContainerAllocator> >::stream(s, indent + "  ", v.gyro);
+    s << indent << "gbias: ";
+    s << std::endl;
+    Printer< ::kelpie::xyz_float32_<ContainerAllocator> >::stream(s, indent + "  ", v.gbias);
+    s << indent << "grav: ";
+    s << std::endl;
+    Printer< ::kelpie::xyz_float32_<ContainerAllocator> >::stream(s, indent + "  ", v.grav);
   }
 };
 

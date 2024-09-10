@@ -35,12 +35,6 @@ from subscribers.imu_subscriber import ImuSubscriber
 from subscribers.motor_current_subscriber import MotorCurrentSubscriber
 from kelpie_common.current_sensor_calibrate import Calibrator
 
-# TODO: Deprecate below if statement.
-if is_physical:
-    #from kelpie_hardware_interface.servo.Interface import ServoInterface
-    from kelpie_hardware_interface.imu.IMU import IMU
-    #from kelpie_common.Config import Leg_linkage
-
 
 class KelpieDriver:
     def __init__(self, is_sim, is_physical, use_imu):

@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
-from current_sensor import LegCurrentSensors, SensorIdx, MotorChan
+from kelpie_hardware_interface.current_sense.current_sensor import LegCurrentSensors, SensorIdx, MotorChan
+# from current_sensor import LegCurrentSensors, SensorIdx, MotorChan
 from kelpie.msg import joint_states
 from kelpie.msg import leg_state
 from kelpie_common.Utilities import build_leg_msg

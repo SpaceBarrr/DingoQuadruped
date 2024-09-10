@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # coding: utf-8
-from batt_sensor import BattVSensor
+from kelpie_hardware_interface.batt_sense.batt_sensor import BattVSensor
 from kelpie.msg import xyz_float32
 
 VOLTAGE_MSG = xyz_float32

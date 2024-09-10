@@ -5,4 +5,8 @@
           ACC
           GYRO-VAL
           GYRO
+          GBIAS-VAL
+          GBIAS
+          GRAV-VAL
+          GRAV
 ))

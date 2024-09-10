@@ -23,6 +23,8 @@ class imu {
       this.att = null;
       this.acc = null;
       this.gyro = null;
+      this.gbias = null;
+      this.grav = null;
     }
     else {
       if (initObj.hasOwnProperty('att')) {
@@ -43,6 +45,18 @@ class imu {
       else {
         this.gyro = new xyz_float32();
       }
+      if (initObj.hasOwnProperty('gbias')) {
+        this.gbias = initObj.gbias
+      }
+      else {
+        this.gbias = new xyz_float32();
+      }
+      if (initObj.hasOwnProperty('grav')) {
+        this.grav = initObj.grav
+      }
+      else {
+        this.grav = new xyz_float32();
+      }
     }
   }
 
@@ -54,6 +68,10 @@ class imu {
     bufferOffset = xyz_float32.serialize(obj.acc, buffer, bufferOffset);
     // Serialize message field [gyro]
     bufferOffset = xyz_float32.serialize(obj.gyro, buffer, bufferOffset);
+    // Serialize message field [gbias]
+    bufferOffset = xyz_float32.serialize(obj.gbias, buffer, bufferOffset);
+    // Serialize message field [grav]
+    bufferOffset = xyz_float32.serialize(obj.grav, buffer, bufferOffset);
     return bufferOffset;
   }
 
@@ -67,11 +85,15 @@ class imu {
     data.acc = xyz_float32.deserialize(buffer, bufferOffset);
     // Deserialize message field [gyro]
     data.gyro = xyz_float32.deserialize(buffer, bufferOffset);
+    // Deserialize message field [gbias]
+    data.gbias = xyz_float32.deserialize(buffer, bufferOffset);
+    // Deserialize message field [grav]
+    data.grav = xyz_float32.deserialize(buffer, bufferOffset);
     return data;
   }
 
   static getMessageSize(object) {
-    return 36;
+    return 60;
   }
 
   static datatype() {
@@ -81,7 +103,7 @@ class imu {
 
   static md5sum() {
     //Returns md5sum for a message object
-    return 'a3e3586bb29c60a67ccc92ece7869236';
+    return 'ce43921e7b399d3ef9d38833a187cc81';
   }
 
   static messageDefinition() {
@@ -90,6 +112,8 @@ class imu {
     att att
     xyz_float32 acc
     xyz_float32 gyro
+    xyz_float32 gbias
+    xyz_float32 grav
     
     ================================================================================
     MSG: kelpie/att
@@ -131,6 +155,20 @@ class imu {
     }
     else {
       resolved.gyro = new xyz_float32()
+    }
+
+    if (msg.gbias !== undefined) {
+      resolved.gbias = xyz_float32.Resolve(msg.gbias)
+    }
+    else {
+      resolved.gbias = new xyz_float32()
+    }
+
+    if (msg.grav !== undefined) {
+      resolved.grav = xyz_float32.Resolve(msg.grav)
+    }
+    else {
+      resolved.grav = new xyz_float32()
     }
 
     return resolved;

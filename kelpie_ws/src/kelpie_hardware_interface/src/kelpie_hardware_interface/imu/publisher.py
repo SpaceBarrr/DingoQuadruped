@@ -1,7 +1,8 @@
-from kelpie.msg import imu, att, xyz_float32
-from CircuitPython_LSM6DSV16X.lsm6dsv16x.lsm6dsv16x import LSM6DSV16X, FIFOMode
 import board
 from math import pi
+
+from kelpie.msg import imu, att, xyz_float32
+from kelpie_hardware_interface.imu.CircuitPython_LSM6DSV16X.lsm6dsv16x.lsm6dsv16x import LSM6DSV16X, FIFOMode
 
 i2c = board.I2C()
 

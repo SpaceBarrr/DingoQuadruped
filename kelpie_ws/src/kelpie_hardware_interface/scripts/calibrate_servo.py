@@ -22,10 +22,10 @@ class MotorCurrents(Thread):
         """
         super().__init__(*args, **kwargs)
         self.currents = np.zeros((3, 4))
-        self.current_sensors = LegCurrentSensors(fr_addr=0x43,  # 1000 0011
-                                                 fl_addr=0x41,  # 1000 0001
-                                                 rr_addr=0x42,  # 1000 0010
-                                                 rl_addr=0x40)  # 1000 0000
+        self.current_sensors = LegCurrentSensors(fr_addr=0x40,
+                                                 fl_addr=0x42,
+                                                 rr_addr=0x41,
+                                                 rl_addr=0x43)
 
     def run(self):
         # Keep pointer/reference. Do not overwrite with new class reference.
@@ -84,7 +84,9 @@ class CalibrateServo:
         self.servo_angles = format_angles(self.ANGLES)
         self.servo_interface.set_servo_angles(self.servo_angles)
 
-    def run(self):
+    def run(self, current):
+        # while True:
+        #     print(current.currents)
         stdscr = curses.initscr()
         stdscr.clear()
 
@@ -167,5 +169,7 @@ class CalibrateServo:
 
 
 if __name__ == "__main__":
+    current = MotorCurrents()
+    current.start()
     calibrate_ob = CalibrateServo()
-    calibrate_ob.run()
+    calibrate_ob.run(current)

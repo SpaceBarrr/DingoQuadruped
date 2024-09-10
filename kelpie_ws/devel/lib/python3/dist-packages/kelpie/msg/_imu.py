@@ -9,12 +9,14 @@ import struct
 import kelpie.msg
 
 class imu(genpy.Message):
-  _md5sum = "a3e3586bb29c60a67ccc92ece7869236"
+  _md5sum = "ce43921e7b399d3ef9d38833a187cc81"
   _type = "kelpie/imu"
   _has_header = False  # flag to mark the presence of a Header object
   _full_text = """att att
 xyz_float32 acc
 xyz_float32 gyro
+xyz_float32 gbias
+xyz_float32 grav
 
 ================================================================================
 MSG: kelpie/att
@@ -28,8 +30,8 @@ float32 x
 float32 y
 float32 z
 """
-  __slots__ = ['att','acc','gyro']
-  _slot_types = ['kelpie/att','kelpie/xyz_float32','kelpie/xyz_float32']
+  __slots__ = ['att','acc','gyro','gbias','grav']
+  _slot_types = ['kelpie/att','kelpie/xyz_float32','kelpie/xyz_float32','kelpie/xyz_float32','kelpie/xyz_float32']
 
   def __init__(self, *args, **kwds):
     """
@@ -39,7 +41,7 @@ float32 z
     changes.  You cannot mix in-order arguments and keyword arguments.
 
     The available fields are:
-       att,acc,gyro
+       att,acc,gyro,gbias,grav
 
     :param args: complete set of field values, in .msg order
     :param kwds: use keyword arguments corresponding to message field names
@@ -54,10 +56,16 @@ float32 z
         self.acc = kelpie.msg.xyz_float32()
       if self.gyro is None:
         self.gyro = kelpie.msg.xyz_float32()
+      if self.gbias is None:
+        self.gbias = kelpie.msg.xyz_float32()
+      if self.grav is None:
+        self.grav = kelpie.msg.xyz_float32()
     else:
       self.att = kelpie.msg.att()
       self.acc = kelpie.msg.xyz_float32()
       self.gyro = kelpie.msg.xyz_float32()
+      self.gbias = kelpie.msg.xyz_float32()
+      self.grav = kelpie.msg.xyz_float32()
 
   def _get_types(self):
     """
@@ -72,7 +80,7 @@ float32 z
     """
     try:
       _x = self
-      buff.write(_get_struct_9f().pack(_x.att.roll, _x.att.pitch, _x.att.yaw, _x.acc.x, _x.acc.y, _x.acc.z, _x.gyro.x, _x.gyro.y, _x.gyro.z))
+      buff.write(_get_struct_15f().pack(_x.att.roll, _x.att.pitch, _x.att.yaw, _x.acc.x, _x.acc.y, _x.acc.z, _x.gyro.x, _x.gyro.y, _x.gyro.z, _x.gbias.x, _x.gbias.y, _x.gbias.z, _x.grav.x, _x.grav.y, _x.grav.z))
     except struct.error as se: self._check_types(struct.error("%s: '%s' when writing '%s'" % (type(se), str(se), str(locals().get('_x', self)))))
     except TypeError as te: self._check_types(ValueError("%s: '%s' when writing '%s'" % (type(te), str(te), str(locals().get('_x', self)))))
 
@@ -90,11 +98,15 @@ float32 z
         self.acc = kelpie.msg.xyz_float32()
       if self.gyro is None:
         self.gyro = kelpie.msg.xyz_float32()
+      if self.gbias is None:
+        self.gbias = kelpie.msg.xyz_float32()
+      if self.grav is None:
+        self.grav = kelpie.msg.xyz_float32()
       end = 0
       _x = self
       start = end
-      end += 36
-      (_x.att.roll, _x.att.pitch, _x.att.yaw, _x.acc.x, _x.acc.y, _x.acc.z, _x.gyro.x, _x.gyro.y, _x.gyro.z,) = _get_struct_9f().unpack(str[start:end])
+      end += 60
+      (_x.att.roll, _x.att.pitch, _x.att.yaw, _x.acc.x, _x.acc.y, _x.acc.z, _x.gyro.x, _x.gyro.y, _x.gyro.z, _x.gbias.x, _x.gbias.y, _x.gbias.z, _x.grav.x, _x.grav.y, _x.grav.z,) = _get_struct_15f().unpack(str[start:end])
       return self
     except struct.error as e:
       raise genpy.DeserializationError(e)  # most likely buffer underfill
@@ -108,7 +120,7 @@ float32 z
     """
     try:
       _x = self
-      buff.write(_get_struct_9f().pack(_x.att.roll, _x.att.pitch, _x.att.yaw, _x.acc.x, _x.acc.y, _x.acc.z, _x.gyro.x, _x.gyro.y, _x.gyro.z))
+      buff.write(_get_struct_15f().pack(_x.att.roll, _x.att.pitch, _x.att.yaw, _x.acc.x, _x.acc.y, _x.acc.z, _x.gyro.x, _x.gyro.y, _x.gyro.z, _x.gbias.x, _x.gbias.y, _x.gbias.z, _x.grav.x, _x.grav.y, _x.grav.z))
     except struct.error as se: self._check_types(struct.error("%s: '%s' when writing '%s'" % (type(se), str(se), str(locals().get('_x', self)))))
     except TypeError as te: self._check_types(ValueError("%s: '%s' when writing '%s'" % (type(te), str(te), str(locals().get('_x', self)))))
 
@@ -127,11 +139,15 @@ float32 z
         self.acc = kelpie.msg.xyz_float32()
       if self.gyro is None:
         self.gyro = kelpie.msg.xyz_float32()
+      if self.gbias is None:
+        self.gbias = kelpie.msg.xyz_float32()
+      if self.grav is None:
+        self.grav = kelpie.msg.xyz_float32()
       end = 0
       _x = self
       start = end
-      end += 36
-      (_x.att.roll, _x.att.pitch, _x.att.yaw, _x.acc.x, _x.acc.y, _x.acc.z, _x.gyro.x, _x.gyro.y, _x.gyro.z,) = _get_struct_9f().unpack(str[start:end])
+      end += 60
+      (_x.att.roll, _x.att.pitch, _x.att.yaw, _x.acc.x, _x.acc.y, _x.acc.z, _x.gyro.x, _x.gyro.y, _x.gyro.z, _x.gbias.x, _x.gbias.y, _x.gbias.z, _x.grav.x, _x.grav.y, _x.grav.z,) = _get_struct_15f().unpack(str[start:end])
       return self
     except struct.error as e:
       raise genpy.DeserializationError(e)  # most likely buffer underfill
@@ -140,9 +156,9 @@ _struct_I = genpy.struct_I
 def _get_struct_I():
     global _struct_I
     return _struct_I
-_struct_9f = None
-def _get_struct_9f():
-    global _struct_9f
-    if _struct_9f is None:
-        _struct_9f = struct.Struct("<9f")
-    return _struct_9f
+_struct_15f = None
+def _get_struct_15f():
+    global _struct_15f
+    if _struct_15f is None:
+        _struct_15f = struct.Struct("<15f")
+    return _struct_15f

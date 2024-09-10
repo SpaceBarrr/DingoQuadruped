@@ -12,7 +12,7 @@ from kelpie.msg import joint_states, xyz_float32, imu
 
 MOTOR_CURRENT_PUB = rospy.Publisher("/kelpie/leg_control/currents", joint_states, queue_size=1)
 BATT_VOLTAGE_PUB = rospy.Publisher("/kelpie/battery/voltage", xyz_float32, queue_size=1)
-IMU_PUBLISHER = rospy.Publisher("/kelpie/imu", imu, queue_size=1)
+# IMU_PUBLISHER = rospy.Publisher("/kelpie/imu", imu, queue_size=1)
 
 if __name__ == '__main__':
     print('Initializing ROS: connecting to ' + os.environ['ROS_MASTER_URI'])
@@ -26,6 +26,6 @@ if __name__ == '__main__':
     while True:
         publish_currents(MOTOR_CURRENT_PUB)
         publish_batt_v(BATT_VOLTAGE_PUB)
-        publish_imu(IMU_PUBLISHER)
+        # publish_imu(IMU_PUBLISHER)
         time.sleep(0.01)
         pass
