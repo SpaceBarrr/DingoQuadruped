@@ -5,8 +5,6 @@
 
 import numpy as np
 import rospy
-from subscribers.imu_subscriber import ImuSubscriber
-from subscribers.motor_current_subscriber import MotorCurrentSubscriber
 from kelpie_common.Config import ServoIndex as s_idx
 import time
 from kelpie.msg import joint_states
@@ -14,7 +12,7 @@ from kelpie.msg import leg_state
 from kelpie_common.Utilities import build_leg_msg, RollingAverage
 from kelpie_hardware_interface.current_sense.current_sensor import SensorIdx, MotorChan
 class Calibrator:
-    def __init__(self, imu: ImuSubscriber, motor_currents: MotorCurrentSubscriber, joint_publisher: rospy.Publisher):
+    def __init__(self, imu, motor_currents, joint_publisher: rospy.Publisher):
         """
         Initialiser for calibrator class.
         :param imu: Imu subscriber class

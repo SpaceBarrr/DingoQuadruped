@@ -33,7 +33,7 @@ from kelpie_common.Utilities import build_leg_msg
 from subscribers.command_input_subscriber import InputSubscriber
 from subscribers.imu_subscriber import ImuSubscriber
 from subscribers.motor_current_subscriber import MotorCurrentSubscriber
-from calibrator.current_sensor_calibrate import Calibrator
+from kelpie_common.current_sensor_calibrate import Calibrator
 
 # TODO: Deprecate below if statement.
 if is_physical:

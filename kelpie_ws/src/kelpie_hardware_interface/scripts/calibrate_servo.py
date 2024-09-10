@@ -5,7 +5,7 @@ import os
 import curses
 import time
 import numpy as np
-
+from threading import Thread
 from kelpie_hardware_interface.servo.Interface import ServoInterface
 from kelpie_common.Config import Leg_linkage, Configuration
 from kelpie_common.Utilities import format_angles
@@ -13,6 +13,37 @@ from kelpie_hardware_interface.current_sense.current_sensor import LegCurrentSen
 
 DIR_PATH = os.path.dirname(os.path.realpath(__file__))
 
+
+
+class MotorCurrents(Thread):
+    def __init__(self, *args, **kwargs) -> None:
+        """
+        Initialise the ImuSubscriber class
+        """
+        super().__init__(*args, **kwargs)
+        self.currents = np.zeros((3, 4))
+        self.current_sensors = LegCurrentSensors(fr_addr=0x43,  # 1000 0011
+                                                 fl_addr=0x41,  # 1000 0001
+                                                 rr_addr=0x42,  # 1000 0010
+                                                 rl_addr=0x40)  # 1000 0000
+
+    def run(self):
+        # Keep pointer/reference. Do not overwrite with new class reference.
+        while True:
+            self.currents[:, 0] = self.get_currents("FR")
+            self.currents[:, 1] = self.get_currents("FL")
+            self.currents[:, 2] = self.get_currents("RR")
+            self.currents[:, 3] = self.get_currents("RL")
+            time.sleep(0.1)
+
+    def get_currents(self, servo):
+        sensor = SensorIdx[servo].value
+        channel_r = MotorChan.R.value
+        channel_u = MotorChan.U.value
+        channel_l = MotorChan.L.value
+        return (round(self.current_sensors.get_shunt_current(sensor, channel_r), 3),
+                round(self.current_sensors.get_shunt_current(sensor, channel_u), 3),
+                round(self.current_sensors.get_shunt_current(sensor, channel_l), 3))
 class CalibrateServo:
     ''' 
     0  [[front_right_hip, front_left_hip, back_right_hip, back_left_hip]
