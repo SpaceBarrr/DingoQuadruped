@@ -22,7 +22,7 @@ while True:
     # print("Gyro X:%.2f, Y: %.2f, Z: %.2f radians/s" % (sensor.gyration))
     # print(f"Temp: {sensor.temperature}")
     # print(f"Quaternion: {sensor.quaternion}")
-    status = sensor.read_status
+    status = sensor.fifo_status
     val = sensor.quaternion
     if val is None:
         continue
