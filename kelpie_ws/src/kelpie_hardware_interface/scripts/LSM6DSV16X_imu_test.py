@@ -18,8 +18,8 @@ sensor.sflp_gravity_vec_batch = False
 sensor.sflp_g_bias_batch = False
 sensor.sflp_init = True
 while True:
-    # print("Acceleration: X:%.2f, Y: %.2f, Z: %.2f m/s^2" % (sensor.acceleration))
-    # print("Gyro X:%.2f, Y: %.2f, Z: %.2f radians/s" % (sensor.gyro))
+    # print("Acceleration: X:%.2f, Y: %.2f, Z: %.2f m/s^2" % (sensor.acc))
+    # print("Gyro X:%.2f, Y: %.2f, Z: %.2f radians/s" % (sensor.gyration))
     # print(f"Temp: {sensor.temperature}")
     # print(f"Quaternion: {sensor.quaternion}")
     status = sensor.read_status
