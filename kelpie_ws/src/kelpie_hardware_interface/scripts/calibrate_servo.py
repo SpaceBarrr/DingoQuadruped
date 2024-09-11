@@ -8,8 +8,10 @@ import numpy as np
 from threading import Thread
 from kelpie_hardware_interface.servo.Interface import ServoInterface
 from kelpie_common.Config import Leg_linkage, Configuration
+from kelpe_common.current_sensor_calibrate import Calibrator
 from kelpie_common.Utilities import format_angles
 from kelpie_hardware_interface.current_sense.current_sensor import LegCurrentSensors, SensorIdx, MotorChan
+from kelpie_common.Config import ServoIndex as s_idx
 
 DIR_PATH = os.path.dirname(os.path.realpath(__file__))
 
@@ -26,6 +28,7 @@ class MotorCurrents(Thread):
                                                  fl_addr=0x42,
                                                  rr_addr=0x41,
                                                  rl_addr=0x43)
+
 
     def run(self):
         # Keep pointer/reference. Do not overwrite with new class reference.
@@ -44,6 +47,10 @@ class MotorCurrents(Thread):
         return (round(self.current_sensors.get_shunt_current(sensor, channel_r), 3),
                 round(self.current_sensors.get_shunt_current(sensor, channel_u), 3),
                 round(self.current_sensors.get_shunt_current(sensor, channel_l), 3))
+
+    def get_current(self, servo):
+        return self.currents[s_idx[servo].value]
+
 class CalibrateServo:
     ''' 
     0  [[front_right_hip, front_left_hip, back_right_hip, back_left_hip]
@@ -54,11 +61,11 @@ class CalibrateServo:
     def __init__(self):
         self.pwm_max = 2400
         self.pwm_min = 370
-        self.servo_interface = ServoInterface(Leg_linkage(Configuration()))
-        self.servo_interface.physical_calibration_offsets = np.zeros((3, 4))
         self.servo_angles = np.zeros((3, 4))
         self.ANGLES = {"fr r": 0, "fr u": 0, "fr l": 90, "fl r": 0, "fl u": 0, "fl l": 90, "rr r": 0, "rr u": 0,
                        "rr l": 90, "rl r": 0, "rl u": 0, "rl l": 90}
+        self._set_start_pos()
+
         if os.path.isfile(f"{DIR_PATH}/calibrate_servo_angles.yaml"):
             with open(f"{DIR_PATH}/calibrate_servo_angles.yaml") as stream:
                 raw_angles = yaml.load(stream, Loader=yaml.SafeLoader)
@@ -72,12 +79,21 @@ class CalibrateServo:
             print("Could not find calibrate_servo_angles.yaml - Using defaults...")
             self.offset = {"fr r": 0, "fr u": 0, "fr l": 0, "fl r": 0, "fl u": 0, "fl l": 0, "rr r": 0, "rr u": 0,
                            "rr l": 0, "rl r": 0, "rl u": 0, "rl l": 0}
-        self._set_start_pos()
+
 
         self.leg_currents = LegCurrentSensors(fr_addr=0x43, # 1000 0011
                                               fl_addr=0x41, # 1000 0001
                                               rr_addr=0x42, # 1000 0010
                                               rl_addr=0x40) # 1000 0000
+
+        self.motor_currents = MotorCurrents()
+        self.motor_currents.start()
+        self.auto_calibrator = Calibrator(self.motor_currents)
+
+        self.servo_interface = ServoInterface(Leg_linkage(Configuration()))
+        self.servo_interface.physical_calibration_offsets = np.zeros((3, 4))
+        self.auto_calibrator.servo_interface = self.servo_interface
+        self.auto_calibrator.servo_angles = self.servo_angles
 
     def _set_start_pos(self):
         self.servo_interface.physical_calibration_offsets = format_angles(self.offset)
@@ -106,6 +122,9 @@ class CalibrateServo:
                 break
             elif motor.lower() == "relax":
                 self.servo_interface.relax_all_motors()
+                continue
+            elif motor.lower() == "auto":
+                self.auto_calibrator.run(format_angles(self.offset) )
                 continue
             elif motor not in list(self.offset.keys()):
                 stdscr.addstr(3, 0, "Invalid motor selection")
