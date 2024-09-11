@@ -8,7 +8,7 @@ import numpy as np
 from threading import Thread
 from kelpie_hardware_interface.servo.Interface import ServoInterface
 from kelpie_common.Config import Leg_linkage, Configuration
-from kelpe_common.current_sensor_calibrate import Calibrator
+from kelpie_common.current_sensor_calibrate import Calibrator
 from kelpie_common.Utilities import format_angles
 from kelpie_hardware_interface.current_sense.current_sensor import LegCurrentSensors, SensorIdx, MotorChan
 from kelpie_common.Config import ServoIndex as s_idx
@@ -64,7 +64,7 @@ class CalibrateServo:
         self.servo_angles = np.zeros((3, 4))
         self.ANGLES = {"fr r": 0, "fr u": 0, "fr l": 90, "fl r": 0, "fl u": 0, "fl l": 90, "rr r": 0, "rr u": 0,
                        "rr l": 90, "rl r": 0, "rl u": 0, "rl l": 90}
-        self._set_start_pos()
+
 
         if os.path.isfile(f"{DIR_PATH}/calibrate_servo_angles.yaml"):
             with open(f"{DIR_PATH}/calibrate_servo_angles.yaml") as stream:
@@ -80,6 +80,7 @@ class CalibrateServo:
             self.offset = {"fr r": 0, "fr u": 0, "fr l": 0, "fl r": 0, "fl u": 0, "fl l": 0, "rr r": 0, "rr u": 0,
                            "rr l": 0, "rl r": 0, "rl u": 0, "rl l": 0}
 
+        self._set_start_pos()
 
         self.leg_currents = LegCurrentSensors(fr_addr=0x43, # 1000 0011
                                               fl_addr=0x41, # 1000 0001
