@@ -58,7 +58,7 @@ class CalibrateServo:
     2  [front_right_lower, front_left_lower, back_right_lower, back_left_lower]]
     '''
 
-    def __init__(self):
+    def __init__(self, motor_currents):
         self.pwm_max = 2400
         self.pwm_min = 370
         self.servo_angles = np.zeros((3, 4))
@@ -80,21 +80,23 @@ class CalibrateServo:
             self.offset = {"fr r": 0, "fr u": 0, "fr l": 0, "fl r": 0, "fl u": 0, "fl l": 0, "rr r": 0, "rr u": 0,
                            "rr l": 0, "rl r": 0, "rl u": 0, "rl l": 0}
 
-        self._set_start_pos()
+        
 
-        self.leg_currents = LegCurrentSensors(fr_addr=0x43, # 1000 0011
-                                              fl_addr=0x41, # 1000 0001
-                                              rr_addr=0x42, # 1000 0010
-                                              rl_addr=0x40) # 1000 0000
+        self.leg_currents = motor_currents
 
         self.motor_currents = MotorCurrents()
         self.motor_currents.start()
         self.auto_calibrator = Calibrator(self.motor_currents)
 
         self.servo_interface = ServoInterface(Leg_linkage(Configuration()))
+        self._set_start_pos()
+
         self.servo_interface.physical_calibration_offsets = np.zeros((3, 4))
         self.auto_calibrator.servo_interface = self.servo_interface
         self.auto_calibrator.servo_angles = self.servo_angles
+        input("press enter")
+        self.auto_calibrator.run(format_angles(self.offset))
+        
 
     def _set_start_pos(self):
         self.servo_interface.physical_calibration_offsets = format_angles(self.offset)
@@ -139,8 +141,6 @@ class CalibrateServo:
                 stdscr.clear()
 
                 motor_enums = motor.split(" ")
-                sensor = SensorIdx[motor_enums[0].upper()].value
-                channel = MotorChan[motor_enums[1].upper()].value
 
             stdscr.refresh()
             value = 0
@@ -149,7 +149,7 @@ class CalibrateServo:
                 
                 stdscr.addstr(0, 0, f"Use 'w' and 's' to change servo angles")
                 stdscr.addstr(1, 0, f"Current angle: {self.offset[motor]}")
-                stdscr.addstr(2, 0, f"Servo Current: {round(self.leg_currents.get_shunt_current(sensor, channel), 3)}")
+                stdscr.addstr(2, 0, f"Servo Current: {round(self.motor_currents.get_current(motor.replace(' ','_').upper()), 3)}")
                 stdscr.addstr(3, 0, "")
                 value = stdscr.getch()
                 stdscr.refresh()
@@ -191,5 +191,5 @@ class CalibrateServo:
 if __name__ == "__main__":
     current = MotorCurrents()
     current.start()
-    calibrate_ob = CalibrateServo()
+    calibrate_ob = CalibrateServo(current)
     calibrate_ob.run(current)

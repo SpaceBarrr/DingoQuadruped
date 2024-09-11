@@ -93,16 +93,13 @@ class ServoInterface:
     def set_servo_angles(self, angles):
         # Adding final physical offset angles from servo calibration and clipping to 180 degree max
         angles = np.clip(angles + self.physical_calibration_offsets, 0, 180)
-
         # print('Unflipped servo_angles: ',self.servo_angles)
 
         # Accounting for difference in configuration of servos (some are mounted backwards)
         angles = np.round(np.multiply(angles, self.servo_multipliers) + self.complementary_angle, 1)
-
         for leg_index in range(4):
             for axis_index in range(3):
                 try:
-                    
                     self.kit.servo[self.pins[axis_index, leg_index]].angle = angles[axis_index, leg_index]
                 except Exception as error:
                     print(self.pins[axis_index, leg_index], angles[axis_index, leg_index])
