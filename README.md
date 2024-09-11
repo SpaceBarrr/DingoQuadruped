@@ -45,12 +45,12 @@ The following flow diagram shows a simplified overview of how a joystick command
 - Change directory to the home folder: `cd ~`
 - Clone this (the Dingo Quadruped) repository using git: `git clone ...`
 - Update all submodules: `git submodule update --init`
-- Move into the dingo_ws folder: `cd /DingoQuadruped/dingo_ws`
+- Move into the kelpie_ws folder: `cd /DingoQuadruped/kelpie_ws`
 - Initialise rosdep: `sudo rosdep init`
 - Fetch dependencies with rosdep: `rosdep update`
 - Build the workspace: `catkin build`
 - Source the workspace: `source devel/setup.bash`
-- (Optional) Add a line to .bashrc to automatically source the workspace: `echo "source ~/DingoQuadruped/dingo_ws/devel/setup.bash" >> ~/.bashrc`, `source ~/.bashrc`
+- (Optional) Add a line to .bashrc to automatically source the workspace: `echo "source ~/DingoQuadruped/kelpie_ws/devel/setup.bash" >> ~/.bashrc`, `source ~/.bashrc`
 
 ### Additional Installation Steps
 #### Bluetooth Setup
@@ -187,9 +187,9 @@ Please run the code first before following these steps. If you do not receive an
 SPI should now work across restarts
 
 #### Setting up Serial Comms
-Serial communications was one of the hardest parts of this project to get working. Unfortunately Ubuntu 20.04 in particular seems to have trouble on Raspberry Pi with serial communications via the tx and rx pins. If the following steps do not work for you, further research/trial and error may be required. 
+Serial communications is no longer required for the base functionality of the dog, however these docs are included in case this is still required for your usecase. 
 
-Do the following:
+To set up serial comms:
 - Run the following to install ROS serial
     - `sudo apt-get update`
     - `sudo apt-get install ros-noetic-rosserial ros-noetic-rosserial-python ros-noetic-rosserial-arduino`
@@ -197,11 +197,18 @@ Do the following:
     - `sudo systemctl disable serial-getty@ttyS0.service --now`
     - `sudo systemctl stop serial-getty@ttyS0.service`
     - `sudo systemctl mask serial-getty@ttyS0.service`
- 
-Test whether serial is working by running the Dingo code. It should attempt to connect to the Arduino and successfully do so, which can be seen via the code printing to the terminal that publishers have been established. If it errors, first check your wiring to the arduino, and that the arduino has been flashed correctly. If this does not work, further research and trial/error will be needed. Look for articles like [this one](https://devicetests.com/enabling-uart-communication-raspberry-pi-4-ubuntu-20-04)
 
 #### Setting up Voltage Monitoring
 The voltage monitoring on this robot was done using the TLA2024IRUGT chip. Please install the required library to run it with `pip3 install adafruit-circuitpython-tla202x`
+
+#### Configuring web server
+The following is copied from [here](https://www.maketecheasier.com/install-and-configure-apache-in-ubuntu/):
+- Install apache `sudo apt-get install apache2
+`
+- Start apache `sudo /etc/init.d/apache2 start`
+- Edit the apache conf to point to the Kelpie HTML files `/etc/apache2/sites-enabled/000-default.conf`
+    - Change `/var/www` to `~/DingoQuadruped/web_gui/`
+- Restart apache `sudo /etc/init.d/apache2 restart`
 
 #### SD Card Backup
 It's a good idea to backup the sdcard every so often. Here is how to do that on linux.
