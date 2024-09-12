@@ -1,7 +1,7 @@
 import board
-from kelpie.msg import imu, quaternion, xyz_float32
+from kelpie.msg import imu, att, xyz_float32
 from kelpie_hardware_interface.imu.CircuitPython_LSM6DSV16X.lsm6dsv16x.lsm6dsv16x import LSM6DSV16X, FIFOMode
-
+from transforms3d.euler import quat2euler
 i2c = board.I2C()
 
 IMU = LSM6DSV16X(i2c, sensor_fusion=True)
@@ -13,7 +13,7 @@ IMU.sflp_g_bias_batch = True
 IMU.sflp_init = True
 
 IMU_MSG = imu()
-IMU_MSG.quaternion = quaternion()
+IMU_MSG.att = att()
 IMU_MSG.acc = xyz_float32()
 IMU_MSG.gyro = xyz_float32()
 IMU_MSG.gbias = xyz_float32()
@@ -27,11 +27,11 @@ def publish(publisher):
     gyro = IMU.gyroscope
 
     # TODO: Interpolate quat to euler.
-    quat_data = data["SFLP_game_rotation_vector"]
+    euler = quat2euler(data["SFLP_game_rotation_vector"])       # Yes this is stupid, but it is too ingrained in V1 code to switch to quaternions fully.
     gbias = data["SFLP_gyroscope_bias"]
     grav = data["SFLP_gravity_vector"]
 
-    IMU_MSG.quaternion.x, IMU_MSG.quaternion.y, IMU_MSG.quaternion.z, IMU_MSG.quaternion.w = quat_data[0], quat_data[1], quat_data[2], quat_data[3]
+    IMU_MSG.att.roll, IMU_MSG.att.pitch, IMU_MSG.att.raw = euler
 
     IMU_MSG.acc.x, IMU_MSG.acc.y, IMU_MSG.acc.z = acc[0], acc[1], acc[2]
     IMU_MSG.gyro.x, IMU_MSG.gyro.y, IMU_MSG.gyro.z = gyro[0], gyro[1], gyro[2]
