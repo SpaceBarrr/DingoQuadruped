@@ -1,4 +1,4 @@
-att att
+quaternion quaternion
 xyz_float32 acc
 xyz_float32 gyro
 xyz_float32 gbias

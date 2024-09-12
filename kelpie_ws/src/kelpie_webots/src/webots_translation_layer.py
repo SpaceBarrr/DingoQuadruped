@@ -155,6 +155,7 @@ print('Running the control loop')
 while KELPIE.step(T_STEP) != -1 and not rospy.is_shutdown():
     acc = ACC.getValues()
     gyro = GYRO.getValues()
+    # TODO: Change to quaternion
     att = ATT.getRollPitchYaw()
     IMU_MSG.att.roll, IMU_MSG.att.pitch, IMU_MSG.att.yaw = att[2], att[0] - pi / 2, att[1]
     IMU_MSG.acc.x, IMU_MSG.acc.y, IMU_MSG.acc.z = acc[0], acc[1], acc[2]
