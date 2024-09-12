@@ -21,13 +21,13 @@ def format_angles(arr):
             [arr["fr r"], arr["fl r"], arr["rr r"], arr["rl r"]],
             [arr["fr u"], arr["fl u"], arr["rr u"], arr["rl u"]],
             [arr["fr l"], arr["fl l"], arr["rr l"], arr["rl l"]]
-        ])
+        ]).astype(float)
 
 def unformat_angles(angles):
-    ret = {"fr r": angles[s_idx["FR_R"]], "fr u": angles[s_idx["FR_U"]], "fr l": angles[s_idx["FR_L"]],
-           "fl r": angles[s_idx["FL_R"]], "fl u": angles[s_idx["FL_U"]], "fl l": angles[s_idx["Fl_L"]],
-           "rr r": angles[s_idx["RR_R"]], "rr u": angles[s_idx["RR_U"]], "rr l": angles[s_idx["RR_L"]],
-           "rl r": angles[s_idx["RL_R"]], "rl u": angles[s_idx["RL_U"]], "rl l": angles[s_idx["RL_L"]]}
+    ret = {"fr r": int(angles[s_idx["FR_R"].value]), "fr u": int(angles[s_idx["FR_U"].value]), "fr l": int(angles[s_idx["FR_L"].value]),
+           "fl r": int(angles[s_idx["FL_R"].value]), "fl u": int(angles[s_idx["FL_U"].value]), "fl l": int(angles[s_idx["FL_L"].value]),
+           "rr r": int(angles[s_idx["RR_R"].value]), "rr u": int(angles[s_idx["RR_U"].value]), "rr l": int(angles[s_idx["RR_L"].value]),
+           "rl r": int(angles[s_idx["RL_R"].value]), "rl u": int(angles[s_idx["RL_U"].value]), "rl l": int(angles[s_idx["RL_L"].value])}
 
     return ret
 

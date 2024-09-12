@@ -44,7 +44,7 @@ class Calibrator:
         self._write_delay = 0.01
 
     def _hardware_control(self):
-        # print(self.joint_angles)
+        
         self.servo_interface.physical_calibration_offsets = self.joint_angles
         self.servo_interface.set_servo_angles(self.servo_angles)
 
@@ -61,7 +61,6 @@ class Calibrator:
         :param init_state: The current state of the robot to prevent sudden movement of servo's
         :return: None
         """
-        print(init_state)
         self.joint_angles = init_state
         motor_control = Thread(target=self._motor_control_thread)
         
@@ -84,7 +83,7 @@ class Calibrator:
         self.joint_angles[2, :] -= 84   # Values from CAD
         self.joint_angles[1, :] -= 29   # Values from CAD
         self._control_motor()
-        return self.joint_angles
+        return self.joint_angles.astype(int)
 
     def _cal_leg(self, leg):
         """
@@ -106,7 +105,7 @@ class Calibrator:
 
     def _zero_upper(self, leg):
         servo = f"{leg}_U"
-        self._hit_limit(servo, step=-0.1, backoff=10, tstep=0.05, limit=0.03)
+        self._hit_limit(servo, step=-0.1, backoff=10, tstep=0.05, limit=0.025)
         self.rolling_avg_curr[s_idx[servo].value[1]].reset()
         time.sleep(0.1)
         self._write_sync[s_idx[servo].value[1]] = -1

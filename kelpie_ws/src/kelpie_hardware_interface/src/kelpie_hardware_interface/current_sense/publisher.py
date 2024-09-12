@@ -11,10 +11,10 @@ FR_STATE_MSG = leg_state()
 FL_STATE_MSG = leg_state()
 RR_STATE_MSG = leg_state()
 RL_STATE_MSG = leg_state()
-CURRENT_SENSORS = LegCurrentSensors(fr_addr=0x43,  # 1000 0011
-                                    fl_addr=0x41,  # 1000 0001
-                                    rr_addr=0x42,  # 1000 0010
-                                    rl_addr=0x40)  # 1000 0000
+CURRENT_SENSORS = LegCurrentSensors(fr_addr=0x40,  # 1000 0011
+                                    fl_addr=0x42,  # 1000 0001
+                                    rr_addr=0x41,  # 1000 0010
+                                    rl_addr=0x43)  # 1000 0000
 def get_currents(servo):
     sensor = SensorIdx[servo].value
     channel_r = MotorChan.R.value

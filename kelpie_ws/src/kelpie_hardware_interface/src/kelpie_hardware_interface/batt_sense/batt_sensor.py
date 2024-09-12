@@ -67,4 +67,4 @@ class BattVSensor:
 
 if __name__ == '__main__':
     bs = BattVSensor()
-    print(f"V0: {bs.v0_batt}, V1: {bs.v1_batt}")
+    print(f"V0_batt: {bs.v0_batt}, V1_batt: {bs.v1_batt}\nV0_raw: {bs.v0}, V1_raw: {bs.v1}\nV2_raw: {bs.v2*2}")

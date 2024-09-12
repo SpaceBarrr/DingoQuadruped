@@ -28,80 +28,83 @@
             console.log('Connection to websocket server closed.');
         });
 
-        // Publishing a Topic
-        // ------------------
+        // // Publishing a Topic
+        // // ------------------
 
-        var cmdVel = new ROSLIB.Topic({
-            ros: ros,
-            name: '/cmd_vel',
-            messageType: 'geometry_msgs/Twist'
-        });
+        // var cmdVel = new ROSLIB.Topic({
+        //     ros: ros,
+        //     name: '/cmd_vel',
+        //     messageType: 'geometry_msgs/Twist'
+        // });
 
-        var twist = new ROSLIB.Message({
-            linear: {
-                x: 0.1,
-                y: 0.2,
-                z: 0.3
-            },
-            angular: {
-                x: -0.1,
-                y: -0.2,
-                z: -0.3
-            }
-        });
-        cmdVel.publish(twist);
+        // var twist = new ROSLIB.Message({
+        //     linear: {
+        //         x: 0.1,
+        //         y: 0.2,
+        //         z: 0.3
+        //     },
+        //     angular: {
+        //         x: -0.1,
+        //         y: -0.2,
+        //         z: -0.3
+        //     }
+        // });
+        // cmdVel.publish(twist);
 
         // Subscribing to a Topic
         // ----------------------
 
         var listener = new ROSLIB.Topic({
             ros: ros,
-            name: '/listener',
-            messageType: 'std_msgs/String'
+            name: '/kelpie/leg_control/currents',
+            messageType: 'kelpie/joint_states'
         });
 
         listener.subscribe(function (message) {
-            console.log('Received message on ' + listener.name + ': ' + message.data);
-            listener.unsubscribe();
+            console.log(message.fr.lower + message.fr.upper + message.fr.roll)
+            // console.log(message.fr.upper)
+            // console.log(message.fr.roll)
+            // console.log('Received message on ' + listener.name + ': ' + message.data);
+            // listener.unsubscribe();
         });
 
         // Calling a service
         // -----------------
 
-        var addTwoIntsClient = new ROSLIB.Service({
-            ros: ros,
-            name: '/add_two_ints',
-            serviceType: 'rospy_tutorials/AddTwoInts'
-        });
+        // var addTwoIntsClient = new ROSLIB.Service({
+        //     ros: ros,
+        //     name: '/add_two_ints',
+        //     serviceType: 'rospy_tutorials/AddTwoInts'
+        // });
 
-        var request = new ROSLIB.ServiceRequest({
-            a: 1,
-            b: 2
-        });
+        // var request = new ROSLIB.ServiceRequest({
+        //     a: 1,
+        //     b: 2
+        // });
 
-        addTwoIntsClient.callService(request, function (result) {
-            console.log('Result for service call on '
-                + addTwoIntsClient.name
-                + ': '
-                + result.sum);
-        });
+        // addTwoIntsClient.callService(request, function (result) {
+        //     console.log('Result for service call on '
+        //         + addTwoIntsClient.name
+        //         + ': '
+        //         + result.sum);
+        // });
 
         // Getting and setting a param value
         // ---------------------------------
 
-        ros.getParams(function (params) {
-            console.log(params);
-        });
+        // ros.getParams(function (params) {
+        //     console.log(params);
+        // });
 
-        var maxVelX = new ROSLIB.Param({
-            ros: ros,
-            name: 'max_vel_y'
-        });
+        // var maxVelX = new ROSLIB.Param({
+        //     ros: ros,
+        //     name: 'max_vel_y'
+        // });
 
-        maxVelX.set(0.8);
-        maxVelX.get(function (value) {
-            console.log('MAX VAL: ' + value);
-        });
+        // maxVelX.set(0.8);
+        // maxVelX.get(function (value) {
+        //     console.log('MAX VAL: ' + value);
+        // });
     </script>
 </head>
 

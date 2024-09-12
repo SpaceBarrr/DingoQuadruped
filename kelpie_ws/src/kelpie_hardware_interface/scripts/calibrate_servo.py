@@ -9,7 +9,7 @@ from threading import Thread
 from kelpie_hardware_interface.servo.Interface import ServoInterface
 from kelpie_common.Config import Leg_linkage, Configuration
 from kelpie_common.current_sensor_calibrate import Calibrator
-from kelpie_common.Utilities import format_angles, reformat_angles
+from kelpie_common.Utilities import format_angles, unformat_angles
 from kelpie_hardware_interface.current_sense.current_sensor import LegCurrentSensors, SensorIdx, MotorChan
 from kelpie_common.Config import ServoIndex as s_idx
 
@@ -75,10 +75,13 @@ class CalibrateServo:
                 "rr r": raw_angles["rr"]["roll"], "rr u": raw_angles["rr"]["upper"], "rr l": raw_angles["rr"]["lower"],
                 "rl r": raw_angles["rl"]["roll"], "rl u": raw_angles["rl"]["upper"], "rl l": raw_angles["rl"]["lower"]
             }
+
         else:
             print("Could not find calibrate_servo_angles.yaml - Using defaults...")
-            self.offset = {"fr r": 0, "fr u": 0, "fr l": 0, "fl r": 0, "fl u": 0, "fl l": 0, "rr r": 0, "rr u": 0,
-                           "rr l": 0, "rl r": 0, "rl u": 0, "rl l": 0}
+            self.offset = {"fr r": 0, "fr u": 0, "fr l": 0, 
+                           "fl r": 0, "fl u": 0, "fl l": 0, 
+                           "rr r": 0, "rr u": 0, "rr l": 0, 
+                           "rl r": 0, "rl u": 0, "rl l": 0}
 
         
 
@@ -94,6 +97,10 @@ class CalibrateServo:
         self.servo_interface.physical_calibration_offsets = np.zeros((3, 4))
         self.auto_calibrator.servo_interface = self.servo_interface
         self.auto_calibrator.servo_angles = self.servo_angles
+
+        # Uncomment when testing auto
+        # input("press enter")
+        # self.auto_calibrator.run(format_angles(self.offset).astype(float))
         
 
     def _set_start_pos(self):
@@ -116,7 +123,7 @@ class CalibrateServo:
             motor = self.str_input(stdscr,
                                    0,
                                    0,
-                                   f"\n{list(self.offset.keys())}, auto\nselect motor (q to exit): ",
+                                   f"\n{list(self.offset.keys())} or auto (calibrate roll first)\nselect motor (q to exit): ",
                                    line_offset=3).decode("utf-8").lower()
 
             if motor == "q":
@@ -125,7 +132,7 @@ class CalibrateServo:
                 self.servo_interface.relax_all_motors()
                 continue
             elif motor.lower() == "auto":
-                self.offset = reformat_angles(self.auto_calibrator.run(format_angles(self.offset)))
+                self.offset = unformat_angles(self.auto_calibrator.run(format_angles(self.offset)))
                 continue
             elif motor not in list(self.offset.keys()):
                 stdscr.addstr(3, 0, "Invalid motor selection")
@@ -173,6 +180,7 @@ class CalibrateServo:
                       "rr": {"roll": self.offset["rr r"], "upper": self.offset["rr u"], "lower": self.offset["rr l"]},
                       "rl": {"roll": self.offset["rl r"], "upper": self.offset["rl u"], "lower": self.offset["rl l"]}
                       }
+        print(new_angles)
         yaml.dump(new_angles, open(f"{DIR_PATH}/calibrate_servo_angles.yaml", "w+"))
 
     @staticmethod
@@ -188,4 +196,4 @@ if __name__ == "__main__":
     current = MotorCurrents()
     current.start()
     calibrate_ob = CalibrateServo(current)
-    calibrate_ob.run(current)
+    calibrate_ob.run()
