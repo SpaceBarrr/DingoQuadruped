@@ -216,6 +216,9 @@ The voltage monitoring on this robot was done using the TLA2024IRUGT chip. Pleas
         </Directory>
         ```
 - Restart apache `sudo /etc/init.d/apache2 restart`
+- Install ROS bridge `sudo apt-get install ros-melodic-rosbridge-suite`
+
+  
 - To forward ROS to the browser, you will need to start ROS bridge `roslaunch rosbridge_server rosbridge_websocket.launch`
 - Finally, the web server should be accessible on the local network at http://dingo:80/index.html
 
