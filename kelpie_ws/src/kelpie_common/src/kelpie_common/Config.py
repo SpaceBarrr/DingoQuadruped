@@ -200,20 +200,20 @@ class SimulationConfig:
 # Leg Linkage for the purpose of hardware interfacing
 class Leg_linkage:
     def __init__(self, configuration):
-        self.a = 35.12  # mm
+        self.a = 35  # mm
         self.b = 37.6  # mm
-        self.c = 43  # mm
-        self.d = 35.23  # mm
-        self.e = 67.1  # mm
+        self.c = 40  # mm
+        self.d = 35 # mm
+        self.e = 61.2836  # mm
         self.f = 130  # mm  #new will be 130.0
-        self.g = 37  # mm
+        self.g = 50  # mm
         self.h = 43  # mm
         self.upper_leg_length = configuration.L2 * 1000
         self.lower_leg_length = configuration.L3 * 1000
         self.lower_leg_bend_angle = m.radians(0)  # degrees found on CAD
         self.i = self.upper_leg_length
         self.hip_width = configuration.L1 * 1000
-        self.gamma = m.atan(28.80 / 20.20)
+        self.gamma = 0.9559
         self.EDC = m.acos((self.c ** 2 + self.h ** 2 - self.e ** 2) / (2 * self.c * self.h))
 
 

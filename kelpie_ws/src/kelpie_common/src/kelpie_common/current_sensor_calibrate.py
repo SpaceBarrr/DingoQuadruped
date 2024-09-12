@@ -10,7 +10,6 @@ import time
 from kelpie.msg import joint_states
 from kelpie.msg import leg_state
 from kelpie_common.Utilities import build_leg_msg, RollingAverage, format_angles
-from kelpie_hardware_interface.current_sense.current_sensor import SensorIdx, MotorChan
 from threading import Thread
 class Calibrator:
     def __init__(self, motor_currents, imu=None, joint_publisher: rospy.Publisher=None, window=3):
@@ -45,7 +44,7 @@ class Calibrator:
         self._write_delay = 0.01
 
     def _hardware_control(self):
-        print(self.joint_angles)
+        # print(self.joint_angles)
         self.servo_interface.physical_calibration_offsets = self.joint_angles
         self.servo_interface.set_servo_angles(self.servo_angles)
 
@@ -78,18 +77,13 @@ class Calibrator:
         rl.start()
 
         fr.join()
-        print("done1")
         rr.join()
-        print("done2")
         fl.join()
-        print("done3")
         rl.join()
-        print("done3")
         motor_control.join()
         self.joint_angles[2, :] -= 84
         self.joint_angles[1, :] -= 29
         self._control_motor()
-        input("press enter")
 
     def _cal_leg(self, leg):
         """
@@ -141,7 +135,7 @@ class Calibrator:
 
         self.joint_angles[s_idx[servo].value] += backoff * self._conversion
         self._write_sync[s_idx[servo].value[1]] = True
-        print(f"Hit Limit: {servo}")
+        # print(f"Hit Limit: {servo}")
 
     def _collided(self, servo, limit=0.1):
         """

@@ -94,8 +94,6 @@ class CalibrateServo:
         self.servo_interface.physical_calibration_offsets = np.zeros((3, 4))
         self.auto_calibrator.servo_interface = self.servo_interface
         self.auto_calibrator.servo_angles = self.servo_angles
-        input("press enter")
-        self.auto_calibrator.run(format_angles(self.offset))
         
 
     def _set_start_pos(self):
