@@ -11,7 +11,6 @@
     <script type="text/javascript" type="text/javascript">
         // Connecting to ROS
         // -----------------
-
         var ros = new ROSLIB.Ros({
             url: 'ws://localhost:9090'
         });
@@ -28,89 +27,75 @@
             console.log('Connection to websocket server closed.');
         });
 
-        // // Publishing a Topic
-        // // ------------------
-
-        // var cmdVel = new ROSLIB.Topic({
-        //     ros: ros,
-        //     name: '/cmd_vel',
-        //     messageType: 'geometry_msgs/Twist'
-        // });
-
-        // var twist = new ROSLIB.Message({
-        //     linear: {
-        //         x: 0.1,
-        //         y: 0.2,
-        //         z: 0.3
-        //     },
-        //     angular: {
-        //         x: -0.1,
-        //         y: -0.2,
-        //         z: -0.3
-        //     }
-        // });
-        // cmdVel.publish(twist);
-
-        // Subscribing to a Topic
+        // Declaring ROS Topics
         // ----------------------
+        var joint_states_topic = new ROSLIB.Topic({
+            ros: ros,
+            name: '/kelpie/leg_control/joint_states',
+            messageType: 'kelpie/joint_states'
+        });
 
-        var listener = new ROSLIB.Topic({
+        var currents_topic = new ROSLIB.Topic({
             ros: ros,
             name: '/kelpie/leg_control/currents',
             messageType: 'kelpie/joint_states'
         });
 
-        listener.subscribe(function (message) {
-            console.log(message.fr.lower + message.fr.upper + message.fr.roll)
-            // console.log(message.fr.upper)
-            // console.log(message.fr.roll)
-            // console.log('Received message on ' + listener.name + ': ' + message.data);
-            // listener.unsubscribe();
+        var batt_voltage_topic = new ROSLIB.Topic({
+            ros: ros,
+            name: '/kelpie/battery/voltage',
+            messageType: 'kelpie/xyz_float32'
         });
 
-        // Calling a service
-        // -----------------
+        var imu_topic = new ROSLIB.Topic({
+            ros: ros,
+            name: '/kelpie/imu',
+            messageType: 'kelpie/imu'
+        });
 
-        // var addTwoIntsClient = new ROSLIB.Service({
-        //     ros: ros,
-        //     name: '/add_two_ints',
-        //     serviceType: 'rospy_tutorials/AddTwoInts'
-        // });
+        <!-- Other publishers:
+            name: '/kelpie/emergency_stop_status'
+            messageType: bool
 
-        // var request = new ROSLIB.ServiceRequest({
-        //     a: 1,
-        //     b: 2
-        // });
+            name: '/kelpie/command_input'
+            messageType: 'kelpie/commands'-->
 
-        // addTwoIntsClient.callService(request, function (result) {
-        //     console.log('Result for service call on '
-        //         + addTwoIntsClient.name
-        //         + ': '
-        //         + result.sum);
-        // });
+        // Subscribing to Topics
+        // ----------------------
+        joint_states_topic.subscribe(function (msg) {
+            document.getElementById("joint_states").innerHTML = msg.data
+            console.log(msg.fr.lower + msg.fr.upper + msg.fr.roll)
+        });
 
-        // Getting and setting a param value
-        // ---------------------------------
+        currents_topic.subscribe(function (msg) {
+            document.getElementById("currents").innerHTML = msg.data
+            console.log(msg.fr.lower + msg.fr.upper + msg.fr.roll)
+        });
 
-        // ros.getParams(function (params) {
-        //     console.log(params);
-        // });
+        batt_voltage_topic.subscribe(function (msg) {
+            document.getElementById("batt_voltage_v1").innerHTML = msg.x
+            document.getElementById("batt_voltage_v2").innerHTML = msg.y
+            document.getElementById("batt_voltage_overall").innerHTML = msg.z
+            console.log(msg.x + msg.y + msg.z)
+        });
 
-        // var maxVelX = new ROSLIB.Param({
-        //     ros: ros,
-        //     name: 'max_vel_y'
-        // });
-
-        // maxVelX.set(0.8);
-        // maxVelX.get(function (value) {
-        //     console.log('MAX VAL: ' + value);
-        // });
+        imu_topic.subscribe(function (msg) {
+            document.getElementById("imu").innerHTML = msg.data
+            console.log(msg.acc.x + msg.acc.y + msg.acc.z)
+        });
     </script>
 </head>
 
 <body>
-    <h1>Simple roslib Example</h1>
-    <p>Check your Web Console for output.</p>
+    <h1>Kelpie</h1>
+<!--    <p>Joint States: <span id="joint_states"></span></p>-->
+<!--    <p>Currents: <span id="currents"></span></p>-->
+<!--    <p>Battery Voltages: <span id="batt_voltage"></span></p>-->
+<!--    <p>IMU: <span id="imu"></span></p>-->
+    <h2>Battery Voltage</h2>
+    <p>V1: <span id="batt_voltage_v1"></span></p>
+    <p>V2: <span id="batt_voltage_v2"></span></p>
+    <p>Total Voltage: <span id="batt_voltage_overall"></span></p>
 </body>
 
 </html>
