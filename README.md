@@ -202,13 +202,22 @@ To set up serial comms:
 The voltage monitoring on this robot was done using the TLA2024IRUGT chip. Please install the required library to run it with `pip3 install adafruit-circuitpython-tla202x`
 
 #### Configuring web server
-The following is copied from [here](https://www.maketecheasier.com/install-and-configure-apache-in-ubuntu/):
 - Install apache `sudo apt-get install apache2
 `
 - Start apache `sudo /etc/init.d/apache2 start`
-- Edit the apache conf to point to the Kelpie HTML files `/etc/apache2/sites-enabled/000-default.conf`
-    - Change `/var/www` to `~/DingoQuadruped/web_gui/`
+- Edit the apache conf to point to the Kelpie HTML files and allow access `sudo nano /etc/apache2/sites-enabled/000-default.conf`
+    - Change `/var/www` to `home/{username}/DingoQuadruped/web_gui/`
+    - Add in the directory directives to allow access
+        ```
+        <Directory home/{username}/DingoQuadruped/web_gui>
+            Options Indexes FollowSymLinks
+            AllowOverride All
+            Require all granted
+        </Directory>
+        ```
 - Restart apache `sudo /etc/init.d/apache2 restart`
+- To forward ROS to the browser, you will need to start ROS bridge `roslaunch rosbridge_server rosbridge_websocket.launch`
+- Finally, the web server should be accessible on the local network at http://dingo:80/index.html
 
 #### SD Card Backup
 It's a good idea to backup the sdcard every so often. Here is how to do that on linux.
