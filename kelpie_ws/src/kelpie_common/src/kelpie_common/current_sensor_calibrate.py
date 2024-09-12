@@ -81,9 +81,10 @@ class Calibrator:
         fl.join()
         rl.join()
         motor_control.join()
-        self.joint_angles[2, :] -= 84
-        self.joint_angles[1, :] -= 29
+        self.joint_angles[2, :] -= 84   # Values from CAD
+        self.joint_angles[1, :] -= 29   # Values from CAD
         self._control_motor()
+        return self.joint_angles
 
     def _cal_leg(self, leg):
         """

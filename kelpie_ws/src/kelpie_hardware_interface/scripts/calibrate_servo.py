@@ -9,7 +9,7 @@ from threading import Thread
 from kelpie_hardware_interface.servo.Interface import ServoInterface
 from kelpie_common.Config import Leg_linkage, Configuration
 from kelpie_common.current_sensor_calibrate import Calibrator
-from kelpie_common.Utilities import format_angles
+from kelpie_common.Utilities import format_angles, reformat_angles
 from kelpie_hardware_interface.current_sense.current_sensor import LegCurrentSensors, SensorIdx, MotorChan
 from kelpie_common.Config import ServoIndex as s_idx
 
@@ -101,7 +101,7 @@ class CalibrateServo:
         self.servo_angles = format_angles(self.ANGLES)
         self.servo_interface.set_servo_angles(self.servo_angles)
 
-    def run(self, current):
+    def run(self):
         # while True:
         #     print(current.currents)
         stdscr = curses.initscr()
@@ -116,7 +116,7 @@ class CalibrateServo:
             motor = self.str_input(stdscr,
                                    0,
                                    0,
-                                   f"\n{list(self.offset.keys())}\nselect motor (q to exit): ",
+                                   f"\n{list(self.offset.keys())}, auto\nselect motor (q to exit): ",
                                    line_offset=3).decode("utf-8").lower()
 
             if motor == "q":
@@ -125,7 +125,7 @@ class CalibrateServo:
                 self.servo_interface.relax_all_motors()
                 continue
             elif motor.lower() == "auto":
-                self.auto_calibrator.run(format_angles(self.offset) )
+                self.offset = reformat_angles(self.auto_calibrator.run(format_angles(self.offset)))
                 continue
             elif motor not in list(self.offset.keys()):
                 stdscr.addstr(3, 0, "Invalid motor selection")
@@ -137,8 +137,6 @@ class CalibrateServo:
                 stdscr.nodelay(True)
                 curses.noecho()
                 stdscr.clear()
-
-                motor_enums = motor.split(" ")
 
             stdscr.refresh()
             value = 0

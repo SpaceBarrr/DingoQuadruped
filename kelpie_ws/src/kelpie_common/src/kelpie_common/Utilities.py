@@ -1,5 +1,6 @@
 import numpy as np
 from collections import deque
+from kelpie_common.Config import ServoIndex as s_idx
 
 def deadband(value, band_radius):
     return max(value - band_radius, 0) + min(value + band_radius, 0)
@@ -21,6 +22,14 @@ def format_angles(arr):
             [arr["fr u"], arr["fl u"], arr["rr u"], arr["rl u"]],
             [arr["fr l"], arr["fl l"], arr["rr l"], arr["rl l"]]
         ])
+
+def unformat_angles(angles):
+    ret = {"fr r": angles[s_idx["FR_R"]], "fr u": angles[s_idx["FR_U"]], "fr l": angles[s_idx["FR_L"]],
+           "fl r": angles[s_idx["FL_R"]], "fl u": angles[s_idx["FL_U"]], "fl l": angles[s_idx["Fl_L"]],
+           "rr r": angles[s_idx["RR_R"]], "rr u": angles[s_idx["RR_U"]], "rr l": angles[s_idx["RR_L"]],
+           "rl r": angles[s_idx["RL_R"]], "rl u": angles[s_idx["RL_U"]], "rl l": angles[s_idx["RL_L"]]}
+
+    return ret
 
 
 class RollingAverage:
