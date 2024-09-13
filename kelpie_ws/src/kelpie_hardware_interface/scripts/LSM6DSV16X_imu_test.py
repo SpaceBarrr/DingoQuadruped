@@ -2,6 +2,7 @@ import sys
 import os
 import time
 import board
+from transforms3d.euler import quat2euler
 
 sys.path.insert(0,
                 os.path.dirname(os.path.realpath(__file__)).replace('scripts', 'src') + \

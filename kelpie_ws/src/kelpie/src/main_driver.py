@@ -68,8 +68,8 @@ class KelpieDriver:
         #     self.linkage = Leg_linkage(self.config)
         #     self.hardware_interface = ServoInterface(self.linkage)
         # Create imu handle
-        if self.use_imu:
-            self.imu = IMU()
+        # if self.use_imu:
+        #     self.imu = IMU()
 
         # Create controller and user input handles
         self.controller = Controller(
@@ -136,10 +136,10 @@ class KelpieDriver:
 
                 # Read imu data. Orientation will be None if no data was available
                 # rospy.loginfo(imu.read_orientation())
-                self.state.euler_orientation = (
-                    self.imu.read_orientation() if self.use_imu else np.array([0, 0, 0])
-                )
-                [yaw, pitch, roll] = self.state.euler_orientation
+                # self.state.euler_orientation = (
+                #     self.imu.read_orientation() if self.use_imu else np.array([0, 0, 0])
+                # )
+                # [yaw, pitch, roll] = self.state.euler_orientation
                 # print('Yaw: ',np.round(yaw,2),'Pitc
                 # ]\h: ',np.round(pitch,2),'Roll: ',np.round(roll,2))
                 # Step the controller forward by dt
