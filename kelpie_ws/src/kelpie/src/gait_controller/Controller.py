@@ -10,7 +10,7 @@ from gait_controller.Utilities import clipped_first_order_filter
 from geometry_msgs.msg import Point
 from std_msgs.msg import Header
 from transforms3d.euler import euler2mat
-
+from kelpie_common.Config import ServoIndex as s_idx
 
 class Controller:
     """Controller and planner object
@@ -20,7 +20,8 @@ class Controller:
             self,
             config,
             inverse_kinematics,
-            imu
+            imu,
+            offsets
     ):
         self.config = config
 
@@ -46,6 +47,7 @@ class Controller:
         self.activate_transition_mapping = {BehaviorState.DEACTIVATED: BehaviorState.REST,
                                             BehaviorState.REST: BehaviorState.DEACTIVATED}
         self.imu = imu
+        self.imu_offsets = offsets
 
     def step_gait(self, state, command):
         """Calculate the desired foot locations for the next timestep
@@ -188,8 +190,8 @@ class Controller:
             )
 
             # Construct foot rotation matrix to compensate for body tilt
-            rotated_foot_locations = self.stabilise_with_IMU(rotated_foot_locations)
-
+            # rotated_foot_locations = self.stabilise_with_IMU(rotated_foot_locations)
+            self.stabilise_with_IMU()
             state.joint_angles = self.inverse_kinematics(
                 rotated_foot_locations, self.config
             )
@@ -211,15 +213,26 @@ class Controller:
         )
         return state.joint_angles
 
-    def stabilise_with_IMU(self, foot_locations):
-        ''' Applies euler orientatin data of pitch roall and yaw to stabilise hte robt. Current only applying to pitch.'''
-        roll, pitch, yaw = self.imu.att[0], self.imu.att[1], self.imu.att[2]
-        # print('Yaw: ',np.round(np.degrees(yaw)),'Pitch: ',np.round(np.degrees(pitch)),'Roll: ',np.round(np.degrees(roll)))
-        correction_factor = 0.5
-        max_tilt = 0.4  # radians
-        roll_compensation = correction_factor * np.clip(-roll, -max_tilt, max_tilt)
-        pitch_compensation = correction_factor * np.clip(-pitch, -max_tilt, max_tilt)
-        rmat = euler2mat(roll_compensation, pitch_compensation, 0)
+    def stabilise_with_IMU(self):
+        # Get imu_stuff from IMU and joint manipulation
+        imu_stuff = np.zeros((3, 4))
+        self.imu_offsets += imu_stuff
 
-        rotated_foot_locations = rmat.T @ foot_locations
-        return rotated_foot_locations
+        """
+        # PSEUDO CODE:
+        Step 1: Get IMU data (roll and pitch)
+        Step 2: If pitching up, lower front legs, raise rear legs
+        Step 3: If pitching down, raise front legs, lower rear legs
+        Step 4: If rolling left, raise left legs, lower right legs
+        Step 5: If rolling right, lower left legs, raise right legs
+        
+        """
+
+    def _adjust_height(self, leg, height_offset):
+        # TODO: Adjust height of each leg such that TPU feet is perpendicular to ground.
+        upper, lower = self._calc_offsets(leg, height_offset)
+        self.imu_offsets[s_idx[leg + "_U"].value] += upper
+        self.imu_offsets[s_idx[leg + "_L"].value] += lower
+        pass
+
+

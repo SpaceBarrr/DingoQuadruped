@@ -64,18 +64,14 @@ class KelpieDriver:
 
         # Create config
         self.config = Configuration()
-        # if is_physical:
-        #     self.linkage = Leg_linkage(self.config)
-        #     self.hardware_interface = ServoInterface(self.linkage)
-        # Create imu handle
-        # if self.use_imu:
-        #     self.imu = IMU()
+        self.imu_offsets = np.zeros((3, 4))
 
         # Create controller and user input handles
         self.controller = Controller(
             self.config,
             four_legs_inverse_kinematics,
-            imu=self.new_imu
+            imu=self.new_imu,
+            offsets=self.imu_offsets
         )
 
         self.state = State()
@@ -235,6 +231,8 @@ class KelpieDriver:
     def publish_joints(self, joint_angles):
         #print(joint_angles, end="\n")
         #print(joint_angles, end="\n")
+        joint_angles += self.imu_offsets
+        # This adds on offsets from the IMU.
         self.joint_states_msg.fr = build_leg_msg(self.fr_state_msg, joint_angles[:, 0])
         self.joint_states_msg.fl = build_leg_msg(self.fl_state_msg, joint_angles[:, 1])
         self.joint_states_msg.rr = build_leg_msg(self.rr_state_msg, joint_angles[:, 2])
