@@ -55,9 +55,10 @@ add_message_files(
    leg_state.msg
    commands.msg
    att.msg
-   xyz_float32.msg
    imu.msg
+   xyz_float32.msg
 )
+
 
 
 ## Generate services in the 'srv' folder
