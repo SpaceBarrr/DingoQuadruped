@@ -23,6 +23,7 @@ class DesiredState:
     yaw = 0
     height = -0.20
     smoothed_yaw = 0
+    yaw_rate = 0
 
 
 class Controller:
@@ -63,12 +64,30 @@ class Controller:
         self.imu_offsets = offsets
 
         # Potentially move these values to be set in the config.
-        self._controller_roll = PID(3, 0.2, 0, setpoint=0, sample_time=0.02)
-        self._controller_pitch = PID(2, 0.2, 0, setpoint=0, sample_time=0.02)
-        self._controller_yaw = PID(2, 0.2, 0, setpoint=0, sample_time=0.02)
+        self._controller_roll = PID(3, 0.2, 0,
+                                    setpoint=0,
+                                    sample_time=0.02,
+                                    output_limits=(-self.config.roll_speed, self.config.roll_speed))
+
+        self._controller_pitch = PID(2, 0.2, 0,
+                                     setpoint=0,
+                                     sample_time=0.02,
+                                     output_limits=(-self.config.max_pitch, self.config.max_pitch))
+
+        self._controller_yaw = PID(2, 0.2, 0,
+                                   setpoint=0,
+                                   sample_time=0.02,
+                                   output_limits=(-self.config.max_yaw_rate, self.config.max_yaw_rate))
+        self._controller_roll(0)
+        self._controller_pitch(0)
+        self._controller_yaw(0)
+
+        self._pid_control = False
 
         self._prev_time = time.monotonic()
         self.d_state = DesiredState()
+        self.pid_control = False
+
 
     def step_gait(self, state, yaw_rate, command):
         """Calculate the desired foot locations for the next timestep
@@ -98,21 +117,52 @@ class Controller:
             new_foot_locations[:, leg_index] = new_location
         return new_foot_locations, contact_modes
 
+    def handle_commands(self, command, dt):
+        if command.pid_control:
+            self.toggle_pid_control()
 
-    def handle_commands(self, commands, dt):
-        roll_rate = -np.round(commands.roll_command, 2) * self.config.roll_speed
-        yaw_rate = np.round(commands.yaw_command, 2) * self.config.max_yaw_rate # rx
-        height_rate = np.round(commands.height_command, 2) * self.config.z_speed
+        roll_rate = -np.round(command.roll_command, 2) * self.config.roll_speed
+        self.d_state.yaw_rate = np.round(command.yaw_command, 2) * self.config.max_yaw_rate  # rx
+        height_rate = np.round(command.height_command, 2) * self.config.z_speed
 
         self.d_state.height -= height_rate * dt  # Use config next time
         self.d_state.roll += roll_rate * dt
-        self.d_state.yaw += yaw_rate * dt
+        self.d_state.yaw += self.d_state.yaw_rate * dt
 
         self.d_state.height = np.clip(self.d_state.height, -0.27, -0.08)
         self.d_state.roll = np.clip(self.d_state.roll, -0.2, 0.2)
-        self.d_state.pitch = np.clip(commands.pitch_command, -self.config.max_pitch, self.config.max_pitch)
+        self.d_state.pitch = np.clip(command.pitch_command, -self.config.max_pitch, self.config.max_pitch)
 
 
+
+    def toggle_pid_control(self):
+        self.pid_control = not self.pid_control
+
+    @property
+    def pid_control(self):
+        return self._pid_control
+
+    @pid_control.setter
+    def pid_control(self, state):
+        if state and not self._pid_control:
+            # If setting to true and previous disabled
+            self._enable_pid()
+        if not state:
+            self._disable_pid()
+        else:
+            pass
+
+    def _disable_pid(self):
+        self._controller_roll.auto_mode = False
+        self._controller_pitch.auto_mode = False
+        self._controller_yaw.auto_mode = False
+        self._pid_control = False
+
+    def _enable_pid(self):
+        self._controller_roll.set_auto_mode(True, self._controller_roll(0))
+        self._controller_pitch.set_auto_mode(True, self._controller_pitch(0))
+        self._controller_yaw.set_auto_mode(True, self._controller_yaw(0))
+        self._pid_control = True
 
     def run(self, state, command):
 
@@ -130,19 +180,27 @@ class Controller:
         self._controller_pitch.setpoint = self.d_state.pitch
         self._controller_yaw.setpoint = self.d_state.yaw
 
-        roll_rate = self._controller_roll(self.imu.roll)
-        pitch_rate = self._controller_pitch(self.imu.pitch)
-        yaw_rate = self._controller_yaw(self.imu.yaw)
+        if self.pid_control:
+            roll_rate = self._controller_roll(self.imu.roll)
+            pitch_rate = self._controller_pitch(self.imu.pitch)
+            yaw_rate = self._controller_yaw(self.imu.yaw)
 
+            roll = state.roll + roll_rate * dt
+            pitch = state.pitch + pitch_rate * dt
+            yaw = state.yaw + yaw_rate * dt
+
+            print(f"Roll: {roll_rate:2.4f}-{self.imu.roll:2.4f}-{self.d_state.roll:2.4f}, "
+                  f"Pitch: {pitch_rate:2.4f}-{self.imu.pitch:2.4f}-{self.d_state.pitch:2.4f}, "
+                  f"Yaw: {yaw_rate:2.4f}-{self.imu.yaw:2.4f}-{self.d_state.yaw:2.4f}", end="\r")
+
+        else:
+            roll = self.d_state.roll
+            pitch = self.d_state.pitch
+            yaw = self.d_state.yaw
+            yaw_rate = self.d_state.yaw_rate
+            # print(yaw, yaw_rate)
         state.ticks += 1
 
-        roll = state.roll + roll_rate * dt
-        pitch = state.pitch + pitch_rate * dt
-        yaw = state.yaw + yaw_rate * dt
-
-        print(f"Roll: {roll_rate:2.4f}-{self.imu.roll:2.4f}-{self.d_state.roll:2.4f}, "
-              f"Pitch: {pitch_rate:2.4f}-{self.imu.pitch:2.4f}-{self.d_state.pitch:2.4f}, "
-              f"Yaw: {yaw_rate:2.4f}-{self.imu.yaw:2.4f}-{self.d_state.yaw:2.4f}", end="\r")
 
         previous_state = state.behavior_state
 
@@ -229,6 +287,7 @@ class Controller:
         state.roll = roll
         state.pitch = pitch
         state.yaw = yaw
+
         self._prev_time = time.monotonic()
 
     def set_pose_to_default(self, state):
@@ -263,7 +322,6 @@ class Controller:
         self.imu_offsets[s_idx[leg + "_U"].value] += upper
         self.imu_offsets[s_idx[leg + "_L"].value] += lower
         pass
-
 
     def publish_task_space_command(self, rotated_foot_locations):
         pass

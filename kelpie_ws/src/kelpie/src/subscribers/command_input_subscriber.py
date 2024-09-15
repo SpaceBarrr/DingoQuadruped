@@ -21,6 +21,7 @@ class InputSubscriber:
         self.previous_hop_toggle = 0
         self.previous_joystick_toggle = 0
         self.previous_calibrate_toggle = 0
+        self.previous_pid_control_toggle = False
 
         self.rounding_dp = 2
 
@@ -28,6 +29,7 @@ class InputSubscriber:
         self.trot_event = 0
         self.joystick_control_event = 0
         self.calibrate_event = 0
+        self.pid_control_event = False
 
         self.input_messages = rospy.Subscriber("/kelpie/command_input", commands, self.input_callback)
         self.current_command = Command()
@@ -39,6 +41,7 @@ class InputSubscriber:
         hop_toggle = command.hop_toggle
         joystick_toggle = command.joystick_toggle
         calibrate_toggle = command.calibration_toggle
+        pid_toggle = command.pid_toggle
 
         self.developing_command = Command()
         # Discrete commands
@@ -57,11 +60,15 @@ class InputSubscriber:
         if not self.calibrate_event:
             self.calibrate_event = (calibrate_toggle and not self.previous_calibrate_toggle)
 
+        if not self.pid_control_event:
+            self.pid_control_event = (pid_toggle and not self.previous_pid_control_toggle)
+
         # Update previous values for toggles and state
         self.previous_gait_toggle = gait_toggle
         self.previous_hop_toggle = hop_toggle
         self.previous_joystick_toggle = joystick_toggle
         self.previous_calibrate_toggle = calibrate_toggle
+        self.previous_pid_control_toggle = pid_toggle
 
         # self.developing_command.trot_event = self.trot_event
         # self.developing_command.hop_event = self.hop_event
@@ -92,10 +99,12 @@ class InputSubscriber:
         self.current_command.hop_event = self.hop_event
         self.current_command.joystick_control_event = self.joystick_control_event
         self.current_command.calibrate = self.calibrate_event
+        self.current_command.pid_control = self.pid_control_event
         self.hop_event = False
         self.trot_event = False
         self.joystick_control_event = False
         self.calibrate_event = False
+        self.pid_control_event = False
 
         # message_dt = 1.0 / message_rate
         #

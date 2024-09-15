@@ -11,6 +11,7 @@ class State:
         self.pitch = 0.0
         self.roll = 0.0
         self.yaw = 0
+        self.pid_control = False
         self.joystick_control_active = 1
         self.behavior_state = BehaviorState.REST
         self.euler_orientation = [0, 0, 0]

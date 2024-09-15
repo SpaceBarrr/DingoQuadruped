@@ -19,7 +19,7 @@ class Configuration:
         self.x_vel_tf = lambda x: x * 1.2  # Allow arbitrary transformation function to be applied to controller inputs
 
         # TODO: Tune max yaw rate. Right now it is too fast for the dog to react in sim.
-        self.max_yaw_rate = 0.2
+        self.max_yaw_rate = 2
         self.max_pitch = 15.0 * np.pi / 180.0
 
         #################### MOVEMENT PARAMS ####################

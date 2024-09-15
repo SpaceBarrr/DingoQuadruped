@@ -27,6 +27,7 @@ class Command:
         self.trot_event = False
         self.joystick_control_event = False
         self.calibrate = False
+        self.pid_control = False
 
     # def __init__(self):
     #     self.horizontal_velocity = np.array([0, 0])
