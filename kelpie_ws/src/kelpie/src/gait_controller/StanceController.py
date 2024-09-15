@@ -6,7 +6,7 @@ class StanceController:
     def __init__(self, config):
         self.config = config
 
-    def position_delta(self, leg_index, state, command):
+    def position_delta(self, leg_index, state, yaw_rate, command):
         """Calculate the difference between the next desired body location and the current body location
         
         Parameters
@@ -36,13 +36,13 @@ class StanceController:
             ]
         )
         delta_p = v_xy * self.config.dt
-        delta_R = euler2mat(0, 0, -command.yaw_rate * self.config.dt)
+        delta_R = euler2mat(0, 0, -yaw_rate * self.config.dt)
         return (delta_p, delta_R)
 
     # TODO: put current foot location into state
-    def next_foot_location(self, leg_index, state, command):
+    def next_foot_location(self, leg_index, state, yaw_rate, command):
         foot_location = state.foot_locations[:, leg_index]
-        (delta_p, delta_R) = self.position_delta(leg_index, state, command)
+        (delta_p, delta_R) = self.position_delta(leg_index, state, yaw_rate, command)
         incremented_location = delta_R @ foot_location + delta_p
 
         return incremented_location

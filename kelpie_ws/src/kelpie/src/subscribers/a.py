@@ -1,3 +1,5 @@
+
+
 #!/usr/bin/env python
 
 # Written by: William L
@@ -76,10 +78,10 @@ class InputSubscriber:
         self.developing_command.horizontal_velocity = np.round(np.array([x_vel, y_vel]), self.rounding_dp)
 
         # Attitude
-        self.developing_command.roll_command = command.roll_movement
-        self.developing_command.pitch_command = command.pitch
-        self.developing_command.yaw_command = command.yaw_rate
-        self.developing_command.height_command = command.height_movement
+        self.developing_command.roll_movement = command.roll_movement
+        self.developing_command.pitch = command.pitch
+        self.developing_command.yaw_rate = command.yaw_rate
+        self.developing_command.height_movement = command.height_movement
 
         self.new_command = self.developing_command
 
@@ -97,21 +99,21 @@ class InputSubscriber:
         self.joystick_control_event = False
         self.calibrate_event = False
 
-        # message_dt = 1.0 / message_rate
-        #
-        # deadbanded_pitch = deadband(
-        #     self.current_command.pitch, self.config.pitch_deadband
-        # )
-        # pitch_rate = clipped_first_order_filter(
-        #     state.pitch,
-        #     deadbanded_pitch,
-        #     self.config.max_pitch_rate,
-        #     self.config.pitch_time_constant,
-        # )
+        message_dt = 1.0 / message_rate
+
+        deadbanded_pitch = deadband(
+            self.current_command.pitch, self.config.pitch_deadband
+        )
+        pitch_rate = clipped_first_order_filter(
+            state.pitch,
+            deadbanded_pitch,
+            self.config.max_pitch_rate,
+            self.config.pitch_time_constant,
+        )
         # self.current_command.pitch = np.clip(state.pitch + message_dt * pitch_rate, -0.35, 0.35)
         # self.current_command.height = np.clip(
         #     state.height - message_dt * self.config.z_speed * self.current_command.height_movement, -0.27, -0.08)
         # self.current_command.roll = np.clip(
         #     state.roll + message_dt * self.config.roll_speed * self.current_command.roll_movement, -0.3, 0.3)
-
+        print(self.current_command.roll, self.current_command.height)
         return self.current_command
