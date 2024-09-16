@@ -1,6 +1,7 @@
 cmake_minimum_required(VERSION 3.0.2)
 project(kelpie)
 
+
 ## Compile as C++11, supported in ROS Kinetic and newer
 # add_compile_options(-std=c++11)
 
@@ -56,7 +57,7 @@ add_message_files(
    commands.msg
    att.msg
    imu.msg
-   xyz_float32.msg
+   vec3d_float32.msg
 )
 
 

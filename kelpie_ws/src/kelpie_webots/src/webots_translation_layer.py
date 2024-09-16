@@ -21,9 +21,11 @@ The robot is publishing the value of its front distance sensor and receving moto
 import ctypes
 import os
 from math import pi
+
+import numpy as np
 import rospy
 from controller import Robot, Gyro, Motor, Accelerometer, InertialUnit
-from kelpie.msg import leg_state, joint_states, imu, att, xyz_float32
+from kelpie.msg import leg_state, joint_states, imu, att, vec3d_float32
 from controller.wb import wb
 from numpy import deg2rad
 import time
@@ -81,16 +83,23 @@ ATT.enable(SAMPLE_RATE)
 # Create messages
 IMU_MSG = imu()
 IMU_MSG.att = att()
-IMU_MSG.acc = xyz_float32()
-IMU_MSG.gyro = xyz_float32()
+IMU_MSG.acc = vec3d_float32()
+IMU_MSG.gyro = vec3d_float32()
 
 # Create joint states global var
 JOINT_DATA: joint_states = None
 GLOBAL_TIME = time.time()
 
 # Every second, add error to FL and RL upper legs.
-ERROR_FL = lambda: (0, (GLOBAL_TIME - time.time()) * deg2rad(0.5), 0)
-ERROR_RL = lambda: (0, (GLOBAL_TIME - time.time()) * deg2rad(0.5), 0)
+ERROR_FL = lambda: (0, (GLOBAL_TIME - time.time()) * deg2rad(0.1), 0)
+ERROR_RL = lambda: (0, 0, 0)
+
+ERROR_FR = lambda: (0, (GLOBAL_TIME - time.time()) * deg2rad(0.1), 0)
+ERROR_RR = lambda: (0, 0, 0)
+
+
+ERROR_FL = lambda: (0, 0, 0)
+ERROR_RL = lambda: (0, 0, 0)
 
 ERROR_FR = lambda: (0, 0, 0)
 ERROR_RR = lambda: (0, 0, 0)
@@ -157,7 +166,9 @@ while KELPIE.step(T_STEP) != -1 and not rospy.is_shutdown():
     gyro = GYRO.getValues()
     # TODO: Change to quaternion
     att = ATT.getRollPitchYaw()
-    IMU_MSG.att.roll, IMU_MSG.att.pitch, IMU_MSG.att.yaw = att[2], att[0] - pi / 2, att[1]
+
+    IMU_MSG.att.roll, IMU_MSG.att.pitch, IMU_MSG.att.yaw = att[1], -(att[0] - pi / 2), att[2]
+    # print(IMU_MSG.att)
     IMU_MSG.acc.x, IMU_MSG.acc.y, IMU_MSG.acc.z = acc[0], acc[1], acc[2]
     IMU_MSG.gyro.x, IMU_MSG.gyro.y, IMU_MSG.gyro.z = gyro[0], gyro[1], gyro[2]
     IMU_PUBLISHER.publish(IMU_MSG)
