@@ -64,6 +64,8 @@ class Keyboard:
             self.command.joystick_toggle = True
         elif key == 'c' or key == 'C':
             self.command.calibration_toggle = True
+        elif key == 'p' or key == 'P':
+            self.command.pid_toggle = True
 
     def on_release(self, key):
         if hasattr(key, 'char'):
@@ -106,6 +108,8 @@ class Keyboard:
             self.command.joystick_toggle = False
         elif key == 'c' or key == 'C':
             self.command.calibration_toggle = False
+        elif key == 'p' or key == 'P':
+            self.command.pid_toggle = False
 
     def command_publish(self):
         print(self.command)
