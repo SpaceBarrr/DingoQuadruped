@@ -15,8 +15,6 @@ from kelpie_common.Config import ServoIndex as s_idx
 
 DIR_PATH = os.path.dirname(os.path.realpath(__file__))
 
-
-
 class MotorCurrents(Thread):
     def __init__(self, *args, **kwargs) -> None:
         """
