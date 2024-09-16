@@ -36,7 +36,7 @@ def publish(publisher):
     # gbias = data["SFLP_gyroscope_bias"]
     # grav = data["SFLP_gravity_vector"]
     pitch, roll, yaw = euler
-    IMU_MSG.att.roll, IMU_MSG.att.pitch, IMU_MSG.att.yaw = roll, pitch, yaw
+    IMU_MSG.att.roll, IMU_MSG.att.pitch, IMU_MSG.att.yaw = -roll, pitch, -yaw
     IMU_MSG.acc.x, IMU_MSG.acc.y, IMU_MSG.acc.z = acc[0], acc[1], acc[2]
     IMU_MSG.gyro.x, IMU_MSG.gyro.y, IMU_MSG.gyro.z = gyro[0], gyro[1], gyro[2]
     # IMU_MSG.gbias.x, IMU_MSG.gbias.y, IMU_MSG.gbias.z = gbias[0], gbias[1], gbias[2]

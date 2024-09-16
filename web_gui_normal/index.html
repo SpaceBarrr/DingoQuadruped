@@ -53,34 +53,40 @@
             messageType: 'kelpie/imu'
         });
 
-        <!-- Other publishers:
-            name: '/kelpie/emergency_stop_status'
-            messageType: bool
+        // Other publishers:
+        //     name: '/kelpie/emergency_stop_status'
+        //     messageType: bool
 
-            name: '/kelpie/command_input'
-            messageType: 'kelpie/commands'-->
+        //     name: '/kelpie/command_input'
+        //     messageType: 'kelpie/commands'
 
         // Subscribing to Topics
         // ----------------------
         joint_states_topic.subscribe(function (msg) {
-            document.getElementById("joint_states").innerHTML = msg.data
-            console.log(msg.fr.lower + msg.fr.upper + msg.fr.roll)
+            document.getElementById("joint_states_fr_roll").innerText = msg.fr.roll
+            document.getElementById("joint_states_fr_upper").innerText = msg.fr.upper
+            document.getElementById("joint_states_fr_lower").innerText = msg.fr.lower
+            console.log(msg.fr.roll + msg.fr.upper + msg.fr.lower)
         });
 
         currents_topic.subscribe(function (msg) {
-            document.getElementById("currents").innerHTML = msg.data
-            console.log(msg.fr.lower + msg.fr.upper + msg.fr.roll)
+            document.getElementById("currents_fr_roll").innerText = msg.fr.roll
+            document.getElementById("currents_fr_upper").innerText = msg.fr.upper
+            document.getElementById("currents_fr_lower").innerText = msg.fr.lower
+            console.log(msg.fr.roll + msg.fr.upper + msg.fr.lower)
         });
 
         batt_voltage_topic.subscribe(function (msg) {
-            document.getElementById("batt_voltage_v1").innerHTML = msg.x
-            document.getElementById("batt_voltage_v2").innerHTML = msg.y
-            document.getElementById("batt_voltage_overall").innerHTML = msg.z
+            document.getElementById("batt_voltage_v1").innerText = msg.x
+            document.getElementById("batt_voltage_v2").innerText = msg.y
+            document.getElementById("batt_voltage_overall").innerText = msg.z
             console.log(msg.x + msg.y + msg.z)
         });
 
         imu_topic.subscribe(function (msg) {
-            document.getElementById("imu").innerHTML = msg.data
+            document.getElementById("imu_acc_x").innerText = msg.acc.x
+            document.getElementById("imu_acc_y").innerText = msg.acc.y
+            document.getElementById("imu_acc_z").innerText = msg.acc.z
             console.log(msg.acc.x + msg.acc.y + msg.acc.z)
         });
     </script>
@@ -88,14 +94,28 @@
 
 <body>
     <h1>Kelpie</h1>
-<!--    <p>Joint States: <span id="joint_states"></span></p>-->
-<!--    <p>Currents: <span id="currents"></span></p>-->
-<!--    <p>Battery Voltages: <span id="batt_voltage"></span></p>-->
-<!--    <p>IMU: <span id="imu"></span></p>-->
+    <h2>Joint States</h2>
+    <h3>Front Right Leg</h3>
+    <p>Roll: <span id="joint_states_fr_roll"></span></p>
+    <p>Upper: <span id="joint_states_fr_upper"></span></p>
+    <p>Lower: <span id="joint_states_fr_lower"></span></p>
+
+    <h2>Currents</h2>
+    <h3>Front Right Leg</h3>
+    <p>Roll: <span id="joint_states_fr_roll"></span></p>
+    <p>Upper: <span id="joint_states_fr_upper"></span></p>
+    <p>Lower: <span id="joint_states_fr_lower"></span></p>
+
     <h2>Battery Voltage</h2>
     <p>V1: <span id="batt_voltage_v1"></span></p>
     <p>V2: <span id="batt_voltage_v2"></span></p>
     <p>Total Voltage: <span id="batt_voltage_overall"></span></p>
+
+    <h2>IMU</h2>
+    <h3>Acceleration</h3>
+    <p>x: <span id="imu_acc_x"></span></p>
+    <p>y: <span id="imu_acc_y"></span></p>
+    <p>z: <span id="imu_acc_z"></span></p>
 </body>
 
 </html>

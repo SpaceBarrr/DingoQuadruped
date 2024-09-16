@@ -14,6 +14,17 @@ from std_msgs.msg import Header
 from transforms3d.euler import euler2mat
 from kelpie_common.Config import ServoIndex as s_idx
 from dataclasses import dataclass
+import math
+from kelpie_common.Utilities import RollingAverage
+
+def yaw_clip(angle):
+    if angle > 0:
+        if angle > math.pi:
+            return angle - 2*math.pi
+    else:
+        if angle < -math.pi:
+            return angle + 2*math.pi
+    return angle
 
 
 @dataclass
@@ -61,6 +72,10 @@ class Controller:
         self.activate_transition_mapping = {BehaviorState.DEACTIVATED: BehaviorState.REST,
                                             BehaviorState.REST: BehaviorState.DEACTIVATED}
         self.imu = imu
+        self.rolling_avg_roll = RollingAverage(window=50, initial=0)
+        self.rolling_avg_pitch = RollingAverage(window=50, initial=0)
+        self.rolling_avg_yaw = RollingAverage(window=50, initial=0)
+
         self.imu_offsets = offsets
 
         # Potentially move these values to be set in the config.
@@ -78,10 +93,15 @@ class Controller:
                                    setpoint=0,
                                    sample_time=0.02,
                                    output_limits=(-self.config.max_yaw_rate, self.config.max_yaw_rate))
+        
+        self._controller_yaw.error_map = yaw_clip
+        
         self._controller_roll(0)
         self._controller_pitch(0)
         self._controller_yaw(0)
 
+        # Roll, yaw
+        self._prev_imu = [0, 0]
         self._pid_control = False
 
         self._prev_time = time.monotonic()
@@ -132,8 +152,17 @@ class Controller:
         self.d_state.height = np.clip(self.d_state.height, -0.27, -0.08)
         self.d_state.roll = np.clip(self.d_state.roll, -0.2, 0.2)
         self.d_state.pitch = np.clip(command.pitch_command, -self.config.max_pitch, self.config.max_pitch)
+        #self.d_state.yaw = yaw_clip(self.d_state.yaw)
 
-
+        if command.roll_command:
+            self._prev_imu[0] = self.imu.roll
+        if command.yaw_command:
+            self._prev_imu[1] = self.imu.yaw
+        
+        if not command.roll_command:
+            self.d_state.roll = self._prev_imu[0]
+        if not command.yaw_command:
+            self.d_state.yaw = self._prev_imu[1]
 
     def toggle_pid_control(self):
         self.pid_control = not self.pid_control
@@ -179,19 +208,22 @@ class Controller:
         self._controller_roll.setpoint = self.d_state.roll
         self._controller_pitch.setpoint = self.d_state.pitch
         self._controller_yaw.setpoint = self.d_state.yaw
+        self.rolling_avg_roll.append(self.imu.roll)
+        self.rolling_avg_pitch.append(self.imu.pitch)
+        self.rolling_avg_yaw.append(self.imu.yaw)
 
         if self.pid_control:
-            roll_rate = self._controller_roll(self.imu.roll)
-            pitch_rate = self._controller_pitch(self.imu.pitch)
-            yaw_rate = self._controller_yaw(self.imu.yaw)
+            roll_rate = self._controller_roll(self.rolling_avg_roll.average)
+            pitch_rate = self._controller_pitch(self.rolling_avg_pitch.average)
+            yaw_rate = self._controller_yaw(self.rolling_avg_yaw.average)
 
             roll = state.roll + roll_rate * dt
             pitch = state.pitch + pitch_rate * dt
             yaw = state.yaw + yaw_rate * dt
 
-            print(f"Roll: {roll_rate:2.4f}-{self.imu.roll:2.4f}-{self.d_state.roll:2.4f}, "
-                  f"Pitch: {pitch_rate:2.4f}-{self.imu.pitch:2.4f}-{self.d_state.pitch:2.4f}, "
-                  f"Yaw: {yaw_rate:2.4f}-{self.imu.yaw:2.4f}-{self.d_state.yaw:2.4f}", end="\r")
+            print(f"Roll: {roll_rate:2.4f}-{self.rolling_avg_roll.average:2.4f}-{self.d_state.roll:2.4f}, "
+                  f"Pitch: {pitch_rate:2.4f}-{self.rolling_avg_pitch.average:2.4f}-{self.d_state.pitch:2.4f}, "
+                  f"Yaw: {yaw_rate:2.4f}-{self.rolling_avg_yaw.average:2.4f}-{self.d_state.yaw:2.4f}", end="\r")
 
         else:
             roll = self.d_state.roll
@@ -259,7 +291,7 @@ class Controller:
                     self.config.dt *
                     clipped_first_order_filter(
                         self.smoothed_yaw,
-                        yaw_rate * -self.config.max_stance_yaw,
+                        self.d_state.yaw_rate * -self.config.max_stance_yaw,
                         self.config.max_stance_yaw_rate,
                         self.config.yaw_time_constant,
                     )
