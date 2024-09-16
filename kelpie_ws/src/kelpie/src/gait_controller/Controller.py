@@ -72,29 +72,29 @@ class Controller:
         self.activate_transition_mapping = {BehaviorState.DEACTIVATED: BehaviorState.REST,
                                             BehaviorState.REST: BehaviorState.DEACTIVATED}
         self.imu = imu
-        self.rolling_avg_roll = RollingAverage(window=50, initial=0)
-        self.rolling_avg_pitch = RollingAverage(window=50, initial=0)
-        self.rolling_avg_yaw = RollingAverage(window=50, initial=0)
+        self.rolling_avg_roll = RollingAverage(window=20, initial=0)
+        self.rolling_avg_pitch = RollingAverage(window=20, initial=0)
+        self.rolling_avg_yaw = RollingAverage(window=20, initial=0)
 
         self.imu_offsets = offsets
 
         # Potentially move these values to be set in the config.
-        self._controller_roll = PID(3, 0.2, 0,
+        self._controller_roll = PID(4, 0.5, 0,
                                     setpoint=0,
                                     sample_time=0.02,
                                     output_limits=(-self.config.roll_speed, self.config.roll_speed))
 
-        self._controller_pitch = PID(2, 0.2, 0,
+        self._controller_pitch = PID(4, 0.5, 0,
                                      setpoint=0,
                                      sample_time=0.02,
                                      output_limits=(-self.config.max_pitch, self.config.max_pitch))
 
-        self._controller_yaw = PID(2, 0.2, 0,
+        self._controller_yaw = PID(0.1, 0, 0,
                                    setpoint=0,
                                    sample_time=0.02,
                                    output_limits=(-self.config.max_yaw_rate, self.config.max_yaw_rate))
         
-        self._controller_yaw.error_map = yaw_clip
+        # self._controller_yaw.error_map = yaw_clip
         
         self._controller_roll(0)
         self._controller_pitch(0)
@@ -257,21 +257,21 @@ class Controller:
             # Apply the desired body rotation
             rotated_foot_locations = (
                     euler2mat(
-                        command.roll, command.pitch, 0.0
+                        self.d_state.roll, self.d_state.pitch, 0.0
                     )
                     @ state.foot_locations
             )
 
             # Construct foot rotation matrix to compensate for body tilt
-            yaw, pitch, roll = state.euler_orientation
-            # print('Yaw: ',np.round(yaw),'Pitch: ',np.round(pitch),'Roll: ',np.round(roll))
-            correction_factor = 0.8
-            max_tilt = 0.4
-            roll_compensation = correction_factor * np.clip(roll, -max_tilt, max_tilt)
-            pitch_compensation = correction_factor * np.clip(pitch, -max_tilt, max_tilt)
-            rmat = euler2mat(roll_compensation, pitch_compensation, 0)
+            # yaw, pitch, roll = self.imu.yaw, self.imu.pitch, self.imu.roll
+            # # print('Yaw: ',np.round(yaw),'Pitch: ',np.round(pitch),'Roll: ',np.round(roll))
+            # correction_factor = 0.8
+            # max_tilt = 0.4
+            # roll_compensation = correction_factor * np.clip(roll, -max_tilt, max_tilt)
+            # pitch_compensation = correction_factor * np.clip(pitch, -max_tilt, max_tilt)
+            # rmat = euler2mat(roll_compensation, pitch_compensation, 0)
 
-            rotated_foot_locations = rmat.T @ rotated_foot_locations
+            # rotated_foot_locations = rmat.T @ rotated_foot_locations
 
             state.joint_angles = self.inverse_kinematics(
                 rotated_foot_locations, self.config

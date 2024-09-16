@@ -30,7 +30,7 @@ class Configuration:
         self.max_pitch_rate = 0.3
         self.roll_speed = 0.1  # maximum roll rate [rad/s]
         self.yaw_time_constant = 0.3
-        self.max_stance_yaw = 1.2
+        self.max_stance_yaw = 1
         self.max_stance_yaw_rate = 1
 
         #################### STANCE ####################
