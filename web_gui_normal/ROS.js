@@ -70,7 +70,7 @@ joint_states_topic.subscribe(function (msg) {
     // console.log(msg.fr.roll + msg.fr.upper + msg.fr.lower)
 });
 
-currents_topic.subscribe(function (msg) {.toFixed(2)
+currents_topic.subscribe(function (msg) {
     document.getElementById("currents_fl_roll").innerText = msg.fl.roll.toFixed(2)
     document.getElementById("currents_fl_upper").innerText = msg.fl.upper.toFixed(2)
     document.getElementById("currents_fl_lower").innerText = msg.fl.lower.toFixed(2)
