@@ -89,12 +89,12 @@ class Controller:
                                      sample_time=0.02,
                                      output_limits=(-self.config.max_pitch, self.config.max_pitch))
 
-        self._controller_yaw = PID(0.1, 0, 0,
+        self._controller_yaw = PID(2, 0.5, 0,
                                    setpoint=0,
                                    sample_time=0.02,
                                    output_limits=(-self.config.max_yaw_rate, self.config.max_yaw_rate))
         
-        # self._controller_yaw.error_map = yaw_clip
+        self._controller_yaw.error_map = yaw_clip
         
         self._controller_roll(0)
         self._controller_pitch(0)
@@ -152,7 +152,8 @@ class Controller:
         self.d_state.height = np.clip(self.d_state.height, -0.27, -0.08)
         self.d_state.roll = np.clip(self.d_state.roll, -0.2, 0.2)
         self.d_state.pitch = np.clip(command.pitch_command, -self.config.max_pitch, self.config.max_pitch)
-        #self.d_state.yaw = yaw_clip(self.d_state.yaw)
+        self.d_state.yaw = yaw_clip(self.d_state.yaw)
+        # Clip desired yaw to be between -pi and pi
 
         if command.roll_command:
             self._prev_imu[0] = self.imu.roll
@@ -215,7 +216,7 @@ class Controller:
         if self.pid_control:
             roll_rate = self._controller_roll(self.rolling_avg_roll.average)
             pitch_rate = self._controller_pitch(self.rolling_avg_pitch.average)
-            yaw_rate = self._controller_yaw(self.rolling_avg_yaw.average)
+            yaw_rate = self._controller_yaw(self.imu.yaw)
 
             roll = state.roll + roll_rate * dt
             pitch = state.pitch + pitch_rate * dt
@@ -223,7 +224,7 @@ class Controller:
 
             print(f"Roll: {roll_rate:2.4f}-{self.rolling_avg_roll.average:2.4f}-{self.d_state.roll:2.4f}, "
                   f"Pitch: {pitch_rate:2.4f}-{self.rolling_avg_pitch.average:2.4f}-{self.d_state.pitch:2.4f}, "
-                  f"Yaw: {yaw_rate:2.4f}-{self.rolling_avg_yaw.average:2.4f}-{self.d_state.yaw:2.4f}", end="\r")
+                  f"Yaw: {yaw_rate:2.4f}-{self.imu.yaw:2.4f}-{self.d_state.yaw:2.4f}", end="\r")
 
         else:
             roll = self.d_state.roll
@@ -232,6 +233,8 @@ class Controller:
             yaw_rate = self.d_state.yaw_rate
             # print(yaw, yaw_rate)
         state.ticks += 1
+        # Clip yaw to be between -pi and pi
+        yaw = yaw_clip(yaw)
 
 
         previous_state = state.behavior_state
@@ -309,7 +312,6 @@ class Controller:
 
             # Construct foot rotation matrix to compensate for body tilt
             # rotated_foot_locations = self.stabilise_with_IMU(rotated_foot_locations)
-            # self.stabilise_with_IMU()
             state.joint_angles = self.inverse_kinematics(
                 rotated_foot_locations, self.config
             )
@@ -333,27 +335,6 @@ class Controller:
         )
         return state.joint_angles
 
-    def stabilise_with_IMUv2(self):
-        # Get imu_stuff from IMU and joint manipulation
-        imu_stuff = np.zeros((3, 4))
-        self.imu_offsets += imu_stuff
-
-        """
-        # PSEUDO CODE:
-        Step 1: Get IMU data (roll and pitch)
-        Step 2: If pitching up, lower front legs, raise rear legs
-        Step 3: If pitching down, raise front legs, lower rear legs
-        Step 4: If rolling left, raise left legs, lower right legs
-        Step 5: If rolling right, lower left legs, raise right legs
-        
-        """
-
-    def _adjust_height(self, leg, height_offset):
-        # TODO: Adjust height of each leg such that TPU feet is perpendicular to ground.
-        upper, lower = self._calc_offsets(leg, height_offset)
-        self.imu_offsets[s_idx[leg + "_U"].value] += upper
-        self.imu_offsets[s_idx[leg + "_L"].value] += lower
-        pass
 
     def publish_task_space_command(self, rotated_foot_locations):
         pass
