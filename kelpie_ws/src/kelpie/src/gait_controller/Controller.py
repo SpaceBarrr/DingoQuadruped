@@ -16,6 +16,7 @@ from kelpie_common.Config import ServoIndex as s_idx
 from dataclasses import dataclass
 import math
 from kelpie_common.Utilities import RollingAverage
+from threading import Thread
 
 def yaw_clip(angle):
     if angle > 0:
@@ -35,6 +36,35 @@ class DesiredState:
     height = -0.20
     smoothed_yaw = 0
     yaw_rate = 0
+
+class IMURollingAvg(Thread):
+    def __init__(self, imu, freq=20, roll_window = 10, pitch_window = 10, yaw_window = 5):
+        super().__init__()
+        self.imu = imu
+        self.freq = freq
+
+        self.rolling_avg_roll = RollingAverage(window=roll_window, initial=0)
+        self.rolling_avg_pitch = RollingAverage(window=pitch_window, initial=0)
+        self.rolling_avg_yaw = RollingAverage(window=yaw_window, initial=0)
+
+    def run(self):
+        while True:
+            self.rolling_avg_roll.append(self.imu.roll)
+            self.rolling_avg_pitch.append(self.imu.pitch)
+            self.rolling_avg_yaw.append(self.imu.yaw)
+            time.sleep(1/self.freq)
+
+    @property
+    def roll(self):
+        return self.rolling_avg_roll.average
+
+    @property
+    def pitch(self):
+        return self.rolling_avg_pitch.average
+
+    @property
+    def yaw(self):
+        return self.rolling_avg_yaw.average
 
 
 class Controller:
@@ -73,9 +103,12 @@ class Controller:
         self.activate_transition_mapping = {BehaviorState.DEACTIVATED: BehaviorState.REST,
                                             BehaviorState.REST: BehaviorState.DEACTIVATED}
         self.imu = imu
-        self.rolling_avg_roll = RollingAverage(window=20, initial=0)
-        self.rolling_avg_pitch = RollingAverage(window=20, initial=0)
-        self.rolling_avg_yaw = RollingAverage(window=20, initial=0)
+        self.roll_avg_imu = IMURollingAvg(imu,
+                                          freq=30,
+                                          roll_window=10,
+                                          pitch_window=10,
+                                          yaw_window=5)
+        self.roll_avg_imu.start()
 
         self.imu_offsets = offsets
 
@@ -194,17 +227,11 @@ class Controller:
             pass
 
     def _disable_pid(self):
-        # self._controller_roll.auto_mode = False
-        # self._controller_pitch.auto_mode = False
-        # self._controller_yaw.auto_mode = False
         self._pid_control_input = self.state
         self._pid_control = False
 
     def _enable_pid(self):
-        # self._controller_roll.set_auto_mode(True, self._controller_roll(0))
-        # self._controller_pitch.set_auto_mode(True, self._controller_pitch(0))
-        # self._controller_yaw.set_auto_mode(True, self._controller_yaw(0))
-        self._pid_control_input = self.imu
+        self._pid_control_input = self.roll_avg_imu
         self._pid_control = True
 
     def run(self, command):
@@ -222,9 +249,6 @@ class Controller:
         self._controller_roll.setpoint = self.d_state.roll
         self._controller_pitch.setpoint = self.d_state.pitch
         self._controller_yaw.setpoint = self.d_state.yaw
-        self.rolling_avg_roll.append(self.imu.roll)
-        self.rolling_avg_pitch.append(self.imu.pitch)
-        self.rolling_avg_yaw.append(self.imu.yaw)
 
         roll_rate = self._controller_roll(self._pid_control_input.roll)
         pitch_rate = self._controller_pitch(self._pid_control_input.pitch)
