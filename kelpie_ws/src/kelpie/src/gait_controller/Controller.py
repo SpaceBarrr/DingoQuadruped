@@ -80,17 +80,17 @@ class Controller:
         self.imu_offsets = offsets
 
         # Potentially move these values to be set in the config.
-        self._controller_roll = PID(4, 0.5, 0,
+        self._controller_roll = PID(20, 11, 0.5,
                                     setpoint=0,
                                     sample_time=0.02,
                                     output_limits=(-self.config.roll_speed, self.config.roll_speed))
 
-        self._controller_pitch = PID(4, 0.5, 0,
+        self._controller_pitch = PID(13, 4, 0.25,
                                      setpoint=0,
                                      sample_time=0.02,
-                                     output_limits=(-self.config.max_pitch, self.config.max_pitch))
+                                     output_limits=(-self.config.max_pitch_rate, self.config.max_pitch_rate))
 
-        self._controller_yaw = PID(2, 0.5, 0,
+        self._controller_yaw = PID(2, 0, 0,
                                    setpoint=0,
                                    sample_time=0.02,
                                    output_limits=(-self.config.max_yaw_rate, self.config.max_yaw_rate))

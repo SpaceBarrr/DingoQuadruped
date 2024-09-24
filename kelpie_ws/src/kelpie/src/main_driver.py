@@ -76,8 +76,6 @@ class KelpieDriver:
             offsets=self.imu_offsets,
             state = self.state
         )
-
-        self.state = State()
         rospy.loginfo("Creating input listener...")
         self.input_interface = InputSubscriber(self.config)
         rospy.loginfo("Input listener successfully initialised... Robot will now receive commands via Joy messages")

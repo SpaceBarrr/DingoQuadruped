@@ -7,7 +7,7 @@ from kelpie.msg import commands
 class Ps4Interface:
     def __init__(self):
         self.rounding_dp = 2
-        self.deadband = 0.1
+        self.deadband = 0.0025
 
         self.noderate = rospy.get_param("noderate", 50.0)
         self.joy_sub = rospy.Subscriber("joy", Joy, self.input_callback)
@@ -24,7 +24,7 @@ class Ps4Interface:
         command.joystick_toggle = msg.buttons[4]  # L1
         command.x = self.apply_deadband(msg.axes[0])  # ly
         command.y = self.apply_deadband(msg.axes[1])  # lx
-        command.pitch = self.apply_deadband(msg.axes[4])  # ry
+        command.pitch = self.apply_deadband(msg.axes[4]*0.25)  # ry
         command.yaw_rate = self.apply_deadband(msg.axes[3])  # rx
         command.height_movement = msg.axes[7]  # dpady
         command.roll_movement = msg.axes[6]  # dpadx

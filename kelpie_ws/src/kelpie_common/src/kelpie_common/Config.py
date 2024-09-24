@@ -27,8 +27,8 @@ class Configuration:
         self.z_speed = 0.06  # maximum speed [m/s]
         self.pitch_deadband = 0.05
         self.pitch_time_constant = 0.25
-        self.max_pitch_rate = 0.3
-        self.roll_speed = 0.1  # maximum roll rate [rad/s]
+        self.max_pitch_rate = 1
+        self.roll_speed = 1  # maximum roll rate [rad/s]
         self.yaw_time_constant = 0.3
         self.max_stance_yaw = 1
         self.max_stance_yaw_rate = 1
