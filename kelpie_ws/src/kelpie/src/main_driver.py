@@ -107,7 +107,7 @@ class KelpieDriver:
             command = self.input_interface.get_command(self.state, self.message_rate)
 
             self.state.behavior_state = BehaviorState.REST
-            self.controller.run(self.state, command)
+            self.controller.run(command)
             self.controller.publish_joint_space_command(self.state.joint_angles)
             self.controller.publish_task_space_command(self.state.rotated_foot_locations)
             self.publish_joints(self.state.joint_angles)
@@ -142,7 +142,7 @@ class KelpieDriver:
                 # print('Yaw: ',np.round(yaw,2),'Pitc
                 # ]\h: ',np.round(pitch,2),'Roll: ',np.round(roll,2))
                 # Step the controller forward by dt
-                self.controller.run(self.state, command)
+                self.controller.run(command)
 
                 if self.state.behavior_state == BehaviorState.TROT or self.state.behavior_state == BehaviorState.REST:
                     self.controller.publish_joint_space_command(self.state.joint_angles)
@@ -170,7 +170,7 @@ class KelpieDriver:
                 rospy.loginfo("Manual Control deactivated. Now accepting external commands")
                 command = self.input_interface.get_command(self.state, self.message_rate)
                 self.state.behavior_state = BehaviorState.REST
-                self.controller.run(self.state, command)
+                self.controller.run(command)
                 self.controller.publish_joint_space_command(self.state.joint_angles)
                 self.controller.publish_task_space_command(self.state.rotated_foot_locations)
                 self.publish_joints(self.state.joint_angles)
