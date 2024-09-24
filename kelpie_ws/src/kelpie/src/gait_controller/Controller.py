@@ -46,7 +46,8 @@ class Controller:
             config,
             inverse_kinematics,
             imu,
-            offsets
+            offsets,
+            state
     ):
         self.config = config
 
@@ -100,12 +101,15 @@ class Controller:
         self._controller_pitch(0)
         self._controller_yaw(0)
 
+        self.state = state
+
         # Roll, yaw
         self._prev_imu = [0, 0]
-        self._pid_control = False
+        self._pid_control_input = self.state
 
         self._prev_time = time.monotonic()
         self.d_state = DesiredState()
+        self._pid_control = False
         self.pid_control = False
 
 
@@ -172,6 +176,13 @@ class Controller:
     def pid_control(self):
         return self._pid_control
 
+    def _set_pid_state(self):
+        self._pid_control_input = self.state
+
+    def _set_pid_imu(self):
+        self._pid_control_input = self.imu
+
+
     @pid_control.setter
     def pid_control(self, state):
         if state and not self._pid_control:
@@ -183,18 +194,20 @@ class Controller:
             pass
 
     def _disable_pid(self):
-        self._controller_roll.auto_mode = False
-        self._controller_pitch.auto_mode = False
-        self._controller_yaw.auto_mode = False
+        # self._controller_roll.auto_mode = False
+        # self._controller_pitch.auto_mode = False
+        # self._controller_yaw.auto_mode = False
+        self._pid_control_input = self.state
         self._pid_control = False
 
     def _enable_pid(self):
-        self._controller_roll.set_auto_mode(True, self._controller_roll(0))
-        self._controller_pitch.set_auto_mode(True, self._controller_pitch(0))
-        self._controller_yaw.set_auto_mode(True, self._controller_yaw(0))
+        # self._controller_roll.set_auto_mode(True, self._controller_roll(0))
+        # self._controller_pitch.set_auto_mode(True, self._controller_pitch(0))
+        # self._controller_yaw.set_auto_mode(True, self._controller_yaw(0))
+        self._pid_control_input = self.imu
         self._pid_control = True
 
-    def run(self, state, command):
+    def run(self, command):
 
         """Steps the controller forward one timestep
 
@@ -213,46 +226,39 @@ class Controller:
         self.rolling_avg_pitch.append(self.imu.pitch)
         self.rolling_avg_yaw.append(self.imu.yaw)
 
-        if self.pid_control:
-            roll_rate = self._controller_roll(self.rolling_avg_roll.average)
-            pitch_rate = self._controller_pitch(self.rolling_avg_pitch.average)
-            yaw_rate = self._controller_yaw(self.imu.yaw)
+        roll_rate = self._controller_roll(self._pid_control_input.roll)
+        pitch_rate = self._controller_pitch(self._pid_control_input.pitch)
+        yaw_rate = self._controller_yaw(self._pid_control_input.yaw)
 
-            roll = state.roll + roll_rate * dt
-            pitch = state.pitch + pitch_rate * dt
-            yaw = state.yaw + yaw_rate * dt
+        roll = self.state.roll + roll_rate * dt
+        pitch = self.state.pitch + pitch_rate * dt
+        yaw = self.state.yaw + yaw_rate * dt
 
-            print(f"Roll: {roll_rate:2.4f}-{self.rolling_avg_roll.average:2.4f}-{self.d_state.roll:2.4f}, "
-                  f"Pitch: {pitch_rate:2.4f}-{self.rolling_avg_pitch.average:2.4f}-{self.d_state.pitch:2.4f}, "
-                  f"Yaw: {yaw_rate:2.4f}-{self.imu.yaw:2.4f}-{self.d_state.yaw:2.4f}", end="\r")
+        print(f"Roll: {roll_rate:2.4f}-{self._pid_control_input.roll:2.4f}-{self.d_state.roll:2.4f}, "
+              f"Pitch: {pitch_rate:2.4f}-{self._pid_control_input.pitch:2.4f}-{self.d_state.pitch:2.4f}, "
+              f"Yaw: {yaw_rate:2.4f}-{self._pid_control_input.yaw:2.4f}-{self.d_state.yaw:2.4f}", end="\r")
 
-        else:
-            roll = self.d_state.roll
-            pitch = self.d_state.pitch
-            yaw = self.d_state.yaw
-            yaw_rate = self.d_state.yaw_rate
-            # print(yaw, yaw_rate)
-        state.ticks += 1
+        self.state.ticks += 1
         # Clip yaw to be between -pi and pi
         yaw = yaw_clip(yaw)
 
 
-        previous_state = state.behavior_state
+        previous_state = self.state.behavior_state
 
         ########## Update operating state based on command ######
         if command.joystick_control_event:
-            state.behavior_state = self.activate_transition_mapping[state.behavior_state]
+            self.state.behavior_state = self.activate_transition_mapping[self.state.behavior_state]
         elif command.trot_event:
-            state.behavior_state = self.trot_transition_mapping[state.behavior_state]
+            self.state.behavior_state = self.trot_transition_mapping[self.state.behavior_state]
         elif command.hop_event:
-            state.behavior_state = self.hop_transition_mapping[state.behavior_state]
+            self.state.behavior_state = self.hop_transition_mapping[self.state.behavior_state]
 
-        if previous_state != state.behavior_state:
-            rospy.loginfo("State changed from %s to %s", str(previous_state), str(state.behavior_state))
+        if previous_state != self.state.behavior_state:
+            rospy.loginfo("State changed from %s to %s", str(previous_state), str(self.state.behavior_state))
 
-        if state.behavior_state == BehaviorState.TROT:
-            state.foot_locations, contact_modes = self.step_gait(
-                state,
+        if self.state.behavior_state == BehaviorState.TROT:
+            self.state.foot_locations, contact_modes = self.step_gait(
+                self.state,
                 yaw_rate,
                 command,
             )
@@ -262,7 +268,7 @@ class Controller:
                     euler2mat(
                         self.d_state.roll, self.d_state.pitch, 0.0
                     )
-                    @ state.foot_locations
+                    @ self.state.foot_locations
             )
 
             # Construct foot rotation matrix to compensate for body tilt
@@ -276,16 +282,16 @@ class Controller:
 
             # rotated_foot_locations = rmat.T @ rotated_foot_locations
 
-            state.joint_angles = self.inverse_kinematics(
+            self.state.joint_angles = self.inverse_kinematics(
                 rotated_foot_locations, self.config
             )
 
-            state.rotated_foot_locations = rotated_foot_locations
+            self.state.rotated_foot_locations = rotated_foot_locations
 
-        elif state.behavior_state == BehaviorState.REST:
+        elif self.state.behavior_state == BehaviorState.REST:
 
             # Set the foot locations to the default stance plus the standard height
-            state.foot_locations = (
+            self.state.foot_locations = (
                     self.config.default_stance
                     + np.array([0, 0, self.d_state.height])[:, np.newaxis]
             )
@@ -307,20 +313,20 @@ class Controller:
                         pitch,
                         self.smoothed_yaw,
                     )
-                    @ state.foot_locations
+                    @ self.state.foot_locations
             )
 
             # Construct foot rotation matrix to compensate for body tilt
             # rotated_foot_locations = self.stabilise_with_IMU(rotated_foot_locations)
-            state.joint_angles = self.inverse_kinematics(
+            self.state.joint_angles = self.inverse_kinematics(
                 rotated_foot_locations, self.config
             )
-            state.rotated_foot_locations = rotated_foot_locations
+            self.state.rotated_foot_locations = rotated_foot_locations
 
-        state.height = self.d_state.height
-        state.roll = roll
-        state.pitch = pitch
-        state.yaw = yaw
+        self.state.height = self.d_state.height
+        self.state.roll = roll
+        self.state.pitch = pitch
+        self.state.yaw = yaw
 
         self._prev_time = time.monotonic()
 

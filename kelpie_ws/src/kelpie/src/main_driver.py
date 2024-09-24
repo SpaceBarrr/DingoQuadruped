@@ -66,12 +66,15 @@ class KelpieDriver:
         self.config = Configuration()
         self.imu_offsets = np.zeros((3, 4))
 
+        self.state = State()
+
         # Create controller and user input handles
         self.controller = Controller(
             self.config,
             four_legs_inverse_kinematics,
             imu=self.new_imu,
-            offsets=self.imu_offsets
+            offsets=self.imu_offsets,
+            state = self.state
         )
 
         self.state = State()
