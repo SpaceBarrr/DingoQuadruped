@@ -25,7 +25,7 @@ from math import pi
 import numpy as np
 import rospy
 from controller import Robot, Gyro, Motor, Accelerometer, InertialUnit
-from kelpie.msg import leg_state, joint_states, imu, att, vec_xyz_float32
+from kelpie.msg import leg_state, joint_states, imu, att, vec_3d_float32
 from controller.wb import wb
 from numpy import deg2rad
 import time
@@ -83,8 +83,8 @@ ATT.enable(SAMPLE_RATE)
 # Create messages
 IMU_MSG = imu()
 IMU_MSG.att = att()
-IMU_MSG.acc = vec_xyz_float32()
-IMU_MSG.gyro = vec_xyz_float32()
+IMU_MSG.acc = vec_3d_float32()
+IMU_MSG.gyro = vec_3d_float32()
 
 # Create joint states global var
 JOINT_DATA: joint_states = None

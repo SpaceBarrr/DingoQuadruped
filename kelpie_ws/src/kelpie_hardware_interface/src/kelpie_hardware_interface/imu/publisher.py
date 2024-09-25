@@ -1,5 +1,5 @@
 import board
-from kelpie.msg import imu, att, vec_xyz_float32
+from kelpie.msg import imu, att, vec_3d_float32
 from kelpie_hardware_interface.imu.CircuitPython_LSM6DSV16X.lsm6dsv16x.lsm6dsv16x import LSM6DSV16X, FIFOMode
 from transforms3d.euler import quat2euler
 i2c = board.I2C()
@@ -14,10 +14,10 @@ IMU.sflp_init = True
 
 IMU_MSG = imu()
 IMU_MSG.att = att()
-IMU_MSG.acc = vec_xyz_float32()
-IMU_MSG.gyro = vec_xyz_float32()
-IMU_MSG.gbias = vec_xyz_float32()
-IMU_MSG.grav = vec_xyz_float32()
+IMU_MSG.acc = vec_3d_float32()
+IMU_MSG.gyro = vec_3d_float32()
+IMU_MSG.gbias = vec_3d_float32()
+IMU_MSG.grav = vec_3d_float32()
 
 
 

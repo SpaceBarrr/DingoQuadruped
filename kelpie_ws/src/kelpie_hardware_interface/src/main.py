@@ -9,10 +9,10 @@ from kelpie_hardware_interface.current_sense.publisher import publish as publish
 from kelpie_hardware_interface.imu.publisher import publish as publish_imu
 from kelpie_hardware_interface.batt_sense.publisher import publish as publish_batt_v
 from kelpie_hardware_interface.lcd.batt_displayer import BattDisplayer
-from kelpie.msg import joint_states, vec_xyz_float32, imu
+from kelpie.msg import joint_states, vec_3d_float32, imu
 
 MOTOR_CURRENT_PUB = rospy.Publisher("/kelpie/leg_control/currents", joint_states, queue_size=1)
-BATT_VOLTAGE_PUB = rospy.Publisher("/kelpie/battery/voltage", vec_xyz_float32, queue_size=1)
+BATT_VOLTAGE_PUB = rospy.Publisher("/kelpie/battery/voltage", vec_3d_float32, queue_size=1)
 IMU_PUBLISHER = rospy.Publisher("/kelpie/imu", imu, queue_size=1)
 
 if __name__ == '__main__':
