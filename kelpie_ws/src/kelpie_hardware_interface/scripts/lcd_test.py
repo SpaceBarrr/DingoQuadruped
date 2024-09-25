@@ -14,11 +14,11 @@ sys.path.insert(0,
 import LCD_1inch47
 
 # Raspberry Pi pin configuration:
-RST = 27
-DC = 25
-BL = 18
-bus = 0 
-device = 0 
+# RST = 27
+# DC = 25
+# BL = 18
+# bus = 0
+# device = 0
 ssid = os.popen("iwgetid -r").read().strip()
 hostname = socket.gethostname()
 ip_address = socket.gethostbyname(hostname)

@@ -80,7 +80,6 @@ class KelpieDriver:
         self.input_interface = InputSubscriber(self.config)
         rospy.loginfo("Input listener successfully initialised... Robot will now receive commands via Joy messages")
 
-
         self.calibrator = Calibrator(self.new_imu, self.motor_currents, self.joint_publisher)
 
         rospy.loginfo("Summary of current gait parameters:")
