@@ -2,7 +2,7 @@ import sys
 import os
 import time
 import board
-from kelpie.msg import imu, att, vec3d_float32
+from kelpie.msg import imu, att, vec_xyz_float32
 from transforms3d.euler import quat2euler
 import time
 
@@ -13,10 +13,10 @@ from lsm6dsv16x import LSM6DSV16X, FIFOMode
 
 IMU_MSG = imu()
 IMU_MSG.att = att()
-IMU_MSG.acc = vec3d_float32()
-IMU_MSG.gyro = vec3d_float32()
-IMU_MSG.gbias = vec3d_float32()
-IMU_MSG.grav = vec3d_float32()
+IMU_MSG.acc = vec_xyz_float32()
+IMU_MSG.gyro = vec_xyz_float32()
+IMU_MSG.gbias = vec_xyz_float32()
+IMU_MSG.grav = vec_xyz_float32()
 
 
 i2c = board.I2C()  # uses board.SCL and board.SDA

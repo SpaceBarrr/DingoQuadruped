@@ -57,7 +57,7 @@ add_message_files(
    commands.msg
    att.msg
    imu.msg
-   vec3d_float32.msg
+   vec_xyz_float32.msg
 )
 
 
