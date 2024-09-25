@@ -9,7 +9,7 @@ import logging
 from PIL import Image,ImageDraw,ImageFont
 
 from kelpie_hardware_interface.lcd.LCD_1inch47 import LCD_1inch47
-class BattDisplayer:
+class KelpieDisplay:
     def __init__(self):
         self.display = LCD_1inch47()
         # Initialize library.
@@ -25,6 +25,7 @@ class BattDisplayer:
     def _draw(self, battery_percentage):
         ssid = os.popen("iwgetid -r").read().strip()
         hostname = socket.gethostname()
+        ip_address = socket.gethostbyname(hostname)
 
         # Create blank image for drawing.
         image1 = Image.new("RGB", (self.display.height, self.display.width), "black")
@@ -38,7 +39,7 @@ class BattDisplayer:
         Font3 = ImageFont.truetype("/usr/share/fonts/truetype/Font02.ttf", 120)
 
         draw.text((20, 110), 'SSID: ' + ssid, fill="WHITE", font=Font1)
-        draw.text((20, 135), 'HOSTNAME: ' + hostname, fill="WHITE", font=Font1)
+        draw.text((20, 135), 'IP: ' + ip_address, fill="WHITE", font=Font1)
         current_time = time.strftime("%I:%M:%S%p")
         draw.text((220, 0), current_time, fill="WHITE", font=Font1_small)
 
@@ -46,7 +47,7 @@ class BattDisplayer:
         # black = Image.new("RGB", (320, 172), "black")
 
         print(os.getcwd() + "\n")
-        curr_path = __file__.replace("/src/kelpie_hardware_interface/lcd/batt_displayer.py","/lib/")
+        curr_path = __file__.replace("/src/kelpie_hardware_interface/lcd/kelpie_display.py","/lib/")
         batt_status = Image.open(curr_path+'emptybatterystatus_white.png')
 
         batt_draw = ImageDraw.Draw(batt_status)
