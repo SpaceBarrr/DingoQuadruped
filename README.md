@@ -43,6 +43,8 @@ The following flow diagram shows a simplified overview of how a joystick command
 - Install necessary packages via `sudo apt-get install python3-catkin-tools git python3-rosdep python3-rosinstall python3-rosinstall-generator python3-wstool python3-pip build-essential wireless-tools libraspberrypi-bin ros-noetic-joy ros-noetic-catkin python3-catkin-tools i2c-tools libi2c-dev python3-smbus`
 - Install necessary python packages via `pip install spidev transforms3d pillow rpi.gpio pyserial simple-pid`
 - Change directory to the home folder: `cd ~`
+- Get a list of available time zones: `timedatectl list-timezones`
+- Set local time zone from list e.g: `sudo timedatectl set-timezone Australia/Melbourne`
 - Clone this (the Dingo Quadruped) repository using git: `git clone ...`
 - Update all submodules: `git submodule update --init`
 - Move into the kelpie_ws folder: `cd /DingoQuadruped/kelpie_ws`
