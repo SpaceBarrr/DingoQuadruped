@@ -43,6 +43,8 @@ The following flow diagram shows a simplified overview of how a joystick command
 - Install necessary packages via `sudo apt-get install python3-catkin-tools git python3-rosdep python3-rosinstall python3-rosinstall-generator python3-wstool python3-pip build-essential wireless-tools libraspberrypi-bin ros-noetic-joy ros-noetic-catkin python3-catkin-tools i2c-tools libi2c-dev python3-smbus`
 - Install necessary python packages via `pip install spidev transforms3d pillow rpi.gpio pyserial simple-pid`
 - Change directory to the home folder: `cd ~`
+- Get a list of available time zones: `timedatectl list-timezones`
+- Set local time zone from list e.g: `sudo timedatectl set-timezone Australia/Melbourne`
 - Clone this (the Dingo Quadruped) repository using git: `git clone ...`
 - Update all submodules: `git submodule update --init`
 - Move into the kelpie_ws folder: `cd /DingoQuadruped/kelpie_ws`
@@ -50,6 +52,8 @@ The following flow diagram shows a simplified overview of how a joystick command
 - Fetch dependencies with rosdep: `rosdep update`
 - Build the workspace: `catkin build`
 - Source the workspace: `source devel/setup.bash`
+- Set ROS_MASTER_URI: `echo "export ROS_MASTER_URI=http://dingo:11311" >> ~/.bashrc`
+- Source ROS in bashrc .bashrc:`echo "source /opt/ros/noetic/setup.bash" >> ~/.bashrc`, `source ~/.bashrc`
 - (Optional) Add a line to .bashrc to automatically source the workspace: `echo "source ~/DingoQuadruped/kelpie_ws/devel/setup.bash" >> ~/.bashrc`, `source ~/.bashrc`
 
 ### Additional Installation Steps
@@ -200,7 +204,8 @@ To set up serial comms:
 
 #### Setting up Voltage Monitoring
 The voltage monitoring on this robot was done using the TLA2024IRUGT chip. Please install the required library to run it with `pip3 install adafruit-circuitpython-tla202x`
-
+#### Setting up camera
+- Install required packages: `sudo apt-get install ros-noetic-video-stream-opencv`
 #### Configuring web server
 - Install apache `sudo apt-get install apache2
 `
@@ -216,7 +221,7 @@ The voltage monitoring on this robot was done using the TLA2024IRUGT chip. Pleas
         </Directory>
         ```
 - Restart apache `sudo /etc/init.d/apache2 restart`
-- Install ROS bridge `sudo apt-get install ros-melodic-rosbridge-suite`
+- Install ROS bridge `sudo apt-get install ros-noetic-rosbridge-suite`
 
   
 - To forward ROS to the browser, you will need to start ROS bridge `roslaunch rosbridge_server rosbridge_websocket.launch`
