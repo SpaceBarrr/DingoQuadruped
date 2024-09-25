@@ -104,21 +104,21 @@ class Controller:
                                             BehaviorState.REST: BehaviorState.DEACTIVATED}
         self.imu = imu
         self.roll_avg_imu = IMURollingAvg(imu,
-                                          freq=30,
-                                          roll_window=10,
-                                          pitch_window=10,
-                                          yaw_window=5)
+                                          freq=40,
+                                          roll_window=3,
+                                          pitch_window=3,
+                                          yaw_window=3)
         self.roll_avg_imu.start()
 
         self.imu_offsets = offsets
 
         # Potentially move these values to be set in the config.
-        self._controller_roll = PID(20, 11, 0.5,
+        self._controller_roll = PID(15, 8, 0.4,
                                     setpoint=0,
                                     sample_time=0.02,
                                     output_limits=(-self.config.roll_speed, self.config.roll_speed))
 
-        self._controller_pitch = PID(13, 4, 0.25,
+        self._controller_pitch = PID(10, 3, 0.2,
                                      setpoint=0,
                                      sample_time=0.02,
                                      output_limits=(-self.config.max_pitch_rate, self.config.max_pitch_rate))
@@ -257,6 +257,8 @@ class Controller:
         roll = self.state.roll + roll_rate * dt
         pitch = self.state.pitch + pitch_rate * dt
         yaw = self.state.yaw + yaw_rate * dt
+
+        # print(f"Roll: {self.roll_avg_imu.roll:2.4f}, Pitch: {self.roll_avg_imu.pitch:2.4f}, Yaw: {self.roll_avg_imu.yaw:2.4f}")
 
         print(f"Roll: {roll_rate:2.4f}-{self._pid_control_input.roll:2.4f}-{self.d_state.roll:2.4f}, "
               f"Pitch: {pitch_rate:2.4f}-{self._pid_control_input.pitch:2.4f}-{self.d_state.pitch:2.4f}, "

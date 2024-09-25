@@ -38,7 +38,7 @@ class Configuration:
 
         # These x_shift variables will move the default foot positions of the robot
         # Handy if the centre of mass shifts as can move the feet to compensate
-        self.rear_leg_x_shift = -0.04  # In default config, the robots mass is slightly biased to the back feet, so the back feet are shifted back slightly
+        self.rear_leg_x_shift = 0.00  # In default config, the robots mass is slightly biased to the back feet, so the back feet are shifted back slightly
         self.front_leg_x_shift = 0.00
 
         self.delta_y = 0.1106  # 0.1083
@@ -68,8 +68,8 @@ class Configuration:
         )
 
         ######################## GEOMETRY ######################
-        self.LEG_FB = 0.11165  # front-back distance from center line to leg axis
-        self.LEG_LR = 0.061  # left-right distance from center line to leg plane
+        self.LEG_FB = 0.14  # front-back distance from center line to leg axis
+        self.LEG_LR = 0.065  # left-right distance from center line to leg plane
         self.LEG_ORIGINS = np.array(  # Origins of the initial frame from the centre of the body
             [
                 [self.LEG_FB, self.LEG_FB, -self.LEG_FB, -self.LEG_FB],

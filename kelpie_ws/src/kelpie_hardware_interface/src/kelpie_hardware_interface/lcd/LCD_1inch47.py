@@ -1,7 +1,6 @@
 import time
 
-import lcdconfig
-
+from  kelpie_hardware_interface.lcd import lcdconfig
 
 class LCD_1inch47(lcdconfig.RaspberryPi):
     width = 172

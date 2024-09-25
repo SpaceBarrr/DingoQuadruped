@@ -8,10 +8,7 @@ import time
 import logging
 from PIL import Image,ImageDraw,ImageFont
 
-sys.path.insert(0,
-                os.path.dirname(os.path.realpath(__file__)).replace('scripts', 'src') + \
-                "/kelpie_hardware_interface/lcd")
-from LCD_1inch47 import LCD_1inch47
+from kelpie_hardware_interface.lcd.LCD_1inch47 import LCD_1inch47
 class BattDisplayer:
     def __init__(self):
         self.display = LCD_1inch47()
@@ -49,7 +46,8 @@ class BattDisplayer:
         # black = Image.new("RGB", (320, 172), "black")
 
         print(os.getcwd() + "\n")
-        batt_status = Image.open('../lib/emptybatterystatus_white.png')
+        curr_path = __file__.replace("/src/kelpie_hardware_interface/lcd/batt_displayer.py","/lib/")
+        batt_status = Image.open(curr_path+'emptybatterystatus_white.png')
 
         batt_draw = ImageDraw.Draw(batt_status)
 
