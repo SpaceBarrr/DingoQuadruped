@@ -285,7 +285,7 @@ class Controller:
         if self.state.behavior_state == BehaviorState.TROT:
             self.state.foot_locations, contact_modes = self.step_gait(
                 self.state,
-                yaw_rate,
+                0,
                 command,
             )
 

@@ -1,16 +1,16 @@
 fl:
-  lower: -34
+  lower: -26
   roll: 110
-  upper: 12
+  upper: 9
 fr:
   lower: -6
   roll: 63
-  upper: 37
+  upper: 41
 rl:
-  lower: -62
+  lower: -59
   roll: 85
-  upper: 8
+  upper: 17
 rr:
   lower: -22
   roll: 113
-  upper: 34
+  upper: 37
