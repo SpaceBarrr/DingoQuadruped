@@ -137,7 +137,7 @@ class Controller:
         self.state = state
 
         # Roll, yaw
-        self._prev_imu = [0, 0]
+        self._prev_state = [0, 0]
         self._pid_control_input = self.state
 
         self._prev_time = time.monotonic()
@@ -193,14 +193,14 @@ class Controller:
         # Clip desired yaw to be between -pi and pi
 
         if command.roll_command:
-            self._prev_imu[0] = self.imu.roll
+            self._prev_state[0] = self._pid_control_input.roll
         if command.yaw_command:
-            self._prev_imu[1] = self.imu.yaw
+            self._prev_state[1] = self._pid_control_input.yaw
         
         if not command.roll_command:
-            self.d_state.roll = self._prev_imu[0]
+            self.d_state.roll = self._prev_state[0]
         if not command.yaw_command:
-            self.d_state.yaw = self._prev_imu[1]
+            self.d_state.yaw = self._prev_state[1]
 
     def toggle_pid_control(self):
         self.pid_control = not self.pid_control
@@ -285,7 +285,7 @@ class Controller:
         if self.state.behavior_state == BehaviorState.TROT:
             self.state.foot_locations, contact_modes = self.step_gait(
                 self.state,
-                0,
+                yaw_rate,
                 command,
             )
 

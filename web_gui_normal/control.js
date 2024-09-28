@@ -51,6 +51,8 @@ function mouse_down(button) {
     default:
       break;
   }
+  console.log(command);
+  command_input.publish(command);
 }
 
 function mouse_up(button) {
@@ -83,6 +85,8 @@ function mouse_up(button) {
     default:
       break;
   }
+  console.log(command)
+  command_input.publish(command);
 }
 
-command_input.publish(command);
+// command_input.publish(command);

@@ -58,17 +58,19 @@ class KelpieDisplay:
             batt_fill = "#d49b00"  # yellow
         else:
             batt_fill = "#09ab00"  # green
+        try:
+            batt_draw.rounded_rectangle([(42, 92), (42 + (153 * battery_percentage), 170)], 8, fill=batt_fill)
+            batt_draw.text((68, 95), str(int(battery_percentage * 100)) + "%", fill="WHITE", font=Font1_large)
+            batt_scale_factor = 0.8
+            resized_batt_status = batt_status.resize(
+                (int(batt_status.size[0] * batt_scale_factor), int(batt_status.size[1] * batt_scale_factor)))
+            image1.paste(resized_batt_status, (62, -40), resized_batt_status.convert('RGBA'))
 
-        batt_draw.rounded_rectangle([(42, 92), (42 + (153 * battery_percentage), 170)], 8, fill=batt_fill)
-        batt_draw.text((68, 95), str(int(battery_percentage * 100)) + "%", fill="WHITE", font=Font1_large)
-        batt_scale_factor = 0.8
-        resized_batt_status = batt_status.resize(
-            (int(batt_status.size[0] * batt_scale_factor), int(batt_status.size[1] * batt_scale_factor)))
-        image1.paste(resized_batt_status, (62, -40), resized_batt_status.convert('RGBA'))
-
-        image1 = image1.rotate(0)
-        image1 = image1.transpose(Image.ROTATE_270)
-        self.display.ShowImage(image1)
+            image1 = image1.rotate(0)
+            image1 = image1.transpose(Image.ROTATE_270)
+            self.display.ShowImage(image1)
+        except:
+            print("Batt display error")
 
     @property
     def battery_v(self):
