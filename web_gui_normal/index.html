@@ -33,6 +33,7 @@
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/roslib@1/build/roslib.min.js"></script>
 
     <script type="text/javascript" src="ROS.js"></script>
+    <script type="text/javascript" src="dashboard.js"></script>
 </head>
 
 <body>
@@ -53,6 +54,13 @@
       </div>
       <main class="mdl-layout__content mdl-color--grey-100">
         <div class="mdl-grid demo-content">
+          <div class="demo-cards mdl-cell mdl-cell--12-col mdl-grid mdl-grid--no-spacing">
+            <div class="ip-address mdl-cell--12-col">
+              <div class="mdl-card__supporting-text">
+                <h4 id="ROS_status"></h4>
+              </div>
+            </div>
+          </div>
           <!-- Voltage Monitoring -->
           <div class="demo-cards mdl-cell mdl-cell--6-col mdl-grid mdl-grid--no-spacing">
             <div class="voltage-monitor mdl-card mdl-shadow--2dp mdl-cell mdl-cell--12-col">
