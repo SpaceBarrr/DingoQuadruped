@@ -13,10 +13,10 @@ class Configuration:
         self.ps4_deactivated_color = PS4_DEACTIVATED_COLOR
 
         #################### COMMANDS ####################
-        self.max_x_velocity = 1.2
+        self.max_x_velocity = 1
         self.max_y_velocity = 0.5
         self.y_vel_tf = lambda y: y * 1  # Allow arbitrary transformation function to be applied to controller inputs
-        self.x_vel_tf = lambda x: x * 1.2  # Allow arbitrary transformation function to be applied to controller inputs
+        self.x_vel_tf = lambda x: x * 1  # Allow arbitrary transformation function to be applied to controller inputs
 
         # TODO: Tune max yaw rate. Right now it is too fast for the dog to react in sim.
         self.max_yaw_rate = 2
@@ -38,7 +38,7 @@ class Configuration:
 
         # These x_shift variables will move the default foot positions of the robot
         # Handy if the centre of mass shifts as can move the feet to compensate
-        self.rear_leg_x_shift = 0.00  # In default config, the robots mass is slightly biased to the back feet, so the back feet are shifted back slightly
+        self.rear_leg_x_shift = -0.04  # In default config, the robots mass is slightly biased to the back feet, so the back feet are shifted back slightly
         self.front_leg_x_shift = 0.00
 
         self.delta_y = 0.1106  # 0.1083
@@ -204,9 +204,9 @@ class Leg_linkage:
     def __init__(self, configuration):
         self.a = 35  # mm
         self.b = 37.6  # mm
-        self.c = 40  # mm
+        self.c = 43#40  # mm
         self.d = 35 # mm
-        self.e = 61.2836  # mm
+        self.e = 67 #61.2836  # mm
         self.f = 130  # mm  #new will be 130.0
         self.g = 50  # mm
         self.h = 43  # mm
