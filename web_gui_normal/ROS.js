@@ -11,10 +11,9 @@ ros.on('connection', function () {
 
 ros.on('error', function (error) {
     console.log('Error connecting to websocket server: ', error);
-    document.getElementById("ROS_status").innerText = 'Cannot connect to ROS. Ensure ROS bridge has been launched.\n' + error
+    document.getElementById("ROS_status").innerText = 'Cannot connect to ROS. Ensure ROS bridge has been launched.'
 });
 
 ros.on('close', function () {
     console.log('Connection to websocket server closed.');
-    document.getElementById("ROS_status").innerText = 'ROS connection closed. Please reload to reconnect.'
 });
