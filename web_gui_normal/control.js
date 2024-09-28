@@ -38,28 +38,28 @@ function mouse_down(button) {
   switch(button) {
     case 'height up':
       document.getElementById("status").innerText = button + " test";
-      desired_movement.height_movement = 1
+      desired_movement.height_movement = 10
       break;
     case "height down":
-      desired_movement.height_movement = -1
+      desired_movement.height_movement = -10
       break;
     case "pitch up":
-      desired_movement.pitch = 0.5
+      desired_movement.pitch = 5
       break;
     case "pitch down":
-      desired_movement.pitch = -0.5
+      desired_movement.pitch = -5
       break;
     case "roll left":
-      desired_movement.roll_movement = 1
+      desired_movement.roll_movement = 10
       break;
     case "roll right":
-      desired_movement.roll_movement = -1
+      desired_movement.roll_movement = -10
       break;
     case "yaw left":
-      desired_movement.yaw_rate = 0.5
+      desired_movement.yaw_rate = 5
       break;
     case "yaw right":
-      desired_movement.yaw_rate = -0.5
+      desired_movement.yaw_rate = -5
       break;
     default:
       break;

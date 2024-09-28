@@ -14,7 +14,7 @@
         <arg name="coalesce_interval" value="0.02"/>
     </node>
 
-    <include file="$(find raspicam_node)/launch/camerav2_1280x720.launch" />
+    <!-- <include file="$(find raspicam_node)/launch/camerav2_1280x720.launch" /> -->
     <include file="$(find rosbridge_server)/launch/rosbridge_websocket.launch" />
     <!-- Kelpie Driver -->
     <node pkg="kelpie" type="main_driver.py" name="kelpie" args="$(arg is_sim) $(arg is_physical) $(arg use_imu)" output="screen"/>
