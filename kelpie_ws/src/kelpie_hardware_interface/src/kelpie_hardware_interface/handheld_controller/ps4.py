@@ -4,7 +4,7 @@ import rospy
 from sensor_msgs.msg import Joy
 from kelpie.msg import commands
 
-class Ps4Interface:
+class ControllerInterface:
     def __init__(self):
         self.rounding_dp = 2
         self.deadband = 0.0025
@@ -41,7 +41,7 @@ class Ps4Interface:
 
 if __name__ == "__main__":
     rospy.init_node("ps4")
-    ps4 = Ps4Interface()
+    ps4 = ControllerInterface()
 
 
     rospy.spin()

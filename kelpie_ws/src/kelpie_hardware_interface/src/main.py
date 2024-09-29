@@ -4,7 +4,7 @@ import rospy
 import time
 
 from kelpie_hardware_interface.servo.servo_subscriber import ServoSubscriber
-from kelpie_hardware_interface.handheld_controller.ps4 import Ps4Interface
+from kelpie_hardware_interface.handheld_controller.ps4 import ControllerInterface
 from kelpie_hardware_interface.current_sense.publisher import publish as publish_currents
 from kelpie_hardware_interface.imu.publisher import publish as publish_imu
 from kelpie_hardware_interface.batt_sense.publisher import publish as publish_batt_v
@@ -23,7 +23,7 @@ if __name__ == '__main__':
 
     # Start main subscribers
     servo_subscriber = ServoSubscriber()
-    ps4 = Ps4Interface()
+    controller = ControllerInterface()
     batt_display = KelpieDisplay()
     batt_avg = RollingAverage(window=40, initial=0)
 
@@ -33,6 +33,6 @@ if __name__ == '__main__':
         batt_avg.append(round(publish_batt_v(BATT_VOLTAGE_PUB), 2))
         batt_display.battery_v = batt_avg.average
         publish_imu(IMU_PUBLISHER)
-        time.sleep(0.01)
+        time.sleep(0.05)
         pass
 

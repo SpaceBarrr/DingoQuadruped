@@ -42,96 +42,63 @@
       z-index: 900;
     }
     </style>
+
+    <script type="text/javascript" src="eventemitter2.min.js"></script>
+    <script type="text/javascript" src="roslib.min.js"></script>
+
+    <script type="text/javascript" src="ROS.js"></script>
+    <script type="text/javascript" src="control.js"></script>
   </head>
+
   <body>
     <div class="demo-layout mdl-layout mdl-js-layout mdl-layout--fixed-drawer mdl-layout--fixed-header">
       <header class="demo-header mdl-layout__header mdl-color--grey-100 mdl-color-text--grey-600">
         <div class="mdl-layout__header-row">
-          <span class="mdl-layout-title">Leg Control Panel</span>
+          <span class="mdl-layout-title">Stance Control Panel</span>
         </div>
       </header>
       <div class="demo-drawer mdl-layout__drawer mdl-color--blue-grey-900 mdl-color-text--blue-grey-50">
         <nav class="demo-navigation mdl-navigation mdl-color--blue-grey-800">
           <a href="index.html" class="mdl-navigation__link"><i class="mdl-color-text--blue-grey-400 material-symbols-outlined" role="presentation">home</i><div class="mdl-layout-spacer"></div>Dashboard<div class="mdl-layout-spacer"></div></a>
-          <a href="leg_control.html" class="mdl-navigation__link"><i class="mdl-color-text--blue-grey-400 material-symbols-outlined" role="presentation">joystick</i><div class="mdl-layout-spacer"></div>Leg Control<div class="mdl-layout-spacer"></div></a>
-          <a href="debug.html" class="mdl-navigation__link"><i class="mdl-color-text--blue-grey-400 material-symbols-outlined" role="presentation">terminal</i><div class="mdl-layout-spacer"></div>Debug<div class="mdl-layout-spacer"></div></a>
+          <a href="leg_control.html" class="mdl-navigation__link"><i class="mdl-color-text--blue-grey-400 material-symbols-outlined" role="presentation">joystick</i><div class="mdl-layout-spacer"></div>Stance Control<div class="mdl-layout-spacer"></div></a>
+          <a href="camera.html" class="mdl-navigation__link"><i class="mdl-color-text--blue-grey-400 material-symbols-outlined" role="presentation">photo_camera</i><div class="mdl-layout-spacer"></div>Camera<div class="mdl-layout-spacer"></div></a>
           <div class="mdl-layout-spacer"></div>
-          <a class="mdl-navigation__link" href="help.html"><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">help_outline</i><span class="visuallyhidden">Help</span></a>
+          <a class="mdl-navigation__link" href="help.html"><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">help_outline</i><div class="mdl-layout-spacer"></div>Help<div class="mdl-layout-spacer"></div></a>
         </nav>
       </div>
       <main class="mdl-layout__content mdl-color--grey-100">
         <div class="mdl-grid demo-content">
-          <div class="front_right mdl-color--white mdl-shadow--2dp mdl-cell mdl-cell--12-col mdl-grid">
-            <h3>Front Right</h3>
-            <div class="mdl-layout-spacer"></div>
-            <table>
-              <tr><td>Joint 1</td><td>Joint 2</td>
-                  <td>Joint 3</td></tr>
-              <tr><td><input id = "slider1" class = "mdl-slider mdl-js-slider" type = "range" 
-                  min = "0" max = "100" value = "0" tabindex = "0" 
-                  onchange = ""></td>
-              <td><input id = "slider2" class = "mdl-slider mdl-js-slider" type = "range"  
-                  min = "0" max = "100" value = "25" tabindex = "0" 
-                  onchange = ""></td>
-              <td><input id = "slider3" class = "mdl-slider mdl-js-slider" type = "range"  
-                  min = "0" max = "100" value = "25" tabindex = "0"
-                  onchange = ""></td>
-              </tr>
-             </table>
+          <div class="demo-cards mdl-cell mdl-cell--12-col mdl-grid mdl-grid--no-spacing">
+            <div class="ip-address mdl-cell--12-col">
+              <div class="mdl-card__supporting-text">
+                <h4 id="ROS_status"></h4>
+              </div>
+            </div>
           </div>
-          <div class="front_left mdl-color--white mdl-shadow--2dp mdl-cell mdl-cell--12-col mdl-grid">
-            <h3>Front Left</h3>
+          <p>Status: <span id="status"></span></p>
+          <div class="height mdl-color--white mdl-shadow--2dp mdl-cell mdl-cell--12-col mdl-grid">
+            <h3>Height</h3>
             <div class="mdl-layout-spacer"></div>
-            <table>
-              <tr><td>Joint 1</td><td>Joint 2</td>
-                  <td>Joint 3</td></tr>
-              <tr><td><input id = "slider1" class = "mdl-slider mdl-js-slider" type = "range" 
-                  min = "0" max = "100" value = "0" tabindex = "0" 
-                  onchange = ""></td>
-              <td><input id = "slider2" class = "mdl-slider mdl-js-slider" type = "range"  
-                  min = "0" max = "100" value = "25" tabindex = "0" 
-                  onchange = ""></td>
-              <td><input id = "slider3" class = "mdl-slider mdl-js-slider" type = "range"  
-                  min = "0" max = "100" value = "25" tabindex = "0"
-                  onchange = ""></td>
-              </tr>
-             </table>
+            <button onmousedown="mouse_down('height up')" onmouseup="mouse_up('height up')">Height Up</button>
+            <button onmousedown="mouse_down('height down')" onmouseup="mouse_up('height down')">Height Down</button>
           </div>
-          <div class="back_right mdl-color--white mdl-shadow--2dp mdl-cell mdl-cell--12-col mdl-grid">
-            <h3>Rear Right</h3>
+          <div class="pitch mdl-color--white mdl-shadow--2dp mdl-cell mdl-cell--12-col mdl-grid">
+            <h3>Pitch</h3>
             <div class="mdl-layout-spacer"></div>
-            <table>
-              <tr><td>Joint 1</td><td>Joint 2</td>
-                  <td>Joint 3</td></tr>
-              <tr><td><input id = "slider1" class = "mdl-slider mdl-js-slider" type = "range" 
-                  min = "0" max = "100" value = "0" tabindex = "0" 
-                  onchange = ""></td>
-              <td><input id = "slider2" class = "mdl-slider mdl-js-slider" type = "range"  
-                  min = "0" max = "100" value = "25" tabindex = "0" 
-                  onchange = ""></td>
-              <td><input id = "slider3" class = "mdl-slider mdl-js-slider" type = "range"  
-                  min = "0" max = "100" value = "25" tabindex = "0"
-                  onchange = ""></td>
-              </tr>
-             </table>
+            <button onmousedown="mouse_down('pitch up')" onmouseup="mouse_up('pitch up')">Pitch Up</button>
+            <button onmousedown="mouse_down('pitch down')" onmouseup="mouse_up('pitch down')">Pitch Down</button>
           </div>
-          <div class="back_left mdl-color--white mdl-shadow--2dp mdl-cell mdl-cell--12-col mdl-grid">
-            <h3>Rear Left</h3>
+          <div class="roll mdl-color--white mdl-shadow--2dp mdl-cell mdl-cell--12-col mdl-grid">
+            <h3>Roll</h3>
             <div class="mdl-layout-spacer"></div>
-            <table>
-              <tr><td>Joint 1</td><td>Joint 2</td>
-                  <td>Joint 3</td></tr>
-              <tr><td><input id = "slider1" class = "mdl-slider mdl-js-slider" type = "range" 
-                  min = "0" max = "100" value = "0" tabindex = "0" 
-                  onchange = ""></td>
-              <td><input id = "slider2" class = "mdl-slider mdl-js-slider" type = "range"  
-                  min = "0" max = "100" value = "25" tabindex = "0" 
-                  onchange = ""></td>
-              <td><input id = "slider3" class = "mdl-slider mdl-js-slider" type = "range"  
-                  min = "0" max = "100" value = "25" tabindex = "0"
-                  onchange = ""></td>
-              </tr>
-             </table>
+            <button onmousedown="mouse_down('roll left')" onmouseup="mouse_up('roll left')">Roll Left</button>
+            <button onmousedown="mouse_down('roll right')" onmouseup="mouse_up('roll right')">Roll Right</button>
+          </div>
+          <div class="yaw mdl-color--white mdl-shadow--2dp mdl-cell mdl-cell--12-col mdl-grid">
+            <h3>Yaw</h3>
+            <div class="mdl-layout-spacer"></div>
+            <button onmousedown="mouse_down('yaw left')" onmouseup="mouse_up('yaw left')">Yaw Left</button>
+            <button onmousedown="mouse_down('yaw right')" onmouseup="mouse_up('yaw right')">Yaw Right</button>
           </div>
         </div>
       </main>

@@ -40,9 +40,9 @@ class StanceController:
         return (delta_p, delta_R)
 
     # TODO: put current foot location into state
-    def next_foot_location(self, leg_index, state, yaw_rate, command):
+    def next_foot_location(self, leg_index, state, d_state, command):
         foot_location = state.foot_locations[:, leg_index]
-        (delta_p, delta_R) = self.position_delta(leg_index, state, yaw_rate, command)
+        (delta_p, delta_R) = self.position_delta(leg_index, state, d_state.yaw_rate, command)
         incremented_location = delta_R @ foot_location + delta_p
 
         return incremented_location

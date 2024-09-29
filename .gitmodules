@@ -2,3 +2,6 @@
 	path = kelpie_ws/src/kelpie_hardware_interface/src/kelpie_hardware_interface/imu/CircuitPython_LSM6DSV16X
 	url = https://github.com/SpaceBarrr/CircuitPython_LSM6DSV16X.git
     branch = main
+[submodule "kelpie_ws/raspicam_node"]
+	path = kelpie_ws/src/raspicam_node
+	url = https://github.com/UbiquityRobotics/raspicam_node

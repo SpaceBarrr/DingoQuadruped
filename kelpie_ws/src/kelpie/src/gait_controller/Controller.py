@@ -118,7 +118,7 @@ class Controller:
                                     sample_time=0.02,
                                     output_limits=(-self.config.roll_speed, self.config.roll_speed))
 
-        self._controller_pitch = PID(10, 3, 0.2,
+        self._controller_pitch = PID(8, 3, 0.4,
                                      setpoint=0,
                                      sample_time=0.02,
                                      output_limits=(-self.config.max_pitch_rate, self.config.max_pitch_rate))
@@ -137,7 +137,7 @@ class Controller:
         self.state = state
 
         # Roll, yaw
-        self._prev_imu = [0, 0]
+        self._prev_state = [0, 0]
         self._pid_control_input = self.state
 
         self._prev_time = time.monotonic()
@@ -146,7 +146,7 @@ class Controller:
         self.pid_control = False
 
 
-    def step_gait(self, state, yaw_rate, command):
+    def step_gait(self, command):
         """Calculate the desired foot locations for the next timestep
 
         Returns
@@ -154,21 +154,22 @@ class Controller:
         Numpy array (3, 4)
             Matrix of new foot locations.
         """
-        contact_modes = self.gait_controller.contacts(state.ticks)
+        contact_modes = self.gait_controller.contacts(self.state.ticks)
         new_foot_locations = np.zeros((3, 4))
         for leg_index in range(4):
             contact_mode = contact_modes[leg_index]
-            foot_location = state.foot_locations[:, leg_index]
+            foot_location = self.state.foot_locations[:, leg_index]
             if contact_mode == 1:
-                new_location = self.stance_controller.next_foot_location(leg_index, state, yaw_rate, command)
+                new_location = self.stance_controller.next_foot_location(leg_index, self.state, self.d_state, command)
             else:
                 swing_proportion = (
-                        self.gait_controller.subphase_ticks(state.ticks) / self.config.swing_ticks
+                        self.gait_controller.subphase_ticks(self.state.ticks) / self.config.swing_ticks
                 )
                 new_location = self.swing_controller.next_foot_location(
                     swing_proportion,
                     leg_index,
-                    state,
+                    self.state,
+                    self.d_state,
                     command
                 )
             new_foot_locations[:, leg_index] = new_location
@@ -193,14 +194,14 @@ class Controller:
         # Clip desired yaw to be between -pi and pi
 
         if command.roll_command:
-            self._prev_imu[0] = self.imu.roll
+            self._prev_state[0] = self._pid_control_input.roll
         if command.yaw_command:
-            self._prev_imu[1] = self.imu.yaw
+            self._prev_state[1] = self._pid_control_input.yaw
         
         if not command.roll_command:
-            self.d_state.roll = self._prev_imu[0]
+            self.d_state.roll = self._prev_state[0]
         if not command.yaw_command:
-            self.d_state.yaw = self._prev_imu[1]
+            self.d_state.yaw = self._prev_state[1]
 
     def toggle_pid_control(self):
         self.pid_control = not self.pid_control
@@ -208,13 +209,6 @@ class Controller:
     @property
     def pid_control(self):
         return self._pid_control
-
-    def _set_pid_state(self):
-        self._pid_control_input = self.state
-
-    def _set_pid_imu(self):
-        self._pid_control_input = self.imu
-
 
     @pid_control.setter
     def pid_control(self, state):
@@ -231,7 +225,7 @@ class Controller:
         self._pid_control = False
 
     def _enable_pid(self):
-        self._pid_control_input = self.roll_avg_imu
+        self._pid_control_input = self.imu
         self._pid_control = True
 
     def run(self, command):
@@ -284,8 +278,6 @@ class Controller:
 
         if self.state.behavior_state == BehaviorState.TROT:
             self.state.foot_locations, contact_modes = self.step_gait(
-                self.state,
-                yaw_rate,
                 command,
             )
 
