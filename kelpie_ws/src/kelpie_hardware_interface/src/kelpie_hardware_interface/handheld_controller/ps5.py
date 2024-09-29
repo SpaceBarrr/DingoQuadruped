@@ -18,14 +18,14 @@ class ControllerInterface:
         command = commands()
 
         command.gait_toggle = msg.buttons[5]  # R1
-        command.hop_toggle = msg.buttons[0]  # cross
-        command.calibration_toggle = msg.buttons[1]  # circle
-        command.pid_toggle = msg.buttons[3] # Square
+        command.hop_toggle = msg.buttons[1]  # cross
+        command.calibration_toggle = msg.buttons[2]  # circle
+        command.pid_toggle = msg.buttons[0] # Square
         command.joystick_toggle = msg.buttons[4]  # L1
         command.x = self.apply_deadband(msg.axes[0])  # ly
         command.y = self.apply_deadband(msg.axes[1])  # lx
-        command.pitch = self.apply_deadband(msg.axes[4]*0.25)  # ry
-        command.yaw_rate = self.apply_deadband(msg.axes[3])  # rx
+        command.pitch = self.apply_deadband(msg.axes[5]*0.25)  # ry
+        command.yaw_rate = self.apply_deadband(msg.axes[2])  # rx
         command.height_movement = msg.axes[7]  # dpady
         command.roll_movement = msg.axes[6]  # dpadx
 
@@ -41,7 +41,7 @@ class ControllerInterface:
 
 if __name__ == "__main__":
     rospy.init_node("ps4")
-    ps4 = ControllerInterface()
+    ps4 = Ps4Interface()
 
 
     rospy.spin()
