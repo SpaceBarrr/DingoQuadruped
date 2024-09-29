@@ -93,7 +93,7 @@ class Calibrator:
         """
         #self._settle()
         #self._zero_roll()
-        self._hit_limit(f"{leg}_U", step=0.5, backoff=-20, tstep=0.1, limit=0.02)
+        self._hit_limit(f"{leg}_U", step=0.5, backoff=-20, tstep=0.1, limit=0.2)
         self._zero_lower(leg)
         self._zero_upper(leg)
 
@@ -105,7 +105,7 @@ class Calibrator:
 
     def _zero_upper(self, leg):
         servo = f"{leg}_U"
-        self._hit_limit(servo, step=-0.1, backoff=10, tstep=0.05, limit=0.025)
+        self._hit_limit(servo, step=-0.1, backoff=10, tstep=0.05, limit=0.25)
         self.rolling_avg_curr[s_idx[servo].value[1]].reset()
         time.sleep(0.1)
         self._write_sync[s_idx[servo].value[1]] = -1
@@ -113,12 +113,12 @@ class Calibrator:
 
     def _zero_lower(self, leg):
         servo = f"{leg}_L"
-        self._hit_limit(servo, step=0.2, backoff=-10, tstep=0.05, limit=0.05)
+        self._hit_limit(servo, step=0.2, backoff=-10, tstep=0.05, limit=0.5)
         self.rolling_avg_curr[s_idx[servo].value[1]].reset()
         time.sleep(0.1)
         return
 
-    def _hit_limit(self, servo, step=1., backoff=-2., tstep=0.1, limit=0.1):
+    def _hit_limit(self, servo, step=1., backoff=-2., tstep=0.1, limit=1.):
         while not self._collided(servo, limit=limit):
             # Run until collided.
             if self._write_sync[s_idx[servo].value[1]]:

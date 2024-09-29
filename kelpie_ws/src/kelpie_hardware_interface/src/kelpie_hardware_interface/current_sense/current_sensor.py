@@ -26,7 +26,7 @@ class MotorChan(IntEnum):
 class CurrentSensor:
     def __init__(self, addr: int, reg: int, mask: int, value: int,
                  channels: list = (1, 2, 3),
-                 shunt_resistor: list = (0.1, 0.1, 0.1)):
+                 shunt_resistor: list = (0.01, 0.01, 0.01)):
         """
         Initialises a new current sensor
         :param addr: Address of the sensor
