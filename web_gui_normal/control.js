@@ -9,7 +9,7 @@ var command_input = new ROSLIB.Topic({
 });
 
 
-function mouse_down(button) {
+function update(button) {
   let desired_movement = {
     gait_toggle : false,
     hop_toggle : false,
@@ -54,19 +54,16 @@ function mouse_down(button) {
   }
 
   var command = new ROSLIB.Message(desired_movement);
-  // console.log(command);
   command_input.publish(command);
 }
 
 
 function mouse_down(button) {
-  document.getElementById("status").innerText = button + " button clicked";
-  interval = setInterval(update, 50);
+  interval = setInterval(update(button), 50);
 }
 
 
 function mouse_up(button) {
-  document.getElementById("status").innerText = button + " button released";
   clearInterval(interval);
 
   var command = new ROSLIB.Message({
@@ -83,6 +80,5 @@ function mouse_up(button) {
     height_movement : 0
   })
 
-  // console.log(command)
   command_input.publish(command);
 }
