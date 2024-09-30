@@ -38,8 +38,8 @@ class Configuration:
 
         # These x_shift variables will move the default foot positions of the robot
         # Handy if the centre of mass shifts as can move the feet to compensate
-        self.rear_leg_x_shift = -0.02  # In default config, the robots mass is slightly biased to the back feet, so the back feet are shifted back slightly
-        self.front_leg_x_shift = 0.00
+        self.rear_leg_x_shift = 0.00  # In default config, the robots mass is slightly biased to the back feet, so the back feet are shifted back slightly
+        self.front_leg_x_shift = 0.05
 
         self.delta_y = 0.1106  # 0.1083
         self.default_z_ref = -0.25  # -0.16
@@ -48,7 +48,7 @@ class Configuration:
         self.z_coeffs = None
         self.z_clearance = 0.08
         self.alpha = (
-            0.5  # Ratio between touchdown distance and total horizontal stance movement
+            0.7  # Ratio between touchdown distance and total horizontal stance movement
         )
         self.beta = (
             0.5  # Ratio between touchdown distance and total horizontal stance movement
@@ -58,7 +58,10 @@ class Configuration:
         self.dt = 0.01
         self.num_phases = 4
         self.contact_phases = np.array(
-            [[1, 1, 1, 0], [1, 0, 1, 1], [1, 0, 1, 1], [1, 1, 1, 0]]
+            [[1, 1, 1, 0], 
+             [1, 0, 1, 1], 
+             [1, 0, 1, 1], 
+             [1, 1, 1, 0]]
         )
         self.overlap_time = (
             0.04  # duration of the phase where all four feet are on the ground
@@ -81,7 +84,7 @@ class Configuration:
         # Leg lengths
         self.L1 = 0.05162024721
         self.L2 = 0.130
-        self.L3 = 0.13813664159
+        self.L3 = 0.13813664159 + 0.03
         self.phi = m.radians(73.91738698)
 
         ################### INERTIAL ####################

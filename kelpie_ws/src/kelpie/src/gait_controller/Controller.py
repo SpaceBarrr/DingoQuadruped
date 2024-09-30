@@ -305,6 +305,9 @@ class Controller:
             )
 
             self.state.rotated_foot_locations = rotated_foot_locations
+            self.state.roll = self.d_state.roll
+            self.state.pitch =  self.d_state.pitch
+            
 
         elif self.state.behavior_state == BehaviorState.REST:
 
@@ -340,12 +343,11 @@ class Controller:
                 rotated_foot_locations, self.config
             )
             self.state.rotated_foot_locations = rotated_foot_locations
+            self.state.roll = roll
+            self.state.pitch = pitch
 
         self.state.height = self.d_state.height
-        self.state.roll = roll
-        self.state.pitch = pitch
         self.state.yaw = yaw
-
         self._prev_time = time.monotonic()
 
     def set_pose_to_default(self, state):
