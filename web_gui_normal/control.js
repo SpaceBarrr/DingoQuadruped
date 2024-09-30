@@ -26,28 +26,28 @@ function update(button) {
 
   switch(button) {
     case 'height up':
-      desired_movement.height_movement = 1
+      desired_movement.height_movement = 0.5
       break;
     case "height down":
-      desired_movement.height_movement = -1
+      desired_movement.height_movement = -0.5
       break;
     case "pitch up":
-      desired_movement.pitch = 1
+      desired_movement.pitch = 0.5
       break;
     case "pitch down":
-      desired_movement.pitch = -1
+      desired_movement.pitch = -0.5
       break;
     case "roll left":
-      desired_movement.roll_movement = 1
+      desired_movement.roll_movement = 0.25
       break;
     case "roll right":
-      desired_movement.roll_movement = -1
+      desired_movement.roll_movement = -0.25
       break;
     case "yaw left":
-      desired_movement.yaw_rate = 1
+      desired_movement.yaw_rate = 0.5
       break;
     case "yaw right":
-      desired_movement.yaw_rate = -1
+      desired_movement.yaw_rate = -0.5
       break;
     default:
       break;
@@ -55,15 +55,16 @@ function update(button) {
 
   var command = new ROSLIB.Message(desired_movement);
   command_input.publish(command);
+
 }
 
 
 function mouse_down(button) {
-  interval = setInterval(update(button), 50);
+  interval = setInterval(update, 50, button);
 }
 
 
-function mouse_up(button) {
+function mouse_up() {
   clearInterval(interval);
 
   var command = new ROSLIB.Message({
