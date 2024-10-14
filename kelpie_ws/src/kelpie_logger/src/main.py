@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 import csv
 import os
 import time
@@ -12,6 +13,8 @@ att = np.zeros((4,))
 acc = np.zeros((4,))
 gyro = np.zeros((4,))
 REF_TIME = time.time()
+rospy.init_node("kelpie_logger")
+
 def IMU_callback(imu_data: imu) -> None:
     """
     Callback function for IMU subscriber.
@@ -24,9 +27,12 @@ def IMU_callback(imu_data: imu) -> None:
     gyro[:] = time.time() - REF_TIME ,imu_data.gyro.x, imu_data.gyro.y, imu_data.gyro.z
 
 IMU = rospy.Subscriber("/kelpie/imu", imu, IMU_callback, queue_size=1)
+
 if not os.path.exists(FP):
     os.makedirs(FP)
 
 with open(FILE_NAME,mode="w+", newline='') as csvfile:
-    spamwriter = csv.writer(csvfile, delimiter=' ', quotechar='|')
-    spamwriter.writerow(att)
+    while True:
+        spamwriter = csv.writer(csvfile, delimiter=' ', quotechar='|')
+        spamwriter.writerow(att)
+        time.sleep(0.05)

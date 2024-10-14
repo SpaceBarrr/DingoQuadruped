@@ -18,6 +18,7 @@
     <include file="$(find rosbridge_server)/launch/rosbridge_websocket.launch" />
     <!-- Kelpie Driver -->
     <node pkg="kelpie" type="main_driver.py" name="kelpie" args="$(arg is_sim) $(arg is_physical) $(arg use_imu)" />
-    <node pkg="kelpie_hardware_interface" type="main.py" name="hardware" output="screen"/>
+    <node pkg="kelpie_hardware_interface" type="main.py" name="hardware" />
+    <node pkg="kelpie_logger" type="main.py" name="logger" output="screen"/>
 </launch>
     

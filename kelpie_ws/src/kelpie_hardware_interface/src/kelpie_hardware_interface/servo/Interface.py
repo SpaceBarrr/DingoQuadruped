@@ -239,7 +239,7 @@ def lower_leg_angle_to_servo_angle(link, THETA2, THETA3):
     DAB, ABC, BCD = calculate_4_bar(CDA, link.d, link.a, link.b, link.c)
     # Calculating Theta
     THETA0 = DAB + link.gamma
-
+    # print(GDE)
     return THETA0
 
 

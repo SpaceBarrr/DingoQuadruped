@@ -1,0 +1,4 @@
+<launch>
+    <node pkg="kelpie_hardware_interface" type="display_runner.py" name="kelpie_display"/>
+</launch>
+    
