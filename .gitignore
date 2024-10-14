@@ -16,3 +16,4 @@ Kelpie_Main_Board/History/*
 /kelpie_ws/src/CMakeLists.txt
 /kelpie_ws/.catkin_workspace
 
+/kelpie_ws/src/kelpie_logger/logs/*
