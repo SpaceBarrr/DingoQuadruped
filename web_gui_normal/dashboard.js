@@ -53,22 +53,37 @@ joint_states_topic.subscribe(function (msg) {
 });
 
 currents_topic.subscribe(function (msg) {
+    let total_current = 0;
+
     document.getElementById("currents_fl_roll").innerText = msg.fl.roll.toFixed(2)
+    total_current += msg.fl.roll;
     document.getElementById("currents_fl_upper").innerText = msg.fl.upper.toFixed(2)
+    total_current += msg.fl.upper;
     document.getElementById("currents_fl_lower").innerText = msg.fl.lower.toFixed(2)
+    total_current += msg.fl.lower;
 
     document.getElementById("currents_fr_roll").innerText = msg.fr.roll.toFixed(2)
+    total_current += msg.fr.roll;
     document.getElementById("currents_fr_upper").innerText = msg.fr.upper.toFixed(2)
+    total_current += msg.fr.upper;
     document.getElementById("currents_fr_lower").innerText = msg.fr.lower.toFixed(2)
+    total_current += msg.fr.lower;
 
     document.getElementById("currents_rl_roll").innerText = msg.rl.roll.toFixed(2)
+    total_current += msg.rl.roll;
     document.getElementById("currents_rl_upper").innerText = msg.rl.upper.toFixed(2)
+    total_current += msg.rl.upper;
     document.getElementById("currents_rl_lower").innerText = msg.rl.lower.toFixed(2)
+    total_current += msg.rl.lower;
 
     document.getElementById("currents_rr_roll").innerText = msg.rr.roll.toFixed(2)
+    total_current += msg.rr.roll;
     document.getElementById("currents_rr_upper").innerText = msg.rr.upper.toFixed(2)
+    total_current += msg.rr.upper;
     document.getElementById("currents_rr_lower").innerText = msg.rr.lower.toFixed(2)
-    // console.log(msg.fr.roll + msg.fr.upper + msg.fr.lower)
+    total_current += msg.rr.lower;
+
+    document.getElementById("total_current").innerText = total_current.toFixed(2)
 });
 
 batt_voltage_topic.subscribe(function (msg) {

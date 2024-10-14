@@ -44,7 +44,7 @@
       </header>
       <div class="demo-drawer mdl-layout__drawer mdl-color--blue-grey-900 mdl-color-text--blue-grey-50">
         <nav class="demo-navigation mdl-navigation mdl-color--blue-grey-800">
-          <a href="index.html" class="mdl-navigation__link"><i class="mdl-color-text--blue-grey-400 material-symbols-outlined" role="presentation">home</i><div class="mdl-layout-spacer"></div>Dashboard<div class="mdl-layout-spacer"></div></a>
+          <a id="active" href="index.html" class="mdl-navigation__link"><i class="mdl-color-text--blue-grey-400 material-symbols-outlined" role="presentation">home</i><div class="mdl-layout-spacer"></div>Dashboard<div class="mdl-layout-spacer"></div></a>
           <a href="leg_control.html" class="mdl-navigation__link"><i class="mdl-color-text--blue-grey-400 material-symbols-outlined" role="presentation">joystick</i><div class="mdl-layout-spacer"></div>Stance Control<div class="mdl-layout-spacer"></div></a>
           <a href="camera.html" class="mdl-navigation__link"><i class="mdl-color-text--blue-grey-400 material-symbols-outlined" role="presentation">photo_camera</i><div class="mdl-layout-spacer"></div>Camera<div class="mdl-layout-spacer"></div></a>
           <div class="mdl-layout-spacer"></div>
@@ -64,12 +64,13 @@
           <div class="demo-cards mdl-cell mdl-cell--6-col mdl-grid mdl-grid--no-spacing">
             <div class="voltage-monitor mdl-card mdl-shadow--2dp mdl-cell mdl-cell--12-col">
               <div class="mdl-card__title mdl-color--teal-300">
-                <h2 class="mdl-card__title-text">Voltage Monitoring</h2>
+                <h2 class="mdl-card__title-text">Battery Status</h2>
               </div>
               <div class="mdl-card__supporting-text mdl-color-text--grey-600">
                 <p>V1: <span id="batt_voltage_v1"></span></p>
                 <p>V2: <span id="batt_voltage_v2"></span></p>
                 <p>Total Voltage: <span id="batt_voltage_overall"></span></p>
+                <p>Total Current Draw: <span id="total_current"></span></p>
               </div>
             </div>
             <div class="demo-separator mdl-cell--1-col"></div>
@@ -114,9 +115,9 @@
                 <h2 class="mdl-card__title-text">IMU</h2>
               </div>
               <div class="mdl-card__supporting-text mdl-color-text--grey-600">
-                <p>roll: <span id="imu_roll"></span></p>
-                <p>pitch: <span id="imu_pitch"></span></p>
-                <p>yaw: <span id="imu_yaw"></span></p>
+                <p>Roll: <span id="imu_roll"></span></p>
+                <p>Pitch: <span id="imu_pitch"></span></p>
+                <p>Yaw: <span id="imu_yaw"></span></p>
                 <p>Acceleration (x): <span id="imu_acc_x"></span></p>
                 <p>Acceleration (y): <span id="imu_acc_y"></span></p>
                 <p>Acceleration (z): <span id="imu_acc_z"></span></p>
