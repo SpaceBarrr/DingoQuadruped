@@ -33,6 +33,6 @@ if not os.path.exists(FP):
 
 with open(FILE_NAME,mode="w+", newline='') as csvfile:
     while True:
-        spamwriter = csv.writer(csvfile, delimiter=' ', quotechar='|')
+        spamwriter = csv.writer(csvfile, delimiter=',', quotechar='|')
         spamwriter.writerow(att)
         time.sleep(0.05)
