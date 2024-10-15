@@ -204,8 +204,10 @@ To set up serial comms:
 
 #### Setting up Voltage Monitoring
 The voltage monitoring on this robot was done using the TLA2024IRUGT chip. Please install the required library to run it with `pip3 install adafruit-circuitpython-tla202x`
+
 #### Setting up camera
 - Install required packages: `sudo apt-get install ros-noetic-video-stream-opencv`
+
 #### Configuring web server
 - Install apache `sudo apt-get install apache2
 `
@@ -222,8 +224,6 @@ The voltage monitoring on this robot was done using the TLA2024IRUGT chip. Pleas
         ```
 - Restart apache `sudo /etc/init.d/apache2 restart`
 - Install ROS bridge `sudo apt-get install ros-noetic-rosbridge-suite`
-
-  
 - To forward ROS to the browser, you will need to start ROS bridge `roslaunch rosbridge_server rosbridge_websocket.launch`
 - Finally, the web server should be accessible on the local network at http://dingo:80/index.html
 
@@ -231,65 +231,50 @@ The voltage monitoring on this robot was done using the TLA2024IRUGT chip. Pleas
 It's a good idea to backup the sdcard every so often. Here is how to do that on linux.
 - Take out the sdcard from the Raspberry Pi and mount it into another linux system.
 - Run these commands to backup/restore. Replace source/destination appropriately.
-    - Backup to file: `sudo dd if=/dev/sdb of=~/dingo_backup.img bs=4M status=progress`
-    - Restore back to sdcard: `sudo dd if=dingo_backup of=/dev/sdb bs=4M status=progress`
+    - Backup to file: `sudo dd if=/dev/sdb of=~/kelpie_backup.img bs=4M status=progress`
+    - Restore back to sdcard: `sudo dd if=kelpie_backup of=/dev/sdb bs=4M status=progress`
 
 #### Servo Calibration
 Help with getting the servos calibrated
- - View the CalibrateServos script itself for additional instructions on dialing in servos.
- - (dingo_hardware_interfacing/dingo_servo_interfacing/src/dingo_servo_interfacing/CalibrateServos.py)
- - Example commands:
-    - `rosrun dingo_servo_interfacing CalibrateServos all cal` (move all servos to calibration position)
-    - `rosrun dingo_servo_interfacing CalibrateServos fr high` (move front right servo to high position)
-
-### Docker Container
-The files inside the base directory enable a docker container to be built and the code to inspected and debugged in visual studio code. This is mostly for debugging purposes, and is best for an external device debugging or adding to the code, rather than being used on the quadruped itself. Note: These instructions assume a linux OS.
-#### Preparing vscode
-- Install [docker](https://docs.docker.com/engine/install/ubuntu/)
-- Install [vscode](https://code.visualstudio.com/docs/setup/linux)
-- Open vscode and add the following extensions: [C/C++ Extension Pack](https://marketplace.visualstudio.com/items?itemName=ms-vscode.cpptools-extension-pack), [Docker](https://marketplace.visualstudio.com/items?itemName=ms-azuretools.vscode-docker), [Dev Containers](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers), [ROS](https://marketplace.visualstudio.com/items?itemName=ms-iot.vscode-ros)
-- close vscode once extensions are installed
-
-#### Building and/or opening the container in vscode
-- In terminal, open the base folder containing the dingo quadruped code: `cd ~/any_folder_name/DingoQuadruped`
-- run `code .` to open the dingo quadruped base folder in vscode
-- A prompt will appear saying either to build the container or run it, click "build" or "run"
-- Wait for the container to be built and initialised
-- (First time only) Once the container is built, Check that "ROS1.noetic" appears in the bottom left to indicate that the ros extension has correctly detected the ros version inside the container. If it does not appear, follow [these steps](https://youtu.be/JbBMF1aot5k?t=356)
+ - Run the `calibrate_servo.py` file in the following path: `kelpie_ws\src\kelpie_hardware_interface\scripts\calibrate_servo.py`
+ - For auto calibration, type `auto`, this will calibrate all the legs automatically, excluding the roll servos
+ - For manual calibration, type the servo name (e.g. `fr r` for front right, roll), then follow the instructions to fine tune the servos
+ - Type `q` to save the quit the calibration script
 
 ## Running the code
-### Dingo_Driver
-The Dingo_Driver should be started before any other code is launched on the Dingo. It starts joystick control of the robot and allows joint and task space commands to be received from other code or controllers via command ROS topics, as long as joystick control is disabled. If enabled, joystick control will override any commands sent through the command topics. To launch it, run the following line:
-`roslaunch dingo dingo.launch`
+### Kelpie_Driver
+The Kelpie_Driver should be started before any other code is launched on the Kelpie. It starts joystick control of the robot and allows joint and task space commands to be received from other code or controllers via command ROS topics, as long as joystick control is disabled. If enabled, joystick control will override any commands sent through the command topics. To launch it, run the following line:
+`roslaunch kelpie kelpie.launch`
 
 Arguments are:
-- is_physical (0/1): Is the code being run on the Dingo itself? Default: "1" (Yes)
+- is_physical (0/1): Is the code being run on the Kelpie itself? Default: "1" (Yes)
 - is_sim (0/1): Should the code publish joint values to the simulator? Default: "0" (No)
 - use_joystick (0/1): Is a joystick being used for control? Default: "1" (Yes)
 - use_keyboard (0/1): Is the keyboard being used for control? Default: "0" (No)
 - (currently not used) serial_port (name of port): The serial port that the nano is connected to. Default: "/dev/ttyS0"
 - use_imu (0/1): Should IMU data be used to correct the robots joint angles? Default: "0" (No)
 
-With no arguments specified, it will assume a joystick controller is used for control and it will launch the hardware interface with IMU feedback disabled. No joint data will be published for Gazebo to use to simulate the robot.
+With no arguments specified, it will assume a joystick controller is used for control and it will launch the hardware interface with IMU feedback disabled. No joint data will be published for WeBots to use to simulate the robot.
 
 As an example of how the arguments can be used, if the code is to be run purely in simulation with joystick control, you would launch the driver with the following arguments: 
-`roslaunch dingo dingo.launch is_physical:=0 is_sim:=1`
+`roslaunch kelpie kelpie.launch is_physical:=0 is_sim:=1`
 
-### Dingo Joystick Controls
+### Kelpie Joystick Controls
 <p align="center">
     <img src="assets/joystick control map.jpg" style="align:centre" width="50%">
 </p>
 
-The diagram above shows the mapping of joystick commands for the Dingo. These instructions are based on a PS4 type controller. An alternative, more general description of joystick commands is below:
+The diagram above shows the mapping of joystick commands for the Kelpie. These instructions are based on a PS4 type controller. An alternative, more general description of joystick commands is below:
 
-The Dingo has two main states: Rest and Trot. 
-- While in the TROT state: Left stick controls the robot's movement. Right stick controls the robot's tilt and turning.
-- While in the REST state: Left stick is disabled. Right stick controls the robot's gaze while staying in place.
+The Kelpie has two main states: Rest and Trot. 
+- While in the TROT state: Left stick controls the robot's movement. Right stick controls the robot's tilt and turning. PID control only applies to the yaw.
+- While in the REST state: Left stick is disabled. Right stick controls the robot's gaze while staying in place. PID control can be toggled.
 
 Buttons:
 - Joystick Control Toggle (L1 Button): Pause/Resume control from the joystick.
 - Gait Toggle (R1 Button): Toggles between trotting and resting modes.
-- Hop Request (X button): Perform a hop (Currently not implemented).
+- PID Control Toggle (Square): Toggles PID control on/off
+- Auto Calibration (Circle): Automatically calibrates the legs
 
 Movement: (Speed proportional to how far stick is moved)
 - Left Stick (Horizontal): Pushing left or right strafes the robot in that direction.
@@ -303,11 +288,7 @@ Orientation:
 - D-pad (Vertical): Pressing up or down adjusts the height of the robot.
 - D-pad (Horizontal): Pressing left or right tilts the robot in that direction.
 
-### Launching the gazebo simulation
-Make sure dingo_driver is running first, then:
-`roslaunch dingo_gazebo simulation.launch`
-
-### Extra Notes on Running in the Docker Container
+### Extra Notes on Using VsCode
 #### Using the ros workspace in vscode
 The ROS extension provides options to roslaunch and rosrun files inside vscode via the inbuilt terminal without needing to use the native linux terminal. The commands to do so are the same as natively. 
 
@@ -321,6 +302,62 @@ An important note, as the entire ros workspace is volume mounted, files can be e
 The ROS extension has two options to enable debugging. The first is to attach to a running node which you start via the terminal with `rosrun package_name node_name`. The second is to debug from a launch file, where you use the debugger menu in vscode to launch a launch file and then set waypoints in any nodes which the launch file starts. To set this up, please watch [this video](https://youtu.be/N2vqBvPQdhE?list=PL2dJBq8ig-vihvDVw-D5zAYOArTMIX0FA)
 
 If the debugger is not stopping at breakpoints, you may need to edit the tasks.json file which tells vscode how to build the container. Ensure that the catkin build task defined in tasks.json includes the option `-DCMAKE_BUILD_TYPE=Debug`.
+
+## Running the Simulation on WeBots
+### For Windows users (Native Linux users can skip this)
+- Install Windows Subsystem for Linux (WSL) for Ubuntu 20.04 by running `wsl --install -d Ubuntu-20.04` in your preferred terminal
+- From Powershell, type in `wsl` (`wsl -d Ubuntu-20.04` if you have multiple ubuntu versions), this will launch WSL and Ubuntu 20.04
+
+### Install Required Packages
+- Execute the following in the bash terminal:
+```
+sudo apt-get update
+sudo sh -c 'echo "deb http://packages.ros.org/ros/ubuntu $(lsb_release -sc) main" > /etc/apt/sources.list.d/ros-latest.list'
+sudo apt install curl
+curl -s https://raw.githubusercontent.com/ros/rosdistro/master/ros.asc | sudo apt-key add -
+sudo apt-get update
+sudo mkdir -p /etc/apt/keyrings
+cd /etc/apt/keyrings
+sudo wget -q https://cyberbotics.com/Cyberbotics.asc
+echo "deb [arch=amd64 signed-by=/etc/apt/keyrings/Cyberbotics.asc] https://cyberbotics.com/debian binary-amd64/" | sudo tee /etc/apt/sources.list.d/Cyberbotics.list
+sudo apt update
+sudo apt install webots
+sudo apt-get install ros-noetic-desktop-full ros-noetic-moveit
+sudo apt-get install python3-rosdep
+sudo rosdep init
+rosdep update
+sudo apt-get install ros-noetic-webots-ros ros-noetic-joy python3-pip
+pip3 install transforms3d adafruit-circuitpython-servokit adafruit-circuitpython-bno055
+sudo apt install python-is-python3
+```
+### Setting Up the Simulation Environment
+- Source the ros files on the shell launch and other environment variables, **don't forget to change the file path** (make sure the path is WSL and not windows)
+```
+echo "source /opt/ros/noetic/setup.bash" >> ~/.bashrc
+echo "export KELPIE_WS=/mnt/windows/path/to/kelpie_ws" >> ~/.bashrc
+echo "export DINGO_WS=/mnt/windows/path/to/dingo_ws" >> ~/.bashrc
+echo "export WEBOTS_HOME=/usr/local/webots" >> ~/.bashrc
+source ~/.bashrc
+```
+- Set up the workspace
+```
+cd /path/to/kelpie_ws
+catkin_make
+```
+
+### Running the Simulation Environment
+- Run the kelpie launch file
+```
+cd /path/to/kelpie_ws
+catkin_make
+source devel/setup.bash
+roslaunch src/kelpie/launch/kelpie.launch is_sim:=1 is_physical:=0
+```
+- Open another terminal and run the webots launch file
+```
+source devel/setup.bash
+roslaunch src/kelpie_webots/launch/webots_ros_python.launch 
+```
 
 
 
