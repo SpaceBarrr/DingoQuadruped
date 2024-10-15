@@ -359,6 +359,15 @@ source devel/setup.bash
 roslaunch src/kelpie_webots/launch/webots_ros_python.launch 
 ```
 
-
+### Running the Simulation as a Digital Twin
+- Connect to the kelpie and run it as described in [Kelpie_Driver](#kelpie_driver)
+- Run the webots launch file on your computer
+```
+cd /path/to/kelpie_ws
+catkin_make
+source devel/setup.bash
+export ROS_MASTER_URI=http://dingo.local:11311/
+roslaunch src/kelpie_webots/launch/webots_ros_python.launch 
+```
 
 
