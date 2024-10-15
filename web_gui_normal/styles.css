@@ -234,6 +234,16 @@ _:-ms-input-placeholder, :root .demo-graph {
   padding: 15px;
 }
 
-/* * {
-  outline: 1px solid red !important;
-} */
+h4 {
+  /* font-weight: bold; */
+  font-size: 16px;
+}
+
+h4 {
+  font-weight: bold;
+}
+
+#active {
+  color: #fff;
+  font-weight: bold;
+}

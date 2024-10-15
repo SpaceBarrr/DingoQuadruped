@@ -11,6 +11,7 @@ ros.on('connection', function () {
 
 ros.on('error', function (error) {
     console.log('Error connecting to websocket server: ', error);
+    document.getElementById("ROS_status").style.color = 'red';
     document.getElementById("ROS_status").innerText = 'Cannot connect to ROS. Ensure ROS bridge has been launched.'
 });
 
