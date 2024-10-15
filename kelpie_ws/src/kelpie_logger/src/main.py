@@ -35,4 +35,4 @@ with open(FILE_NAME,mode="w+", newline='') as csvfile:
     while True:
         spamwriter = csv.writer(csvfile, delimiter=',', quotechar='|')
         spamwriter.writerow(att)
-        time.sleep(0.05)
+        time.sleep(0.1)
