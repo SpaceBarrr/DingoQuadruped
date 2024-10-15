@@ -11,7 +11,7 @@ from kelpie_common.Config import ServoIndex as s_idx
 class MotorCurrentSubscriber:
     def __init__(self) -> None:
         """
-        Initialise the ImuSubscriber class
+        Initialise the MotorCurrentSubscriber class
         """
         self.currents = np.zeros((3, 4))
         
@@ -19,8 +19,8 @@ class MotorCurrentSubscriber:
 
     def callback(self, current_data: joint_states) -> None:
         """
-        Callback function for IMU subscriber.
-        :param current_data: The IMU data, expected as imu message format
+        Callback function for current subscriber.
+        :param current_data: The current data, expected as current message format
         :return: None
         """
         # Keep pointer/reference. Do not overwrite with new class reference.
