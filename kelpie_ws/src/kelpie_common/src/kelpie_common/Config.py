@@ -209,10 +209,10 @@ class Leg_linkage:
         self.b = 37.6  # mm
         self.c = 40 #43  # mm
         self.d = 35 # mm
-        self.e = 61.3 #67 #61.2836  # mm
+        self.e = 61.2836 #67 #61.2836  # mm
         self.f = 130  # mm  #new will be 130.0
         self.g = 50  # mm
-        self.h = 43  # mm
+        self.h = 40  # mm
         self.upper_leg_length = configuration.L2 * 1000
         self.lower_leg_length = configuration.L3 * 1000
         self.lower_leg_bend_angle = m.radians(0)  # degrees found on CAD
