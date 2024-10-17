@@ -33,8 +33,8 @@ from kelpie_common.Utilities import build_leg_msg
 from subscribers.command_input_subscriber import InputSubscriber
 from subscribers.imu_subscriber import ImuSubscriber
 from subscribers.motor_current_subscriber import MotorCurrentSubscriber
+from subscribers.battery_voltage_subscriber import BatteryVoltageSubscriber
 from kelpie_common.current_sensor_calibrate import Calibrator
-
 
 class KelpieDriver:
     def __init__(self, is_sim, is_physical, use_imu):
@@ -47,11 +47,8 @@ class KelpieDriver:
 
         self.new_imu = ImuSubscriber()
         self.motor_currents = MotorCurrentSubscriber()
+        self.batt_voltages = BatteryVoltageSubscriber()
 
-        # self.joint_command_sub = rospy.Subscriber("/joint_space_cmd", JointSpace, self.run_joint_space_command)
-        # self.task_command_sub = rospy.Subscriber("/task_space_cmd", TaskSpace, self.run_task_space_command)
-        self.estop_status_sub = rospy.Subscriber("/kelpie/emergency_stop_status", Bool,
-                                                 self.update_emergency_stop_status)
         self.external_commands_enabled = 0
 
         self.joint_states_msg = joint_states()
@@ -93,11 +90,11 @@ class KelpieDriver:
         # Wait until the activate button has been pressed
         while not rospy.is_shutdown():
             if self.state.currently_estopped == 1:
-                rospy.logwarn("E-stop pressed. Controlling code now disabled until E-stop is released")
+                rospy.logwarn("Undervoltage e-stop activated. Please charge the battery now!")
                 self.state.trotting_active = 0
                 while self.state.currently_estopped == 1:
                     self.rate.sleep()
-                rospy.loginfo("E-stop released")
+                rospy.loginfo("E-stop deactivated") # shouldn't actually be possible
 
             rospy.loginfo("Manual robot control active. Currently not accepting external commands")
             # Always start Manual control with the robot standing still. Send default positions once
@@ -109,11 +106,14 @@ class KelpieDriver:
             self.controller.publish_task_space_command(self.state.rotated_foot_locations)
             self.publish_joints(self.state.joint_angles)
 
-            # if self.is_physical:
-            #     # Update the pwm widths going to the servos
-            #     self.hardware_interface.set_actuator_postions(self.state.joint_angles)
             while self.state.currently_estopped == 0:
                 time.start = rospy.Time.now()
+                
+                all_batt_voltages = self.batt_voltages.get_voltages()
+                overall_batt_voltage = all_batt_voltages[2] # only take overall batt voltage
+                if overall_batt_voltage < 3: # pick 3 to account for voltage sag while trotting, the actual battery voltage is likely much higher
+                    self.state.currently_estopped == 1
+                    continue
 
                 # Update the robot controller's parameters
                 command = self.input_interface.get_command(self.state, self.message_rate)
@@ -128,16 +128,8 @@ class KelpieDriver:
                         break
                     else:
                         rospy.logerr(
-                            "Received Request to enable external control, but e-stop is pressed so the request has been ignored. Please release e-stop and try again")
+                            "Received Request to enable external control, but e-stop is activated so the request has been ignored. Please charge the battery and try again")
 
-                # Read imu data. Orientation will be None if no data was available
-                # rospy.loginfo(imu.read_orientation())
-                # self.state.euler_orientation = (
-                #     self.imu.read_orientation() if self.use_imu else np.array([0, 0, 0])
-                # )
-                # [yaw, pitch, roll] = self.state.euler_orientation
-                # print('Yaw: ',np.round(yaw,2),'Pitc
-                # ]\h: ',np.round(pitch,2),'Roll: ',np.round(roll,2))
                 # Step the controller forward by dt
                 self.controller.run(command)
 
@@ -149,9 +141,6 @@ class KelpieDriver:
 
                     # If running simulator, publish joint angles to gazebo controller:
                     self.publish_joints(self.state.joint_angles)
-                    # if self.is_physical:
-                    #     # Update the pwm widths going to the servos
-                    #     self.hardware_interface.set_actuator_postions(self.state.joint_angles)
 
                     # rospy.loginfo('All angles: \n',np.round(np.degrees(state.joint_angles),2))
                     time.end = rospy.Time.now()
@@ -171,22 +160,13 @@ class KelpieDriver:
                 self.controller.publish_joint_space_command(self.state.joint_angles)
                 self.controller.publish_task_space_command(self.state.rotated_foot_locations)
                 self.publish_joints(self.state.joint_angles)
-                # if self.is_physical:
-                #     # Update the pwm widths going to the servos
-                #     self.hardware_interface.set_actuator_postions(self.state.joint_angles)
+
                 while self.state.currently_estopped == 0:
                     command = self.input_interface.get_command(self.state, self.message_rate)
                     if command.joystick_control_event == 1:
                         self.external_commands_enabled = 0
                         break
                     self.rate.sleep()
-
-    def update_emergency_stop_status(self, msg):
-        if msg.data == 1:
-            self.state.currently_estopped = 1
-        if msg.data == 0:
-            self.state.currently_estopped = 0
-        return
 
     def run_task_space_command(self, msg):
         if self.external_commands_enabled == 1 and self.currently_estopped == 0:
@@ -199,14 +179,11 @@ class KelpieDriver:
             joint_angles = self.controller.inverse_kinematics(foot_locations, self.config)
             self.publish_joints(joint_angles)
 
-            # if self.is_physical:
-            #     self.hardware_interface.set_actuator_postions(joint_angles)
-
         elif self.external_commands_enabled == 0:
             rospy.logerr(
                 "ERROR: Robot not accepting commands. Please deactivate manual control before sending control commands")
         elif self.currently_estopped == 1:
-            rospy.logerr("ERROR: Robot currently estopped. Please release before trying to send commands")
+            rospy.logerr("ERROR: Robot currently estopped. Please charge the battery before trying to send commands")
 
     def run_joint_space_command(self, msg):
         if self.external_commands_enabled == 1 and self.currently_estopped == 0:
@@ -219,14 +196,11 @@ class KelpieDriver:
 
             self.publish_joints(self.state.joint_angles)
 
-            # if self.is_physical:
-            #     self.hardware_interface.set_actuator_postions(joint_angles)
-
         elif self.external_commands_enabled == 0:
             rospy.logerr(
                 "ERROR: Robot not accepting commands. Please deactivate manual control before sending control commands")
         elif self.currently_estopped == 1:
-            rospy.logerr("ERROR: Robot currently estopped. Please release before trying to send commands")
+            rospy.logerr("ERROR: Robot currently estopped. Please charge the battery before trying to send commands")
 
     def publish_joints(self, joint_angles):
         #print(joint_angles, end="\n")
@@ -240,12 +214,8 @@ class KelpieDriver:
 
         self.joint_publisher.publish(self.joint_states_msg)
 
-
-
-
 def signal_handler(sig, frame):
     sys.exit(0)
-
 
 def main():
     """Main program
@@ -255,5 +225,5 @@ def main():
     kelpie = KelpieDriver(is_sim, is_physical, use_imu)
     kelpie.run()
 
-
-main()
+if __name__ == "__main__":
+    main()

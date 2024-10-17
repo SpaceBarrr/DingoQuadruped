@@ -1,11 +1,9 @@
 #!/usr/bin/python
 # -*- coding: UTF-8 -*-
-#import chardet
+
 import os
-import sys
 import socket
 import time
-import logging
 from PIL import Image,ImageDraw,ImageFont
 
 from kelpie_hardware_interface.lcd.LCD_1inch47 import LCD_1inch47
