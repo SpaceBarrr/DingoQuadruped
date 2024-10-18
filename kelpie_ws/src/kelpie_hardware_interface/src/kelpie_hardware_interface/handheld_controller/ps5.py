@@ -19,7 +19,7 @@ class ControllerInterface:
 
         command.gait_toggle = msg.buttons[5]  # R1
         command.hop_toggle = msg.buttons[1]  # cross
-        command.calibration_toggle = msg.buttons[2]  # circle
+        command.calibration_toggle = 0 # Unmapped
         command.pid_toggle = msg.buttons[0] # Square
         command.joystick_toggle = msg.buttons[4]  # L1
         command.x = self.apply_deadband(msg.axes[0])  # ly
