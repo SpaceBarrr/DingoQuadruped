@@ -1,5 +1,6 @@
 clear all; clc; close all;
 format long g
+
 %% Set variables
 link1 = sym('link1_a', [1,4]);
 link2 = sym('link2_a', [1,4]);
@@ -48,23 +49,25 @@ servo_upper_const = deg2rad(30);
 servo_lower_const = deg2rad(47.2);
 
 % Set constants
-%fourbar1_consts = [35.0143 35.0000 37.6165 42.9981];
-%fourbar2_consts = [130 43.0025 130.177 37];
+% Dingo V1 params
+% fourbar1_consts = [35.0143 35.0000 37.6165 42.9981];
+% fourbar2_consts = [130 42.9801 130.200 37.0083];
 
+% Kelpie params
 fourbar1_consts = [35.0143 35.0000 37.6165 40];
-fourbar2_consts = [130 40 130.177 50];
+fourbar2_consts = [130 40 130.203 37];
 
 l1_const = 130;
-l2_const = 127.407;
+l2_const = 138.169; %127.407;
 force_x = 0; % In kg
 force_y = 1.5; % In kg
 g = 9.81;
 
 value = subs(lower_to_upper, [link1 link2 servo_upper servo_lower l1 l2], [fourbar1_consts fourbar2_consts servo_upper_const servo_lower_const l1_const l2_const]);
-theta2_val = double(rad2deg(value))
+theta2_val = double(rad2deg(value));
 
-x_val = double(subs(dk(1), [link1 link2 servo_upper servo_lower l1 l2], [fourbar1_consts fourbar2_consts servo_upper_const servo_lower_const l1_const l2_const]))
-y_val = double(subs(dk(2), [link1 link2 servo_upper servo_lower l1 l2], [fourbar1_consts fourbar2_consts servo_upper_const servo_lower_const l1_const l2_const]))
+x_val = double(subs(dk(1), [link1 link2 servo_upper servo_lower l1 l2], [fourbar1_consts fourbar2_consts servo_upper_const servo_lower_const l1_const l2_const]));
+y_val = double(subs(dk(2), [link1 link2 servo_upper servo_lower l1 l2], [fourbar1_consts fourbar2_consts servo_upper_const servo_lower_const l1_const l2_const]));
 
 % Torque outputs as N-mm, convert to kg-cm
 torque1 = abs(double(subs(torque(1), [link1 link2 servo_upper servo_lower Fx Fy l1 l2], [fourbar1_consts fourbar2_consts servo_upper_const servo_lower_const force_x*g force_y*g l1_const l2_const])) * 0.0101971621)
@@ -75,3 +78,36 @@ ltx_x = latex(dk(1));
 ltx_y = latex(dk(2));
 
 
+%% Sweeping Through Linkage Lengths
+torque1 = zeros(1, 16);
+torque2 = zeros(1, 16);
+for i = 35:50
+    fourbar1_consts = [35.0143 35.0000 37.6165 40];
+    fourbar2_consts = [130 40 130.203 i];
+    value = subs(lower_to_upper, [link1 link2 servo_upper servo_lower l1 l2], [fourbar1_consts fourbar2_consts servo_upper_const servo_lower_const l1_const l2_const]);
+    theta2_val = double(rad2deg(value));
+    
+    x_val = double(subs(dk(1), [link1 link2 servo_upper servo_lower l1 l2], [fourbar1_consts fourbar2_consts servo_upper_const servo_lower_const l1_const l2_const]));
+    y_val = double(subs(dk(2), [link1 link2 servo_upper servo_lower l1 l2], [fourbar1_consts fourbar2_consts servo_upper_const servo_lower_const l1_const l2_const]));
+    
+    % Torque outputs as N-mm, convert to kg-cm
+    torque1(i-34) = abs(double(subs(torque(1), [link1 link2 servo_upper servo_lower Fx Fy l1 l2], [fourbar1_consts fourbar2_consts servo_upper_const servo_lower_const force_x*g force_y*g l1_const l2_const])) * 0.0101971621);
+    torque2(i-34) = abs(double(subs(torque(2), [link1 link2 servo_upper servo_lower Fx Fy l1 l2], [fourbar1_consts fourbar2_consts servo_upper_const servo_lower_const force_x*g force_y*g l1_const l2_const])) * 0.0101971621);
+end
+
+
+%% Plot
+length = linspace(35,50,16);
+
+plot(length, torque1)
+hold on
+plot(length, torque2)
+legend("Upper leg torque", "Lower leg torque")
+xlabel("Length in mm")
+ylabel("Required Torque in kgcm")
+title("Required Torque Vs Linkage Length")
+set(gcf, 'color', 'none');    
+set(gca, 'color', 'none');
+exportgraphics(gcf,'transparent.eps',...   % since R2020a
+    'ContentType','vector',...
+    'BackgroundColor','none')

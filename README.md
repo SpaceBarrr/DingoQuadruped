@@ -247,17 +247,20 @@ The Kelpie_Driver should be started before any other code is launched on the Kel
 `roslaunch kelpie kelpie.launch`
 
 Arguments are:
-- is_physical (0/1): Is the code being run on the Kelpie itself? Default: "1" (Yes)
-- is_sim (0/1): Should the code publish joint values to the simulator? Default: "0" (No)
-- use_joystick (0/1): Is a joystick being used for control? Default: "1" (Yes)
-- use_keyboard (0/1): Is the keyboard being used for control? Default: "0" (No)
-- (currently not used) serial_port (name of port): The serial port that the nano is connected to. Default: "/dev/ttyS0"
-- use_imu (0/1): Should IMU data be used to correct the robots joint angles? Default: "0" (No)
+- mode (0/1)
+    - 0: physical (default)
+    - 1: simulation
+- input_type (0/1): 
+    - 0: PS4 controller (default)
+    - 1: keyboard
+- use_cam (0/1): 
+    - 0: camera off (default)
+    - 1: camera on
 
 With no arguments specified, it will assume a joystick controller is used for control and it will launch the hardware interface with IMU feedback disabled. No joint data will be published for WeBots to use to simulate the robot.
 
-As an example of how the arguments can be used, if the code is to be run purely in simulation with joystick control, you would launch the driver with the following arguments: 
-`roslaunch kelpie kelpie.launch is_physical:=0 is_sim:=1`
+As an example of how the arguments can be used, if the code is to be run with keyboard control and the camera enabled, you would launch the driver with the following arguments: 
+`roslaunch kelpie kelpie.launch input_type:=1 use_cam:=1`
 
 ### Kelpie Joystick Controls
 <p align="center">
@@ -351,7 +354,7 @@ catkin_make
 cd /path/to/kelpie_ws
 catkin_make
 source devel/setup.bash
-roslaunch src/kelpie/launch/kelpie.launch is_sim:=1 is_physical:=0
+roslaunch src/kelpie/launch/kelpie.launch mode:=1
 ```
 - Open another terminal and run the webots launch file
 ```
@@ -360,7 +363,10 @@ roslaunch src/kelpie_webots/launch/webots_ros_python.launch
 ```
 
 ### Running the Simulation as a Digital Twin
-- Connect to the kelpie and run it as described in [Kelpie_Driver](#kelpie_driver)
+- Connect to the kelpie and run it as described in [Kelpie_Driver](#kelpie_driver), with the digital twin argument set to true
+```
+roslaunch src/kelpie/launch/kelpie.launch digital_twin:=1
+```
 - Run the webots launch file on your computer
 ```
 cd /path/to/kelpie_ws
