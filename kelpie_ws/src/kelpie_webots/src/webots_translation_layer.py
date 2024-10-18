@@ -18,25 +18,32 @@
 This is a simple example of a Webots controller running a Python ROS node thanks to rospy.
 The robot is publishing the value of its front distance sensor and receving motor commands (velocity).
 """
+import sys
+import rospy
 import ctypes
 import os
 from math import pi
-
 import numpy as np
-import rospy
 from controller import Robot, Gyro, Motor, Accelerometer, InertialUnit
-from kelpie.msg import leg_state, joint_states, imu, att, vec_3d_float32
 from controller.wb import wb
+from kelpie.msg import leg_state, joint_states, imu, att, vec_3d_float32
 from numpy import deg2rad
 import time
 
+
+
+args = rospy.myargv(argv=sys.argv)
+DIGITAL_TWIN = int(args[1])
 # Set global parameters
 SAMPLE_RATE = 1
-
 START_POS = leg_state()
 START_POS.roll = 0
 START_POS.upper = pi / 8
 START_POS.lower = pi / 3
+
+VOLTAGE_MSG = vec_3d_float32()
+BATT_VOLTAGE_PUB = rospy.Publisher("/kelpie/battery/voltage", vec_3d_float32, queue_size=1)
+IMU_PUBLISHER = rospy.Publisher("/kelpie/imu", imu, queue_size=1)
 
 # Get robot motors
 KELPIE = Robot()
@@ -85,6 +92,7 @@ IMU_MSG = imu()
 IMU_MSG.att = att()
 IMU_MSG.acc = vec_3d_float32()
 IMU_MSG.gyro = vec_3d_float32()
+VOLTAGE_MSG = vec_3d_float32()
 
 # Create joint states global var
 JOINT_DATA: joint_states = None
@@ -103,6 +111,8 @@ ERROR_RL = lambda: (0, 0, 0)
 
 ERROR_FR = lambda: (0, 0, 0)
 ERROR_RR = lambda: (0, 0, 0)
+
+BATT_VALS = lambda: (4.2, 4.2, 8.4)
 
 
 def set_pos(leg, data: leg_state, error: tuple) -> None:
@@ -154,13 +164,13 @@ def init_pos():
 
 #init_pos()
 
+
 # Initialise ROS nodes
 print('Initializing ROS: connecting to ' + os.environ['ROS_MASTER_URI'])
 rospy.init_node('webots_translation_layer', anonymous=True)
 rospy.Subscriber("/kelpie/leg_control/joint_states", joint_states, callback, queue_size=1)
-IMU_PUBLISHER = rospy.Publisher("/kelpie/imu", imu, queue_size=1)
-print('Running the control loop')
 
+print('Running the control loop')
 while KELPIE.step(T_STEP) != -1 and not rospy.is_shutdown():
     acc = ACC.getValues()
     gyro = GYRO.getValues()
@@ -171,7 +181,12 @@ while KELPIE.step(T_STEP) != -1 and not rospy.is_shutdown():
     # print(IMU_MSG.att)
     IMU_MSG.acc.x, IMU_MSG.acc.y, IMU_MSG.acc.z = acc[0], acc[1], acc[2]
     IMU_MSG.gyro.x, IMU_MSG.gyro.y, IMU_MSG.gyro.z = gyro[0], gyro[1], gyro[2]
-    IMU_PUBLISHER.publish(IMU_MSG)
+    if not DIGITAL_TWIN:
+        IMU_PUBLISHER.publish(IMU_MSG)
+        VOLTAGE_MSG.x = BATT_VALS[0]        # Cell 1 voltage
+        VOLTAGE_MSG.y = BATT_VALS[1]        # Cell 2 voltage
+        VOLTAGE_MSG.z = BATT_VALS[2]        # Raw battery voltage
+        BATT_VOLTAGE_PUB.publish(VOLTAGE_MSG)
 
     if JOINT_DATA is None:
         # Skip if no joint data has been received.

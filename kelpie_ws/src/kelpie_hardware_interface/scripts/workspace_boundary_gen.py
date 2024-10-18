@@ -49,9 +49,9 @@ def calculate_4_bar(th2, a, b, c, d):
 GDE_lower = np.deg2rad(33)
 GDE_upper = np.deg2rad(150)
 link = Leg_linkage(Configuration())
-n = 1000
 start = 0
 stop = 140
+n = stop + 1
 sweep = np.linspace(start, stop, n)
 data_points = np.zeros((n, 3))
 
@@ -61,19 +61,39 @@ for i in range(n):
     CDA = m.pi + THETA2 - GDE_lower - link.EDC + link.gamma
     DAB, _, _ = calculate_4_bar(CDA, link.d, link.a, link.b, link.c)
     THETA0 = DAB + link.gamma
-    THETA0_upper = 180 - np.rad2deg(THETA0)
+    THETA0_upper = m.pi - THETA0
 
     CDA = m.pi + THETA2 - GDE_upper - link.EDC + link.gamma
     DAB, _, _ = calculate_4_bar(CDA, link.d, link.a, link.b, link.c)
     THETA0 = DAB + link.gamma
-    THETA0_lower = 180 - np.rad2deg(THETA0)
+    THETA0_lower = m.pi - THETA0
+    # THETA0_lower = np.rad2deg(THETA0)
 
-    data_points[i, :] = (np.rad2deg(THETA2),
-                         THETA0_upper if not (np.isnan(THETA0_upper) or THETA0_upper > 82) else 82,
-                         THETA0_lower if not (np.isnan(THETA0_lower) or THETA0_lower < -50) else -50,
+    # data_points[i, :] = (round(np.rad2deg(THETA2)),
+    #                      THETA0_upper if not (np.isnan(THETA0_upper) or THETA0_upper > 82) else 82,
+    #                      THETA0_lower if not (np.isnan(THETA0_lower) or THETA0_lower < -50) else -50,
+    #                      )
+
+    THETA0_upper = THETA0_upper if not (np.isnan(THETA0_upper) or THETA0_upper > 1.43117) else 1.43117
+    THETA0_lower = THETA0_lower if not (np.isnan(THETA0_lower) or THETA0_lower < -0.872665) else -0.872665
+    
+    _, _, CDA = calculate_4_bar(m.pi - THETA0_lower - link.gamma, link.a, link.b, link.c, link.d)
+    GDE = m.pi - (CDA - link.gamma) + THETA2 - np.deg2rad(100)
+    _, _, FGD = calculate_4_bar(GDE, link.h, link.f, link.g, link.i)
+    THETA0_lower = FGD
+
+    _, _, CDA = calculate_4_bar(m.pi - THETA0_upper - link.gamma, link.a, link.b, link.c, link.d)
+    GDE = m.pi - (CDA - link.gamma) + THETA2 - np.deg2rad(100)
+    _, _, FGD = calculate_4_bar(GDE, link.h, link.f, link.g, link.i)
+    THETA0_upper = FGD
+
+    data_points[i, :] = (round(np.rad2deg(THETA2)),
+                         np.rad2deg(THETA0_upper)-90,
+                         np.rad2deg(THETA0_lower)-90
                          )
 
-FILE_NAME = __file__.replace("/workspace_boundary_gen.py", "/workspace_boundary_gen.csv")
+
+FILE_NAME = __file__.replace("/workspace_boundary_gen.py", "/workspace_boundaries.csv")
 
 with open(FILE_NAME, mode="w+", newline='') as csvfile:
     csv_writer = csv.writer(csvfile, delimiter=',', quotechar='|')

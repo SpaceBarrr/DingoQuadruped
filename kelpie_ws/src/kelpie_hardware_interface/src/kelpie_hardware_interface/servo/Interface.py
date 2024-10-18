@@ -2,7 +2,7 @@
 import math as m
 import yaml
 import os
-
+import csv
 import numpy as np
 import rospy
 from adafruit_servokit import ServoKit
@@ -15,7 +15,8 @@ class ServoInterface:
         self.link = link
         self.servo_angles = np.zeros((3, 4))
         self.kit = ServoKit(channels=16, address=0x60)  # Defininng a new set of servos uising the Adafruit ServoKit LIbrary
-
+        self._workspace_boundary_LUT = {}
+        self._build_workspace_boundary_LUT()
         """ SERVO INDICES, CALIBRATION MULTIPLIERS AND OFFSETS
             #   ROW:    which joint of leg to control 0:hip, 1: upper leg, 2: lower leg
             #   COLUMN: which leg to control. 0: front-right, 1: front-left, 2: back-right, 3: back-left.
@@ -71,6 +72,12 @@ class ServoInterface:
         for i in range(16):
             self.kit.servo[i].actuation_range = 180
             self.kit.servo[i].set_pulse_width_range(self.pwm_min, self.pwm_max)
+    
+    def _build_workspace_boundary_LUT(self):
+        fname = __file__.replace("/src/kelpie_hardware_interface/servo/Interface.py", "/scripts/workspace_boundaries.csv")
+        with open(fname, mode='r') as workspace_boundaries:
+            reader = csv.reader(workspace_boundaries)
+            self._workspace_boundary_LUT = {float(rows[0]):[float(rows[1]), float(rows[2])] for rows in reader}
 
     def set_actuator_postions(self, joint_angles):
         """Converts all angles found via inverse kinematics to the angles needed at the servo by applying multipliers
@@ -82,7 +89,7 @@ class ServoInterface:
         joint_angles : 3x4 numpy array of float angles (radians)
         """
         # Limit angles ot physical possiblity
-        possible_joint_angles = impose_physical_limits(joint_angles)
+        possible_joint_angles = self.impose_physical_limits(joint_angles)
 
         # Convert to servo angles
         angles = self.joint_angles_to_servo_angles(possible_joint_angles)
@@ -163,9 +170,32 @@ class ServoInterface:
         # print('Uncorrected servo_angles: ',self.servo_angles)
 
         return servo_angles
+    
+    def impose_physical_limits(self, desired_joint_angles):
+        ''' Takes desired upper and lower leg angles and clips them to be within the range of physical possiblity. 
+        This is because some angles are not possible for the physical linkage. Processing is done in degrees.
+            ----------
+        desired_joint_angles : numpy array 3x4 of float angles (radians)
+            Desired angles of all joints for all legs from inverse kinematics
 
+        Returns
+        -------
+        possble_joint_angles: numpy array 3x4 of float angles (radians)
+            The angles that will be attempted to be implemeneted, limited to a possible range
+        '''
+        # return desired_joint_angles
+        possible_joint_angles = np.zeros((3, 4))
+        
+        for i in range(4):
+            hip, upper, lower = np.degrees(desired_joint_angles[:, i])
+            print(upper, self._workspace_boundary_LUT[round(upper)]) if i == 0 else 0
+            hip = np.clip(hip, -20, 20)
+            upper = np.clip(upper, 0, 120)
+            max_lower, min_lower = self._workspace_boundary_LUT[round(upper)]
+            lower = np.clip(lower, min_lower, max_lower)
 
-
+            possible_joint_angles[:, i] = hip, upper, lower
+        return np.radians(possible_joint_angles)
 
 ### FUNCTIONS ###
 
@@ -243,53 +273,5 @@ def lower_leg_angle_to_servo_angle(link, THETA2, THETA3):
     return THETA0
 
 
-def impose_physical_limits(desired_joint_angles):
-    ''' Takes desired upper and lower leg angles and clips them to be within the range of physical possiblity. 
-    This is because some angles are not possible for the physical linkage. Processing is done in degrees.
-        ----------
-    desired_joint_angles : numpy array 3x4 of float angles (radians)
-        Desired angles of all joints for all legs from inverse kinematics
 
-    Returns
-    -------
-    possble_joint_angles: numpy array 3x4 of float angles (radians)
-        The angles that will be attempted to be implemeneted, limited to a possible range
-    '''
-    return desired_joint_angles
-    possible_joint_angles = np.zeros((3, 4))
-
-    for i in range(4):
-        hip, upper, lower = np.degrees(desired_joint_angles[:, i])
-
-        hip = np.clip(hip, -20, 20)
-        upper = np.clip(upper, 0, 120)
-
-        if 0 <= upper < 10:
-            lower = np.clip(lower, -20, 40)
-        elif 10 <= upper < 20:
-            lower = np.clip(lower, -40, 40)
-        elif 20 <= upper < 30:
-            lower = np.clip(lower, -50, 40)
-        elif 30 <= upper < 40:
-            lower = np.clip(lower, -60, 30)
-        elif 40 <= upper < 50:
-            lower = np.clip(lower, -70, 25)
-        elif 50 <= upper < 60:
-            lower = np.clip(lower, -70, 20)
-        elif 60 <= upper < 70:
-            lower = np.clip(lower, -70, 0)
-        elif 70 <= upper < 80:
-            lower = np.clip(lower, -70, -10)
-        elif 80 <= upper < 90:
-            lower = np.clip(lower, -70, -20)
-        elif 90 <= upper < 100:
-            lower = np.clip(lower, -70, -30)
-        elif 100 <= upper < 110:
-            lower = np.clip(lower, -70, -40)
-        elif 110 <= upper < 120:
-            lower = np.clip(lower, -70, -60)
-
-        possible_joint_angles[:, i] = hip, upper, lower
-
-    return np.radians(possible_joint_angles)
 

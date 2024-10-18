@@ -30,7 +30,7 @@ class ControllerInterface:
         command.roll_movement = msg.axes[6]  # dpadx
 
         self.command_pub.publish(command)
-        print(command)
+        # print(command)
 
 
 
